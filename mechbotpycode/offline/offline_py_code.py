@@ -12,7 +12,7 @@ mega_connected = False
 flysky_connected = False
 motordriver_connected = False
 
-while ~mega_connected:
+while not mega_connected:
     try:
         ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1) #9600 is baud rate(must be same with that of NodeMCU)
         mega_connected = True
@@ -22,6 +22,7 @@ while ~mega_connected:
             mega_connected = True
         except:
             print("check serial connection(Mega)")
+print("Serial connected")
 
 
 GPIO.setwarnings(False)
@@ -161,15 +162,15 @@ def stop():
 
 def check_error():
     global mega_connected, status_check
-    if~(mega_connected):
+    if not (mega_connected):
         status_check= "mega_disconneced"
         #print("mega_disconneced")
         stop()
-    elif ~(flysky_connected):
+    elif not (flysky_connected):
         status_check = "flysky_disconneced"
         stop()
         #print("mega_disconneced")
-    elif~(motordriver_connected):
+    elif not (motordriver_connected):
         status_check = "motor_driver_disconnected"
         stop()
         #print("motor_driver_disconnected")
@@ -184,5 +185,5 @@ while True:
     encoder2 = enc2.read()
     brakeing(brake_speed, encoder1, encoder2)
     check_error()
-    print(encoder1,encoder2)
+    #print(encoder1,encoder2)
     print(str(throttle_speed)+" "+str(brake_speed)+" "+str(sterring_input)+" "+str(drive_mode))
