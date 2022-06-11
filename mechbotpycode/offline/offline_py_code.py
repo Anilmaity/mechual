@@ -9,6 +9,8 @@ enc = Encoder.Encoder(18, 17)  # (DT,CLK)
 enc2 = Encoder.Encoder(19, 26)
 
 mega_connected = False
+flysky_connected = False
+motordriver_connected = False
 
 while ~mega_connected:
     try:
@@ -60,7 +62,7 @@ def setup():
 
 
 def get_data():
-    global throttle_speed,brake_speed,drive_mode,sterring_input,sterring_position
+    global throttle_speed,brake_speed,drive_mode,sterring_input,sterring_position,mega_connected,flysky_connected,motordriver_connected
     try:
         if ser.in_waiting > 0:
             mega_connected = True
@@ -80,6 +82,11 @@ def get_data():
                     drive_mode = 'R'
                 sterring_input = int(data[4])
                 sterring_position = int(data[5])
+
+                flysky_connected = True
+                mega_connected = True
+                motordriver_dconnected = True
+
 
 
 
@@ -147,9 +154,28 @@ def brakeing(input,encoder1,encoder2 ):
         brake_pwm[1].start(0)
         GPIO.output(DIR[1], GPIO.LOW)
 
+def stop():
+    brake_pwm[0].start(0)
+    brake_pwm[0].start(0)
+    throttle_pwm.start(0)
+
 def check_error():
-    global
-    if()
+    global mega_connected, status_check
+    if~(mega_connected):
+        status_check= "mega_disconneced"
+        #print("mega_disconneced")
+        stop()
+    elif ~(flysky_connected):
+        status_check = "flysky_disconneced"
+        stop()
+        #print("mega_disconneced")
+    elif~(motordriver_connected):
+        status_check = "motor_driver_disconnected"
+        stop()
+        #print("motor_driver_disconnected")
+    else:
+        status_check = "OK"
+
 
 setup()
 while True:
