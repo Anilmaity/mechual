@@ -11,6 +11,7 @@ enc2 = Encoder.Encoder(19, 26)
 mega_connected = False
 flysky_connected = False
 motordriver_connected = False
+status_check='initial'
 
 while not mega_connected:
     try:
@@ -180,10 +181,13 @@ def check_error():
 
 setup()
 while True:
+    start_time = time.time()
     drive(throttle_speed, drive_mode)
     encoder1 = enc.read()
     encoder2 = enc2.read()
     brakeing(brake_speed, encoder1, encoder2)
     check_error()
     #print(encoder1,encoder2)
-    print(str(throttle_speed)+" "+str(brake_speed)+" "+str(sterring_input)+" "+str(drive_mode))
+    print("throttle"+str(throttle_speed)+" brake "+str(brake_speed)+" sterring in "+str(sterring_input)+" sterring pos "
+          +str(drive_mode)+" loop time pi "++" status "+str(status_check))
+    loop_time = time.time() - start_time
