@@ -3,11 +3,10 @@ import time
 import RPi.GPIO as GPIO
 import serial
 import Encoder
+    
 
-enc = Encoder.Encoder(18, 17)  # (DT,CLK)
-enc2 = Encoder.Encoder(19, 26)
-
-mega_connected = False
+                                                                                                                                                                                                                                                                                                                                                                                                                                     
+mega_connected = False                                                                                                                                                                                                                                                                                                                     
 flysky_connected = False
 motordriver_connected = False
 status_check = 'initial'
@@ -36,6 +35,9 @@ reverse_pin = 10
 N_pin = 9
 PWM = [23, 20]
 DIR = [24, 21]
+ENC1 = [14,15]
+ENC2 = [3,2]
+
 
 #     Data require global
 throttle_speed = 0
@@ -46,15 +48,60 @@ sterring_input = 0
 brake_pwm = []
 throttle_pwm = 0
 loop_time =0
+encoder1_count = 0
+encoder2_count = 0
+error_encoder1=0
+error_encoder2=0
+last_error_encoder2 =0
+last_error_encoder1 = 0 
+def rotation_decode2(Enc_B):
+    global encoder2_count
+    Switch2_A = GPIO.input(ENC2[0])
+    Switch2_B = GPIO.input(ENC2[1])
+ 
+    if (Switch2_A == 1) and (Switch2_B == 0):
+        encoder2_count += 1
+        #print ("direction -> ", counter)
+        return
+ 
+    elif (Switch2_A == 1) and (Switch2_B == 1):
+        encoder2_count -= 1
 
+    
+def rotation_decode1(Enc_A):
+    global encoder1_count
+    Switch_A = GPIO.input(ENC1[1])
+    Switch_B = GPIO.input(ENC1[0])
+ 
+    if (Switch_A == 0) and (Switch_B == 1):
+        encoder1_count += 1
+ 
+    elif (Switch_A == 1) and (Switch_B == 1):
+        encoder1_count -= 1
 
+    
 def setup():
     global brake_pwm, throttle_pwm
+    
+    GPIO.setup(ENC1[0], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(ENC1[1], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    
+    GPIO.add_event_detect(ENC1[0], GPIO.RISING, callback=rotation_decode1)
+    
+    GPIO.setup(ENC2[0], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(ENC2[1], GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+    GPIO.add_event_detect(ENC2[0], GPIO.RISING, callback=rotation_decode2)
+
+
+
     GPIO.setup(throttle, GPIO.OUT)
     GPIO.setup(PWM[0], GPIO.OUT)
     GPIO.setup(PWM[1], GPIO.OUT)
     GPIO.setup(DIR[0], GPIO.OUT)  # set pin as output
     GPIO.setup(DIR[1], GPIO.OUT)  # set pin as output
+  
+
 
     GPIO.setup(brake_pin, GPIO.OUT)  # set pin as output
     GPIO.setup(reverse_pin, GPIO.OUT)  # set pin as output
@@ -77,7 +124,8 @@ def get_data():
             if(int(data[1]) >0):
                 throttle_speed = int((int(data[1])-1000)*0.1)
             #print(throttle_speed)
-            brake_speed = (int(data[2])-1500)
+            if(int(data[2]) >= 1500):
+                brake_speed = (int(data[2])-1500)*8
             drive_mode = int(data[3])
             if (drive_mode >= 1900):
                 drive_mode = 'R'
@@ -122,34 +170,49 @@ def drive(drive_speed, drive_mode):
         throttle_pwm.start(0)
 
 
-def brakeing(input, encoder1, encoder2):
-    error_encoder1 = input - encoder1
-    error_encoder2 = input - encoder2
+def brakeing():
+    global error_encoder1,error_encoder2,last_error_encoder2,encoder2_count,encoder1_count,last_error_encoder1
+    error_encoder1 = -brake_speed + encoder1_count
+    error_encoder2 = -brake_speed + encoder2_count
 
     if (brake_speed > 20):
         GPIO.output(brake_pin, GPIO.HIGH)
     else:
         GPIO.output(brake_pin, GPIO.LOW)
 
-    if (error_encoder1 > 3):
+    if (error_encoder1 > 50):
         brake_pwm[0].start(100)
         GPIO.output(DIR[0], GPIO.HIGH)
-    elif (error_encoder1 < -3):
+    elif (error_encoder1 < -50):
         brake_pwm[0].start(100)
         GPIO.output(DIR[0], GPIO.LOW)
     else:
         brake_pwm[0].start(0)
         GPIO.output(DIR[0], GPIO.LOW)
 
-    if (error_encoder2 > 3):
+    if (error_encoder2 > 50):
         brake_pwm[1].start(100)
         GPIO.output(DIR[1], GPIO.HIGH)
-    elif (error_encoder1 < -3):
+    elif (error_encoder2 < -50):
         brake_pwm[1].start(100)
         GPIO.output(DIR[1], GPIO.LOW)
     else:
         brake_pwm[1].start(0)
         GPIO.output(DIR[1], GPIO.LOW)
+    
+    if(last_error_encoder2 == error_encoder2 and brake_speed == 0):
+        time.sleep(0.01)
+        error_encoder2 = -brake_speed + encoder2_count
+        if(last_error_encoder2 == error_encoder2 and brake_speed == 0):
+            encoder2_count =0
+    last_error_encoder2 = error_encoder2
+    
+    if(last_error_encoder1 == error_encoder1 and brake_speed == 0):
+        time.sleep(0.01)
+        error_encoder1 = -brake_speed + encoder1_count
+        if(last_error_encoder1 == error_encoder1 and brake_speed == 0):
+            encoder1_count =0
+    last_error_encoder1 = error_encoder1
 
 
 def stop():
@@ -181,12 +244,10 @@ while True:
     start_time = time.time()
     get_data()
     drive(throttle_speed, drive_mode)
-    encoder1 = enc.read()
-    encoder2 = enc2.read()
-    brakeing(brake_speed, encoder1, encoder2)
+    brakeing()
     check_error()
 
-    # print(encoder1,encoder2)
+    print(encoder1_count,encoder2_count,error_encoder1,error_encoder2)
     print("throttle " + str(throttle_speed) + " brake " + str(brake_speed) + " sterring in " + str(
         sterring_input) + " sterring pos "
           + str(drive_mode) + " loop_time_pi " +str(int(1000*loop_time))+" ms "+ " status " + str(status_check))

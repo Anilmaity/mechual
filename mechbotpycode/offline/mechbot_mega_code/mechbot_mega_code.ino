@@ -31,7 +31,7 @@ void setup(){
    Serial.begin(115200);
    Serial.setTimeout(50);
    
-   motor_setup();
+   //motor_setup();
    ibus_setup();
    
   
@@ -48,7 +48,7 @@ void loop(){
 loopstart = millis();
 ibus_loop();
 if((millis() - motor_driver_start_time) >= 300 ){
-motor_loop();
+//motor_loop();
 motor_driver_start_time = millis();
 }
 send_data();
