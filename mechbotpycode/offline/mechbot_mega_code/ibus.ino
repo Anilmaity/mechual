@@ -1,6 +1,5 @@
 #include <IBusBM.h>
 
-int channel_data[6] = {0,0,0,0,0,0};
 
 IBusBM IBus; // IBus object
 
@@ -15,14 +14,16 @@ void ibus_setup() {
 
 
 void ibus_loop() {
-  int val;
   for(int i =0; i<= 5 ; i++)
   {
   channel_data[i] = IBus.readChannel(i); // get latest value for servo channel 1
-  Serial.print(channel_data[i]);
-  Serial.print(" ");
+ // Serial.print(channel_data[i]);
+  //Serial.print(" ");
   }
-
-  Serial.println();
+  
+  if(Sterring_input > 0){
+Sterring_input = map(channel_data[2],1000,2000 , -2400 , 2400);
+  }
+//Serial.println();
   delay(2);
 }

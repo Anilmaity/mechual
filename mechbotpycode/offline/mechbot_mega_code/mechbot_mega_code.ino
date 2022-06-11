@@ -1,6 +1,4 @@
 
-
-
 #include<RMCS2303drive.h>
 
 RMCS2303 rmcs;                      
@@ -15,20 +13,44 @@ int LPR=334;
 int acceleration=60000;
 int speed=8000;
 
+int channel_data[6] = {0,0,0,0,0,0};
+
+
+bool M_D_connected = true;
+bool flysky_connected = true; 
 long int Current_position;
 long int Current_Speed;
+long int loopstart = 0;
+long int loop_time = 0;
+long int motor_driver_start_time = 0;
+long int Sterring_input = 0;
+
 
 void setup(){
            
    Serial.begin(115200);
    Serial.setTimeout(50);
+   
    motor_setup();
    ibus_setup();
    
   
 }
+void send_data(){
+  Serial.print("@@#"+String(channel_data[2])+"#"+String(channel_data[4])+"#"+String(channel_data[1])
+  +"#"+String(channel_data[2])+"#"+String(Current_position)+"#"+String(flysky_connected)+"#"+String(M_D_connected)+"#"+String(loop_time)+"#@@");
+  Serial.println();
+  
+}
 
 void loop(){
+loop_time = millis();
 ibus_loop();
- motor_loop();
+if((millis() - motor_driver_start_time) >= 300 ){
+motor_loop();
+motor_driver_start_time = millis();
+}
+send_data();
+loop_time = millis() - loop_time;
+
 }
