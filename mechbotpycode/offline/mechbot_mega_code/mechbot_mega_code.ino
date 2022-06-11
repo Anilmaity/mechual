@@ -37,20 +37,21 @@ void setup(){
   
 }
 void send_data(){
-  Serial.print("@@#"+String(channel_data[2])+"#"+String(channel_data[4])+"#"+String(channel_data[1])
-  +"#"+String(channel_data[2])+"#"+String(Current_position)+"#"+String(flysky_connected)+"#"+String(M_D_connected)+"#"+String(loop_time)+"#@@");
+  Serial.print("@@#"+String(channel_data[2])+"#"+String(channel_data[4])+"#"+String(channel_data[5])
+  +"#"+String(Sterring_input)+"#"+String(Current_position)+"#"+String(flysky_connected)
+  +"#"+String(M_D_connected)+"#"+String(loop_time)+"#@@");
   Serial.println();
   
 }
 
 void loop(){
-loop_time = millis();
+loopstart = millis();
 ibus_loop();
 if((millis() - motor_driver_start_time) >= 300 ){
 motor_loop();
 motor_driver_start_time = millis();
 }
 send_data();
-loop_time = millis() - loop_time;
+loop_time = millis() - loopstart;
 
 }
