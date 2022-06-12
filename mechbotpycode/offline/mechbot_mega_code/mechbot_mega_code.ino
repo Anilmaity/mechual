@@ -10,8 +10,8 @@ int PP_gain=32;
 int PI_gain=16;
 int VF_gain=32;
 int LPR=334;
-int acceleration=60000;
-int speed=8000;
+int acceleration=10000;
+int speed=1000;
 
 int channel_data[6] = {0,0,0,0,0,0};
 
@@ -31,7 +31,7 @@ void setup(){
    Serial.begin(115200);
    Serial.setTimeout(50);
    
-   //motor_setup();
+   motor_setup();
    ibus_setup();
    
   
@@ -48,7 +48,7 @@ void loop(){
 loopstart = millis();
 ibus_loop();
 if((millis() - motor_driver_start_time) >= 300 ){
-//motor_loop();
+motor_loop();
 motor_driver_start_time = millis();
 }
 send_data();

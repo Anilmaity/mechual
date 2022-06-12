@@ -13,7 +13,8 @@ void motor_setup()
 
 void motor_loop()
 {
-  int response =  rmcs.Absolute_position(slave_id,Sterring_input);   //enter position count with direction (CW:+ve,CCW:-ve) 
+  int response =  rmcs.Absolute_position(slave_id,Sterring_input);   //enter position count with direction (CW:+ve,CCW:-ve)
+ // Serial.println(response); 
     if(response == 1){
       M_D_connected = true;
       Current_position=rmcs.Position_Feedback(slave_id);
