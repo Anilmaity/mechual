@@ -22,7 +22,7 @@ void ibus_loop() {
   }
   
   if(channel_data[0] <= 2000 && channel_data[0] >= 1000){
-Sterring_input = map(channel_data[0],1000,2000 , -800 , 800);
+Sterring_input = map(channel_data[0],1000,2000 , 1000 , -1000);
   }
 //Serial.println();
   delay(2);
