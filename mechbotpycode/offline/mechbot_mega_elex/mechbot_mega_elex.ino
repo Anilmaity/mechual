@@ -15,10 +15,10 @@ int speed=8000;
 
 int channel_data[6] = {0,0,0,0,0,0};
 
+int Current_position =0;
 
 bool M_D_connected = true;
 bool flysky_connected = true; 
-long int Current_position;
 long int Current_Speed;
 long int loopstart = 0;
 long int loop_time = 0;
@@ -31,7 +31,7 @@ void setup(){
    Serial.begin(115200);
    Serial.setTimeout(50);
    
-   //motor_setup();
+   motor_setup();
    ibus_setup();
    
   
@@ -47,10 +47,7 @@ void send_data(){
 void loop(){
 loopstart = millis();
 ibus_loop();
-if((millis() - motor_driver_start_time) >= 300 ){
-//motor_loop();
-motor_driver_start_time = millis();
-}
+motor_loop();
 send_data();
 loop_time = millis() - loopstart;
 

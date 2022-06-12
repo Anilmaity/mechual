@@ -1,49 +1,65 @@
 int DIR_pin = 2;
-int PWM_pin =3;
-int ENC_A = 9;
-int ENC_B =6;
-
-int current_position =0; 
+int PWM_pin = 3;
+int ENC_A = 20;
+int ENC_B = 21;
+int A =0;
+int B=0;
 int position_error = 0;
+int sterring_speed = 0;
 void motor_setup()
 {
-  
-  pinMode(DIR_pin,OUTPUT);
-  pinMode(PWM_pin,OUTPUT);
+
+  pinMode(DIR_pin, OUTPUT);
+  pinMode(PWM_pin, OUTPUT);
   pinMode(ENC_A, INPUT_PULLUP);
   pinMode(ENC_B, INPUT_PULLUP);
 
-  attachInterrupt(ENC_A, decode_rotation, RISING); 
-   
+  attachInterrupt(digitalPinToInterrupt(ENC_A), decode_rotation, RISING);
+
 }
 
 void motor_loop()
 {
-  position_error = Sterring_input - current_position;
   
-  if(position_error > 10){
-    analogWrite(PWM_pin , 50);
+  position_error = Sterring_input - Current_position;
+
+  if(abs(position_error)<200)
+  {
+    sterring_speed = 150;
+  }
+  else{
+    sterring_speed = 255;
+  }
+  
+  if (position_error > 10) {
+    
+    analogWrite(PWM_pin ,sterring_speed);
     digitalWrite(DIR_pin, HIGH);
   }
-  else if(position_error < -10){
-    analogWrite(PWM_pin , 50);
+  else if (position_error < -10) {
+    analogWrite(PWM_pin , sterring_speed);
+    digitalWrite(DIR_pin, LOW);
+  }
+  else {
+    analogWrite(PWM_pin , 0);
     digitalWrite(DIR_pin, LOW);
   }
 
- 
+
 }
 
-void decode_rotation(){
-  int A = digitalRead(ENC_A);
-  int B = digitalRead(ENC_B);
-
-if(A == 1 && B ==0){
-  current_position +=1;
+void decode_rotation() {
+   A = digitalRead(ENC_A);
+   B = digitalRead(ENC_B);
   
-}
-else if(A == 1 && B ==1){
-    current_position -=1;
 
-}
-  
+  if (A == 1 && B == 0) {
+    Current_position -= 1;
+
+  }
+  else if (A == 1 && B == 1) {
+    Current_position += 1;
+
+  }
+
 }
