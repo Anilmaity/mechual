@@ -14,14 +14,15 @@ void motor_setup()
   pinMode(ENC_A, INPUT_PULLUP);
   pinMode(ENC_B, INPUT_PULLUP);
 
-  attachInterrupt(digitalPinToInterrupt(ENC_A), decode_rotation, RISING);
+  attachInterrupt(digitalPinToInterrupt(ENC_A), decode_rotation_A, RISING);
+    attachInterrupt(digitalPinToInterrupt(ENC_B), decode_rotation_B, RISING);
 
 }
 
 void motor_loop()
 {
   
-  position_error = Sterring_input - Current_position;
+  position_error = Sterring_input - Current_position_A;
 
   if(abs(position_error)<100)
   {
@@ -48,17 +49,34 @@ void motor_loop()
 
 }
 
-void decode_rotation() {
+void decode_rotation_A() {
    A = digitalRead(ENC_A);
    B = digitalRead(ENC_B);
   
 
   if (A == 1 && B == 0) {
-    Current_position -= 1;
+    Current_position_A -= 1;
 
   }
   else if (A == 1 && B == 1) {
-    Current_position += 1;
+    Current_position_A += 1;
+
+  }
+
+}
+
+
+void decode_rotation_B() {
+   A = digitalRead(ENC_A);
+   B = digitalRead(ENC_B);
+  
+
+  if (A == 0 && B == 1) {
+    Current_position_B -= 1;
+
+  }
+  else if (A == 1 && B == 1) {
+    Current_position_B += 1;
 
   }
 
