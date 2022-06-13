@@ -23,9 +23,9 @@ void motor_loop()
   
   position_error = Sterring_input - Current_position;
 
-  if(abs(position_error)<200)
+  if(abs(position_error)<100)
   {
-    sterring_speed = 150;
+    sterring_speed = 100;
   }
   else{
     sterring_speed = 255;

@@ -8,8 +8,12 @@ dta =0
 dtb =0
 Enc_A = 18  
 Enc_B = 23
-Enc2_A = 3
-Enc2_B = 2
+Enc2_A = 19
+Enc2_B =26
+Switch2_A=0
+Switch2_B=0
+Switch_A=0
+Switch_B=0
 
 abs_count= 0
  
@@ -32,10 +36,10 @@ def init():
  
  
 def rotation_decode(Enc_A):
-    global counter,dta,dtb,abs_count
+    global counter
     #print(Enc_A)
-    Switch_A = GPIO.input(18)
-    Switch_B = GPIO.input(23)
+    Switch_A = GPIO.input(Enc_A)
+    Switch_B = GPIO.input(Enc_B)
     
     if (Switch_A == 1) and (Switch_B == 0):
         counter += 1
@@ -49,15 +53,17 @@ def rotation_decode(Enc_A):
 def rotation_decode2(Enc2_A):
     global counter2
     #print(Enc_A)
-    Switch2_A = GPIO.input(2)
-    Switch2_B = GPIO.input(3)
+    Switch2_A = GPIO.input(Enc2_A)
+    Switch2_B = GPIO.input(Enc2_B)
     
-    if (Switch2_A == 0) and (Switch2_B == 1):
-        counter2 += 1
+    
+    if (Switch2_A == 1) and (Switch2_B == 0):
+        counter2 -= 1
+        return
 
  
     elif (Switch2_A == 1) and (Switch2_B == 1):
-        counter2 -= 1
+        counter2 += 1
 
     
     
@@ -66,7 +72,7 @@ def main():
     try:
         init()
         while True :
-            print(counter,counter2)
+            print(counter,counter2,Switch_A,Switch_B, Switch2_A,Switch2_B)
             time.sleep(0.1)
     except KeyboardInterrupt:
         GPIO.cleanup()
