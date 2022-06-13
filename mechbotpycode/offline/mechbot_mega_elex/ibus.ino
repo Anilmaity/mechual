@@ -25,5 +25,5 @@ void ibus_loop() {
 Sterring_input = map(channel_data[0],1000,2000 , 1000 , -1000);
   }
 //Serial.println();
-  delay(80);
+  delay(60);
 }

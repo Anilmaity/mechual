@@ -22,22 +22,22 @@ void motor_setup()
 void motor_loop()
 {
   
-  position_error = Sterring_input - Current_position_A;
+  position_error = Sterring_input - Current_position;
 
-  if(abs(position_error)<100)
+  if(abs(position_error)<50)
   {
-    sterring_speed = 100;
+    sterring_speed = 80;
   }
   else{
     sterring_speed = 255;
   }
   
-  if (position_error > 10) {
+  if (position_error > 5) {
     
     analogWrite(PWM_pin ,sterring_speed);
     digitalWrite(DIR_pin, HIGH);
   }
-  else if (position_error < -10) {
+  else if (position_error < -5) {
     analogWrite(PWM_pin , sterring_speed);
     digitalWrite(DIR_pin, LOW);
   }
@@ -62,6 +62,8 @@ void decode_rotation_A() {
     Current_position_A += 1;
 
   }
+  Current_position = int((Current_position_B + Current_position_A)/2);
+
 
 }
 
@@ -72,12 +74,12 @@ void decode_rotation_B() {
   
 
   if (A == 0 && B == 1) {
-    Current_position_B -= 1;
-
-  }
-  else if (A == 1 && B == 1) {
     Current_position_B += 1;
 
   }
+  else if (A == 1 && B == 1) {
+    Current_position_B -= 1;
 
+  }
+Current_position = int((Current_position_B + Current_position_A)/2);
 }

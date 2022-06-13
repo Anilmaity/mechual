@@ -144,7 +144,7 @@ def get_data():
                 else:
                     drive_mode = 'N'
                 sterring_input = int(data[4])
-                sterring_position = int(data[5])
+                sterring_position = data[5]
 
                 flysky_connected = True
                 mega_connected = True
