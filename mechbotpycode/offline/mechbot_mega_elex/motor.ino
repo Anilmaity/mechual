@@ -83,3 +83,20 @@ void decode_rotation_B() {
   }
 Current_position = int((Current_position_B + Current_position_A)/2);
 }
+
+void throttle_setup(){
+  pinMode(throttle_pin, OUTPUT);
+  TCCR0B = TCCR0B & B11111000 | B00000010; // for PWM frequency of 7000 Hz
+  TCCR0B = TCCR0B & B11111000 | B00000001; // for PWM frequency of 62500 Hz
+
+}
+
+void throttling(){
+if(throttle > 10){
+  analogWrite(throttle_pin, throttle);
+}
+else{
+  analogWrite(throttle_pin, 0);
+}
+  
+}

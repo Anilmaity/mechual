@@ -14,16 +14,28 @@ void ibus_setup() {
 
 
 void ibus_loop() {
-  for(int i =0; i<= 5 ; i++)
+  for(int i =0; i<= 9 ; i++)
   {
   channel_data[i] = IBus.readChannel(i); // get latest value for servo channel 1
- // Serial.print(channel_data[i]);
+  //Serial.print(channel_data[i]);
   //Serial.print(" ");
   }
   
   if(channel_data[0] <= 2000 && channel_data[0] >= 1000){
 Sterring_input = map(channel_data[0],1000,2000 , 1000 , -1000);
   }
+
+if(channel_data[9]< 1500){
+    if(channel_data[2] <= 2000 && channel_data[2] >= 1000){
+    throttle = map(channel_data[2],1000,2000 , 0 , 125);
+  }
+}
+else{
+      if(channel_data[2] <= 2000 && channel_data[2] >= 1000){
+    throttle = map(channel_data[2],1000,2000 , 0 , 200);
+  }
+}
+  
 //Serial.println();
   delay(60);
 }
