@@ -1,11 +1,4 @@
-int DIR_pin = 2;
-int PWM_pin = 3;
-int ENC_A = 20;
-int ENC_B = 21;
-int A =0;
-int B=0;
-int position_error = 0;
-int sterring_speed = 0;
+
 void motor_setup()
 {
 
@@ -88,11 +81,11 @@ void throttle_setup(){
   pinMode(throttle_pin, OUTPUT);
   TCCR0B = TCCR0B & B11111000 | B00000010; // for PWM frequency of 7000 Hz
   //TCCR0B = TCCR0B & B11111000 | B00000001; // for PWM frequency of 62500 Hz
-  //TCCR0B = TCCR0B & B11111000 | B00000011; 
+
 }
 
 void throttling(){
-if(throttle > 50){
+if(throttle > 10){
   analogWrite(throttle_pin, throttle);
 }
 else{
