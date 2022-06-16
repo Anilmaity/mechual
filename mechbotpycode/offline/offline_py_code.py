@@ -48,12 +48,12 @@ def setup():
     GPIO.setup(ENC1[0], GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(ENC1[1], GPIO.IN, pull_up_down=GPIO.PUD_UP)
         
-    GPIO.add_event_detect(ENC1[0], GPIO.RISING, callback=rotation_decode1)
         
     GPIO.setup(ENC2[0], GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(ENC2[1], GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
-    GPIO.add_event_detect(ENC2[0], GPIO.RISING, callback=rotation_decode2)
+    
+    #GPIO.add_event_detect(ENC1[0], GPIO.RISING, callback=rotation_decode1)
+    #GPIO.add_event_detect(ENC2[0], GPIO.RISING, callback=rotation_decode2)
 
 
 
@@ -132,9 +132,9 @@ def get_data():
             #print(len(data))
             if (len(data) == 10):
                 if(int(data[1]) >0):
-                    throttle_speed = int((int(data[1])-1000)*0.1)
+                    throttle_speed = int(data[1])
                 #print(throttle_speed)
-                if(int(data[2]) <= 1500):
+                if(int(data[2]) <= 1500) and (int(data[2]) >= 1000) :
                     brake_speed = (1500-int(data[2]))*3
                 drive_mode = int(data[3])
                 if (drive_mode >= 1900):

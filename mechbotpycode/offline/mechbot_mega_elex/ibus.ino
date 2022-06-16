@@ -6,7 +6,7 @@ IBusBM IBus; // IBus object
 void ibus_setup() {
   // Serial.begin(115200);   // remove comment from this line if you change the Serial port in the next line
 
-  IBus.begin(Serial1);    // iBUS connected to Serial0 - change to Serial1 or Serial2 port when required
+  IBus.begin(Serial3);    // iBUS connected to Serial0 - change to Serial1 or Serial2 port when required
 
 
   Serial.println("Start IBus2PWM");
@@ -27,15 +27,15 @@ Sterring_input = map(channel_data[0],1000,2000 , 1000 , -1000);
 
 if(channel_data[9]< 1500){
     if(channel_data[2] <= 2000 && channel_data[2] >= 1000){
-    throttle = map(channel_data[2],1000,2000 , 0 , 125);
+    throttle = map(channel_data[2],1000,2000 , 55 , 114);
   }
 }
 else{
       if(channel_data[2] <= 2000 && channel_data[2] >= 1000){
-    throttle = map(channel_data[2],1000,2000 , 0 , 200);
+    throttle = map(channel_data[2],1000,2000 , 55 , 184);
   }
 }
   
 //Serial.println();
-  delay(60);
+  delay(50);
 }

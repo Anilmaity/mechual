@@ -87,12 +87,12 @@ Current_position = int((Current_position_B + Current_position_A)/2);
 void throttle_setup(){
   pinMode(throttle_pin, OUTPUT);
   TCCR0B = TCCR0B & B11111000 | B00000010; // for PWM frequency of 7000 Hz
-  TCCR0B = TCCR0B & B11111000 | B00000001; // for PWM frequency of 62500 Hz
-
+  //TCCR0B = TCCR0B & B11111000 | B00000001; // for PWM frequency of 62500 Hz
+  //TCCR0B = TCCR0B & B11111000 | B00000011; 
 }
 
 void throttling(){
-if(throttle > 10){
+if(throttle > 50){
   analogWrite(throttle_pin, throttle);
 }
 else{
