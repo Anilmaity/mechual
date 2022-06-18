@@ -25,12 +25,12 @@ void motor_loop()
     sterring_speed = 255;
   }
   
-  if (position_error > 5) {
+  if (position_error > 10) {
     
     analogWrite(PWM_pin ,sterring_speed);
     digitalWrite(DIR_pin, HIGH);
   }
-  else if (position_error < -5) {
+  else if (position_error < -10) {
     analogWrite(PWM_pin , sterring_speed);
     digitalWrite(DIR_pin, LOW);
   }
