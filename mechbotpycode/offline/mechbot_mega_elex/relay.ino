@@ -1,9 +1,9 @@
 void drive_mode(){
 
   if(Drive_mode== 'N'){
-    digitalWrite(Neutral_pin,LOW);
-        digitalWrite(Reverse_pin,HIGH);
 
+        digitalWrite(Neutral_pin,HIGH);
+            digitalWrite(Reverse_pin,LOW);
   }
   else if(Drive_mode == 'F'){
         digitalWrite(Neutral_pin,HIGH);
@@ -12,8 +12,9 @@ void drive_mode(){
 
   }
   else{
-        digitalWrite(Neutral_pin,HIGH);
-            digitalWrite(Reverse_pin,LOW);
+            
+    digitalWrite(Neutral_pin,LOW);
+        digitalWrite(Reverse_pin,HIGH);
 
 
   }

@@ -14,23 +14,36 @@ void motor_setup()
 
 void motor_loop()
 {
-  
-  position_error = Sterring_input - Current_position;
+ if(enable_encoder == false){
+      position_error = Sterring_input ;
+    Current_position = 0;
+     Current_position_B=0;
+     Current_position_A=0;
+    }
 
+  else
+    if(abs(Current_position)< 1200){
+  position_error = Sterring_input - Current_position;
+  }
+  else{
+      position_error = Sterring_input ;
+
+  }
+  
   if(abs(position_error)<50)
   {
-    sterring_speed = 80;
+    sterring_speed = 120;
   }
   else{
     sterring_speed = 255;
   }
   
-  if (position_error > 10) {
+  if (position_error > 3) {
     
     analogWrite(PWM_pin ,sterring_speed);
     digitalWrite(DIR_pin, HIGH);
   }
-  else if (position_error < -10) {
+  else if (position_error < -3) {
     analogWrite(PWM_pin , sterring_speed);
     digitalWrite(DIR_pin, LOW);
   }
@@ -85,11 +98,12 @@ void throttle_setup(){
 }
 
 void throttling(){
+  
 if(throttle > 10){
   analogWrite(throttle_pin, throttle);
 }
 else{
   analogWrite(throttle_pin, 0);
 }
+  }
   
-}

@@ -42,7 +42,9 @@ int Brake_Speed = 0;
 int B_Current_position_B[2] = {0,0};
 int B_Current_position_A[2] = {0,0};
 int Current_brake_position[2] = {0,0};
-
+int enable_encoder_0 = false;
+int enable_encoder_1 = false;
+bool enable_encoder = true;
 
 void setup(){
            
@@ -57,13 +59,13 @@ void setup(){
    motor_setup();
    ibus_setup();
    
+   
   
 }
 void send_data(){
-  Serial.print("@@#"+String(throttle)+"#"+String(Brake_Speed)+"#"+String(Drive_mode
-  )
+  Serial.print("@@#"+String(throttle)+"#"+String(Brake_Speed)+"#"+String(Drive_mode)
   +"#"+String(Sterring_input)+"# "+String(Current_brake_position[0])+" @ "+String(Current_position)+" @ "+String(Current_brake_position[1])+" #"+String(flysky_connected)
-  +"#"+String(M_D_connected)+"#"+String(loop_time)+"#@@");
+  +"#"+String(M_D_connected)+"#"+String(loop_time)+" "+String(enable_encoder_0)+" "+String(enable_encoder_1)+" "+"#@@");
   Serial.println();
   
 //   Serial.println(String(B_Current_position_B[0])+"  "+String(B_Current_position_B[1])+"   "+String(B_Current_position_A[0])+"   "+String(B_Current_position_A[1])+"  "+String(Current_position_B)+" "+ String(Current_position_A));
