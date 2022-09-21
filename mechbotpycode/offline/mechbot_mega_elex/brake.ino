@@ -3,8 +3,10 @@
 void brake_setup()
 {
 
-  pinMode(B_DIR_pin, OUTPUT);
-  pinMode(B_PWM_pin, OUTPUT);
+  pinMode(B_DIR_pin[0], OUTPUT);
+  pinMode(B_DIR_pin[1], OUTPUT);
+  pinMode(B_PWM_pin[0], OUTPUT);
+  pinMode(B_PWM_pin[1], OUTPUT);
   pinMode(B_ENC_A[0], INPUT_PULLUP);
   pinMode(B_ENC_B[0], INPUT_PULLUP);
   pinMode(B_ENC_A[1], INPUT_PULLUP);

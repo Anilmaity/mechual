@@ -99,7 +99,7 @@ void throttle_setup(){
 
 void throttling(){
   
-if(throttle > 10){
+if(throttle > 51){
   analogWrite(throttle_pin, throttle);
 }
 else{
