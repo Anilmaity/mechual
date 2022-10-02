@@ -1,7 +1,5 @@
 #include <IBusBM.h>
 
-#include <SoftwareSerial.h>
-SoftwareSerial mySerial(10, 11); // RX, TX
 
 IBusBM IBus; // IBus object
 
@@ -20,36 +18,44 @@ void ibus_loop() {
   for (int i = 0; i <= 5 ; i++)
   {
     channel_data[i] = IBus.readChannel(i); // get latest value for servo channel 1
-  // Serial.print(channel_data[i]);
+   Serial.print(channel_data[i]);
     //Serial.print(Serial3.available());
- //  Serial.print(" ");
+   Serial.print(" ");
   }
   //--------------------Sterring input mapping ------------------------------
-  if (channel_data[0] <= 2000 && channel_data[0] >= 1000) {
-
-    //if (channel_data[0] < 1500){
-    if (true) {
-
-      sterring_value = map(channel_data[0], 1000, 2000 , -150 , 150);
+     if (channel_data[3] <= 2000 && channel_data[3] >= 1510) {
+      sterring_value = map(channel_data[3], 1500, 2000 , 0 , 120);
     }
-    else {
-      sterring_value = map(channel_data[0], 1000, 2000 , 150 , -150);
+      else if (channel_data[3] <= 1490 && channel_data[3] >= 1000) {
+      sterring_value = map(channel_data[3], 1000, 1500 , -120 , 0);
     }
-  }
+    else{
+      sterring_value =0;
+    }
+  
 
 
 
   //-------------------------Throttle---------------------
-  if (channel_data[2] < 1500) {
-    if (channel_data[2] <= 2000 && channel_data[2] >= 1000) {
-      throttle = map(channel_data[2], 1000, 2000 , 0 , 104);
+    if (channel_data[1] <= 2000 && channel_data[1] >= 1600) {
+      throttle = map(channel_data[1], 1600, 2000 , initial_throttle , 147);
+     // throttle = map(channel_data[1], 1600, 2000 , initial_throttle  , max_limit);
     }
-  }
-  else {
-    if (channel_data[2] <= 2000 && channel_data[2] >= 1000) {
-      throttle = map(channel_data[2], 1000, 2000 , 0 , 184);
+      else if (channel_data[1] <= 1400 && channel_data[1] >= 1000) {
+      throttle = map(channel_data[1], 1000, 1400 , -max_limit , -initial_throttle);
     }
-  }
+     else if (channel_data[1] <= 1600 && channel_data[1] > 1510) {
+      throttle = initial_throttle;
+    }
+     else if (channel_data[1] <= 1490 && channel_data[1] >= 1400) {
+      throttle = -initial_throttle;
+    }
+    else{
+      throttle=0;
+    }
+
+    
+  
 
   
 
@@ -60,5 +66,5 @@ void ibus_loop() {
   
 
 
-  //delay(50);
+  delay(10);
 }
