@@ -15,12 +15,13 @@ int Right_max_limit = 147;
 int Right_Reverse_pin = 2; //1500 RPM //1760,1525
 int Left_Reverse_pin = 4; 
 
-//int Right_Brake_pin = 7; 
 int Right_throttle_pin = 3;
 int Right_throttle = 0;
 
 int Left_throttle_pin = 6;
 int Left_throttle = 0;
+
+int Brake_pin = 7;
 
  int Right_motor_value = 0;
  int last_Right_motor_value = 0;
@@ -37,16 +38,11 @@ long int loop_time = 0;
 
 
 // Variables for brake
-int B_DIR_pin[2] = {9, 10};
-int B_PWM_pin = 8;
-int B_min_LS_pin = A0;
-int B_min_LS_val = 0;
-int B_max_LS_val = 0;
-int B_max_LS_pin = A1;
+#include <Servo.h>
+Servo BrakeServo[2];
+int B_pin[2] = {9, 10};
 int Brake = 0;
-int last_Brake = 0;
-
-
+long int last_signal = 0; 
 void setup() {
 
   Serial.begin(115200);
@@ -70,8 +66,6 @@ void raw_print(){
     Serial.print(" ");
    Serial.print(Brake);
     Serial.print(" ");
-       Serial.print(last_Brake);
-    Serial.print(" ");
    Serial.print(throttle);
     Serial.print(" ");
        Serial.print(Right_motor_value);
@@ -88,6 +82,8 @@ void motor_setup() {
     
   pinMode(Left_throttle_pin, OUTPUT);
   pinMode(Right_throttle_pin, OUTPUT);
+  pinMode(Brake_pin, OUTPUT);
+  digitalWrite(Brake_pin,HIGH);
   TCCR2B = TCCR2B & B11111000 | B00000001;    // D3,D11 set timer 3 divisor to     1 for PWM frequency of 31372.55 Hz
   //TCCR0B = TCCR0B & B11111000 | B00000001; //D5,D6 62500 Hz
   TCCR0B = TCCR0B & B11111000 | B00000010;    // set timer 0 divisor to     8 for PWM frequency of  7812.50 Hz
@@ -95,15 +91,15 @@ void motor_setup() {
 
 void drive() {
  if(throttle>46){
-Right_motor_value = throttle - sterring_value + (10*((throttle - sterring_value)/abs(throttle - sterring_value))) ;
-Left_motor_value = throttle + sterring_value ;
+Right_motor_value = throttle + (10*((throttle )/abs(throttle )+1)) ;
+Left_motor_value = throttle  ;
  }else{
-Right_motor_value = throttle + sterring_value;// + (10*((throttle - sterring_value)/abs(throttle - sterring_value))) ;
+Right_motor_value = throttle + sterring_value ;
 Left_motor_value = throttle - sterring_value ;
  }
 
 if(abs(Right_motor_value) > Right_max_limit) Right_motor_value = Right_motor_value/abs(Right_motor_value)*Right_max_limit;
-if(abs(Left_motor_value) > max_limit)  Left_motor_value = Left_motor_value/abs(Left_motor_value)*max_limit;
+if(abs(Left_motor_value) > Right_max_limit)  Left_motor_value = Left_motor_value/abs(Left_motor_value)*Right_max_limit;
 
 if(abs(throttle)>cutoff){
     if(throttle>=0){
@@ -168,43 +164,27 @@ analogWrite(Left_throttle_pin,initial_throttle);
 }
 
 void brake_setup() {
-  pinMode(B_min_LS_pin, INPUT_PULLUP);
-  pinMode(B_max_LS_pin, INPUT_PULLUP);
-  pinMode(B_DIR_pin[0],OUTPUT);
-  pinMode(B_DIR_pin[1],OUTPUT);
-  pinMode(B_PWM_pin,OUTPUT);
+  BrakeServo[0].attach(B_pin[0]);
+  BrakeServo[1].attach(B_pin[1]);
+  delay(100);
+  BrakeServo[0].write(0);
+  BrakeServo[1].write(0);
+  last_signal = millis();
 }
 void brake() {
-  B_min_LS_val = digitalRead(B_min_LS_pin);
-  B_max_LS_val = digitalRead(B_max_LS_pin);
-  if (last_Brake == 0 && Brake == 1){
-    if(B_max_LS_val != 0){
-    digitalWrite( B_DIR_pin[0],HIGH);
-    digitalWrite( B_DIR_pin[1],LOW);
-    }
-    else{
-    digitalWrite( B_DIR_pin[0],LOW);
-    digitalWrite( B_DIR_pin[1],LOW); 
-        last_Brake = 1;
-     
-    }
+  if(millis()- last_signal > 20)
+  {
+  
+  BrakeServo[0].write(Brake);
+  BrakeServo[0].write(Brake);
+  
+  last_signal = millis();
+  if(Brake > 20){
+      digitalWrite(Brake_pin,HIGH);
   }
-  else if(last_Brake == 1 && Brake == 0){
-    if(B_min_LS_val != 0){
-    digitalWrite( B_DIR_pin[0],LOW);
-    digitalWrite( B_DIR_pin[1],HIGH);
-    }
-     else{
-    digitalWrite( B_DIR_pin[0],LOW);
-    digitalWrite( B_DIR_pin[1],LOW);  
-        last_Brake = 0;
-    
-    }
+  else{
+      digitalWrite(Brake_pin,LOW);
+
   }
-    else{
-    digitalWrite( B_DIR_pin[0],LOW);
-    digitalWrite( B_DIR_pin[1],LOW);      
-    }
-
-
+  }
 }

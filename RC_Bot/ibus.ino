@@ -60,8 +60,11 @@ void ibus_loop() {
   
 
   //-------------------------Brake---------------------
-    if (channel_data[4] <= 2000 && channel_data[2] >= 1000) {
-      Brake = map(channel_data[4], 1000, 2000 , 0 , 1);
+    if (channel_data[5] <= 2000 && channel_data[5] >= 1500) {
+      Brake = map(channel_data[5], 1500, 2000 , 1 , 180);
+    }
+    else{
+      Brake = 1;
     }
   
 
