@@ -3,17 +3,16 @@ long int sterring_value = 0;
 long int throttle = 10; //2826 RPM
 //------------------------------------
 
-float diff_pwm = 0.78;
 int left_const = 7;
 int increment_value = 20;
-int cutoff = 80; 
-int initial_throttle = 46;
+int cutoff = 30;
+int initial_throttle = 30;
 int max_limit = 170;
 int Right_max_limit = 147;
 
 //int Neutral_pin = 6;
 int Right_Reverse_pin = 2; //1500 RPM //1760,1525
-int Left_Reverse_pin = 4; 
+int Left_Reverse_pin = 4;
 
 int Right_throttle_pin = 3;
 int Right_throttle = 0;
@@ -23,11 +22,14 @@ int Left_throttle = 0;
 
 int Brake_pin = 7;
 
- int Right_motor_value = 0;
+ int Right_motor_value = 0; // 123.2 rpm at 147 rev 89.7 rpm
  int last_Right_motor_value = 0;
- int Left_motor_value = 0;
+ int Left_motor_value = 0; //122.4 rpm at 147 rev 86.5 rpm
  int last_Left_motor_value = 0;
- 
+
+ //right turn  left->96.4 rpm  right-> 87.5 rpm
+ //left turn  left->85.9  rpm  right-> 91.8 rpm
+
 int channel_data[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 bool flysky_connected = true;
@@ -42,9 +44,8 @@ long int loop_time = 0;
 Servo BrakeServo[2];
 int B_pin[2] = {9, 10};
 int Brake = 0;
-long int last_signal = 0; 
+long int last_signal = 0;
 void setup() {
-
   Serial.begin(115200);
   brake_setup();
   motor_setup();
@@ -79,7 +80,7 @@ void motor_setup() {
 
     pinMode(Right_Reverse_pin, OUTPUT);
     pinMode(Left_Reverse_pin, OUTPUT);
-    
+
   pinMode(Left_throttle_pin, OUTPUT);
   pinMode(Right_throttle_pin, OUTPUT);
   pinMode(Brake_pin, OUTPUT);
@@ -90,12 +91,13 @@ void motor_setup() {
 }
 
 void drive() {
- if(throttle>46){
-Right_motor_value = throttle + (10*((throttle )/abs(throttle )+1)) ;
+ if(abs(throttle)>35){
+Right_motor_value = throttle  ;
 Left_motor_value = throttle  ;
  }else{
-Right_motor_value = throttle + sterring_value ;
-Left_motor_value = throttle - sterring_value ;
+  if(sterring_value > 0)
+Right_motor_value =  -sterring_value ;
+Left_motor_value =  + sterring_value ;
  }
 
 if(abs(Right_motor_value) > Right_max_limit) Right_motor_value = Right_motor_value/abs(Right_motor_value)*Right_max_limit;
@@ -114,13 +116,13 @@ else{
 }
 else{
   if(Right_motor_value>=0){
-    
+
       digitalWrite(Right_Reverse_pin, LOW);
   }
   else{
       digitalWrite(Right_Reverse_pin, HIGH);
   }
-  
+
   if(Left_motor_value>=0){
       digitalWrite(Left_Reverse_pin, LOW);
   }
@@ -154,7 +156,7 @@ analogWrite(Left_throttle_pin,abs(last_Left_motor_value)+increment_value+left_co
   else{
 analogWrite(Left_throttle_pin,abs(Left_motor_value)+left_const);
   }
-  
+
 }
 else{
 analogWrite(Left_throttle_pin,initial_throttle);
@@ -174,10 +176,10 @@ void brake_setup() {
 void brake() {
   if(millis()- last_signal > 20)
   {
-  
+
   BrakeServo[0].write(Brake);
-  BrakeServo[0].write(Brake);
-  
+  BrakeServo[1].write(Brake);
+
   last_signal = millis();
   if(Brake > 20){
       digitalWrite(Brake_pin,HIGH);
