@@ -3,10 +3,11 @@ long int sterring_value = 0;
 long int throttle = 10; //2826 RPM
 //------------------------------------
 
+float diff_pwm = 0.78;
 int left_const = 7;
 int increment_value = 20;
-int cutoff = 30;
-int initial_throttle = 30;
+int cutoff = 80;
+int initial_throttle = 46;
 int max_limit = 170;
 int Right_max_limit = 147;
 
@@ -22,13 +23,10 @@ int Left_throttle = 0;
 
 int Brake_pin = 7;
 
- int Right_motor_value = 0; // 123.2 rpm at 147 rev 89.7 rpm
+ int Right_motor_value = 0;
  int last_Right_motor_value = 0;
- int Left_motor_value = 0; //122.4 rpm at 147 rev 86.5 rpm
+ int Left_motor_value = 0;
  int last_Left_motor_value = 0;
-
- //right turn  left->96.4 rpm  right-> 87.5 rpm
- //left turn  left->85.9  rpm  right-> 91.8 rpm
 
 int channel_data[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -46,6 +44,7 @@ int B_pin[2] = {9, 10};
 int Brake = 0;
 long int last_signal = 0;
 void setup() {
+
   Serial.begin(115200);
   brake_setup();
   motor_setup();
@@ -91,13 +90,12 @@ void motor_setup() {
 }
 
 void drive() {
- if(abs(throttle)>35){
-Right_motor_value = throttle  ;
+ if(abs(throttle)>46){
+Right_motor_value = throttle + (10*((throttle )/abs(throttle )+1)) ;
 Left_motor_value = throttle  ;
  }else{
-  if(sterring_value > 0)
-Right_motor_value =  -sterring_value ;
-Left_motor_value =  + sterring_value ;
+Right_motor_value = - sterring_value ;
+Left_motor_value = + sterring_value ;
  }
 
 if(abs(Right_motor_value) > Right_max_limit) Right_motor_value = Right_motor_value/abs(Right_motor_value)*Right_max_limit;
@@ -174,14 +172,14 @@ void brake_setup() {
   last_signal = millis();
 }
 void brake() {
-  if(millis()- last_signal > 20)
+  if(millis()- last_signal > 15)
   {
 
   BrakeServo[0].write(Brake);
   BrakeServo[1].write(Brake);
 
   last_signal = millis();
-  if(Brake > 20){
+  if(Brake > 10){
       digitalWrite(Brake_pin,HIGH);
   }
   else{
