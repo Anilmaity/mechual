@@ -4,7 +4,7 @@
 int Reverse_pin = 26;
 int Brake_pin = 22;
 
-int channel_pins[4] = { 2, 3, 18, 19 };  // ch 1 , ch3 , ch5 , ch6
+int channel_pins[4] = { 3, 2, 18, 19 };  // ch 1 , ch3 , ch5 , ch6
 
 volatile int cha1, cha2, cha3, cha4, cha5, cha6;
 volatile int tempcha1, tempcha2, tempcha3, tempcha4, tempcha5, tempcha6;
@@ -24,7 +24,7 @@ long int Sterring_input = 0;
 
 // Variables for brake
 int Brake = 0;
-int brake_signal_pin = 2;
+int brake_signal_pin = 8;
 Servo brakeservo;
 
 
@@ -40,7 +40,7 @@ long int sensorValue = 0;
 
 // throttle
 int initial_throttle = 50;
-int max_limit = 147;
+int max_limit = 200;
 int throttle_pin = 5;
 int throttle = 0;
 
@@ -62,8 +62,20 @@ void setup() {
 }
 void send_data() {
 
-
-  // Serial.println());
+  //Serial.print(cha1);
+  //Serial.print(" ");
+  //Serial.print(cha2);
+  //Serial.print(" ");
+  //Serial.print(cha3);
+  //Serial.print(" ");
+  //Serial.print(cha4);
+  //Serial.print(" ");
+  Serial.print(throttle);
+  Serial.print(" ");
+  Serial.print(Brake);
+  Serial.print(" ");
+  Serial.print(sterring_value);
+  Serial.println(" ");
 }
 
 void loop() {

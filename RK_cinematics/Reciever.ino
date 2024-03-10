@@ -84,9 +84,9 @@ void evaluteinputs() {
 
   if (cha4 >= 1600) {
     if (cha1 <= 2000 && cha1 >= 1510) {
-      throttle = map(cha1, 1500, 2000, initial_throttle, max_limit);
+      throttle = map(cha1, 1500, 1950, initial_throttle, max_limit);
     } else if (cha1 <= 1490 && cha1 >= 1000) {
-      throttle = map(cha1, 1000, 1500, -max_limit, -initial_throttle);
+      throttle = map(cha1, 1050, 1500, -max_limit, -initial_throttle);
     } else {
       throttle = 0;
     }
@@ -102,7 +102,7 @@ void evaluteinputs() {
 
 
     if (cha3 <= 2000 && cha3 >= 1000) {
-      Brake = map(cha3, 1000, 200, 0, 90);
+      Brake = map(cha3, 1000, 2000, 0, 90);
     } else {
       Brake = 0;
     }

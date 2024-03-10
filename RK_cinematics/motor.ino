@@ -46,7 +46,7 @@ void throttle_setup() {
 
 void throttling() {
 
-  if (throttle > initial_throttle) {
+  if (abs(throttle) > initial_throttle) {
     analogWrite(throttle_pin, abs(throttle));
 
   } else {
