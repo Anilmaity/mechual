@@ -1,13 +1,13 @@
 #include <Servo.h>
 
-char Drive_mode = 'N';
+char Drive_mode = 'F';
 //------------------------------------
-int Neutral_pin = 24;
+
 int Reverse_pin =26;
 int Brake_pin = 22;
 
 int channel_data[10] = {0,0,0,0,0,0,0,0,0,0};
-int channel_pins[4] = {2,3,18,19}; // ch 1 , ch3 , ch5 , ch6 
+int channel_pins[4] = {2,3,18,19};             // ch 1 , ch3 , ch5 , ch6 
 
 volatile int cha1 , cha2 , cha3 , cha4 , cha5 , cha6;
 volatile int tempcha1 , tempcha2 , tempcha3 , tempcha4 , tempcha5 , tempcha6;
@@ -15,7 +15,6 @@ volatile int tempcha1 , tempcha2 , tempcha3 , tempcha4 , tempcha5 , tempcha6;
 volatile int CT1 , CT2 ,CT3 , CT4 , CT5 , CT6 ;
 
 
-bool M_D_connected = true;
 bool flysky_connected = true; 
 long int Current_Speed;
 long int loopstart = 0;
@@ -34,8 +33,8 @@ Servo brakeservo;
 
 
 // sterring_value
-int S_DIR = 3;
-int S_PWM = 4;
+int S_DIR = 6;
+int S_PWM = 7;
 int S_SEN = A0;
 long int sterring_value = 512;
 long int error =0;
@@ -56,7 +55,6 @@ int throttle= 0;
 void setup(){
            
    Serial.begin(115200);
-   Serial3.setTimeout(100);
    pinMode(Neutral_pin, OUTPUT);
    pinMode(Reverse_pin, OUTPUT);
    pinMode(Brake_pin, OUTPUT);
@@ -79,6 +77,7 @@ void send_data(){
 void loop(){
 loopstart = millis();
 //ibus_loop();
+evaluteinputs();
 braking();
 drive_mode();
 send_data();

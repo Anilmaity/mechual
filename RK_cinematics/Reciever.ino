@@ -2,17 +2,17 @@
 
 void intrupptsetup(){
 
-  pinMode( 2, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(2), ch1, RISING);
+  pinMode( channel_pins[0], INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(channel_pins[0]), ch1, RISING);
 
-  pinMode( 3, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(3), ch2, RISING);
+  pinMode( channel_pins[1], INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(channel_pins[1]), ch2, RISING);
 
-  pinMode( 18, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(18), ch3, RISING);
+  pinMode( channel_pins[2], INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(channel_pins[2]), ch3, RISING);
 
-  pinMode( 19, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(19), ch4, RISING);
+  pinMode( channel_pins[3], INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(channel_pins[3]), ch4, RISING);
   
 }
 
@@ -53,4 +53,50 @@ void c4() {
    if (tempcha4 > 900 && tempcha4 < 2100 ) {cha4 = tempcha4 ;}
   else {cha4 = cha4 ; }}
 
+
+
+void evaluteinputs(){
+
+    if (cha4 >= 1600) {
+      if (cha1 <= 2000 && cha1 >= 1510) {
+      throttle = map(cha1, 1500, 2000 , initial_throttle, max_limit);
+    }
+      else if (cha1 <= 1490 && cha1 >= 1000) {
+      throttle = map(cha1[0], 1000, 1500 , -max_limit , -initial_throttle );
+    }
+    else{
+      throttle = 0 ;
+    }
+
+
+     if (cha2 <= 2000 && cha2 >= 1510) {
+      sterring_value = map(cha2, 1500, 2000 , 530, 860);
+    }
+      else if (cha2 <= 1490 && cha2 >= 1000) {
+      sterring_value = map(cha2, 1000, 1500 , 200 , 530);
+    }
+    else{
+      sterring_value =530;
+    }
+
+
+    if (cha3 <= 2000 && cha3 >= 1000) {
+      Brake = map(cha3, 1000, 200 , 0 , 90);
+    }
+    else{
+      Brake = 0;
+    }
+
+
+
+        }
+    else
+    {
+    
+    throttle = 0 ;
+    //Brake = 0 ;
+    //sterring_value = ;
+    }
+
+}
 
