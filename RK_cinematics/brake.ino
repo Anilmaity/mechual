@@ -6,7 +6,7 @@ void brake_setup() {
 
 void braking() {
 
-  if (abs(Brake) > 200) {
+  if (abs(Brake) > 10) {
     digitalWrite(Brake_pin, LOW);
   } else {
     digitalWrite(Brake_pin, HIGH);

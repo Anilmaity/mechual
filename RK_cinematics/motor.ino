@@ -24,14 +24,6 @@ void sterring_loop() {
   }
 }
 
-void drive_mode() {
-
-  if (throttle >= 0) {
-    digitalWrite(Reverse_pin, HIGH);
-  } else {
-    digitalWrite(Reverse_pin, LOW);
-  }
-}
 
 
 void throttle_setup() {
@@ -46,10 +38,47 @@ void throttle_setup() {
 
 void throttling() {
 
-  if (abs(throttle) > initial_throttle) {
-    analogWrite(throttle_pin, abs(throttle));
+    if (input_throttle >= int(initial_throttle/2)) {
+    digitalWrite(Reverse_pin, HIGH);
+  } else if(input_throttle <= int(-initial_throttle/2)) {
+    digitalWrite(Reverse_pin, LOW);
+  }
+
+
+  if (throttle >= 0) {
+    if (throttle > input_throttle) {
+      if(input_throttle < 0){
+        input_throttle =  0 ;
+      }
+      else{
+       input_throttle = input_throttle + 5;
+      }
+
+    } else if (throttle <= input_throttle) {
+      input_throttle = throttle;
+    } else {
+      input_throttle = 0;
+    }
 
   } else {
-    analogWrite(throttle_pin, 0);
+    
+    if (throttle < input_throttle) {
+      if(input_throttle > 0){
+        input_throttle = 0 ;
+      }
+      else{
+       input_throttle = input_throttle - 2;
+      }
+
+    } else if (throttle >= input_throttle) {
+      input_throttle = throttle;
+    } 
+  }
+
+  if (abs(throttle) > initial_throttle) {
+    analogWrite(throttle_pin, abs(input_throttle));
+
+  } else {
+    analogWrite(throttle_pin, abs(input_throttle));
   }
 }

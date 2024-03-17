@@ -1,15 +1,8 @@
 #include <Servo.h>
 
 
-int Reverse_pin = 26;
-int Brake_pin = 22;
-
-int channel_pins[4] = { 3, 2, 18, 19 };  // ch 1 , ch3 , ch5 , ch6
-
-volatile int cha1, cha2, cha3, cha4, cha5, cha6;
-volatile int tempcha1, tempcha2, tempcha3, tempcha4, tempcha5, tempcha6;
-
-volatile int CT1, CT2, CT3, CT4, CT5, CT6;
+int Reverse_pin = 38;
+int Brake_pin = 40;
 
 
 bool flysky_connected = true;
@@ -19,12 +12,15 @@ long int loop_time = 0;
 long int motor_driver_start_time = 0;
 long int Sterring_input = 0;
 
+unsigned long int a, b, c;
+int x[15], ch1[15], ch[10], i;
+
 
 
 
 // Variables for brake
 int Brake = 0;
-int brake_signal_pin = 8;
+int brake_signal_pin = 10;
 Servo brakeservo;
 
 
@@ -40,10 +36,10 @@ long int sensorValue = 0;
 
 // throttle
 int initial_throttle = 50;
-int max_limit = 200;
-int throttle_pin = 5;
+int max_limit = 140;
+int throttle_pin = 2;
 int throttle = 0;
-
+int input_throttle = 0;
 
 
 
@@ -55,21 +51,27 @@ void setup() {
   pinMode(Reverse_pin, OUTPUT);
   pinMode(Brake_pin, OUTPUT);
   digitalWrite(Brake_pin, HIGH);
-  intrupptsetup();
+  ppm_setup();
+  //intrupptsetup();
   throttle_setup();
   brake_setup();
   sterring_setup();
+  
 }
 void send_data() {
 
-  //Serial.print(cha1);
-  //Serial.print(" ");
-  //Serial.print(cha2);
-  //Serial.print(" ");
-  //Serial.print(cha3);
-  //Serial.print(" ");
-  //Serial.print(cha4);
-  //Serial.print(" ");
+  Serial.print(ch[1]);
+  Serial.print(" ");
+  Serial.print(ch[2]);
+  Serial.print(" ");
+  Serial.print(ch[3]);
+  Serial.print(" ");
+  Serial.print(ch[4]);
+  Serial.print(" ");
+  Serial.print(ch[5]);
+  Serial.print(" ");
+  Serial.print(input_throttle);
+  Serial.print(" ");
   Serial.print(throttle);
   Serial.print(" ");
   Serial.print(Brake);
@@ -80,11 +82,13 @@ void send_data() {
 
 void loop() {
   loopstart = millis();
-  evaluteinputs();
+  read_rc();
   braking();
-  drive_mode();
+  //drive_mode();
+  evaluteinputs();
   send_data();
   sterring_loop();
   throttling();
   loop_time = millis() - loopstart;
+  delay(40);
 }
