@@ -1,8 +1,9 @@
 #include <Servo.h>
+#include <mbed.h>
 
 
-int Reverse_pin = 38;
-int Brake_pin = 40;
+int Reverse_pin = 40;
+int Brake_pin = 38;
 
 
 bool flysky_connected = true;
@@ -19,27 +20,35 @@ int x[15], ch1[15], ch[10], i;
 
 
 // Variables for brake
-int Brake = 0;
+int Brake = 90;
 int brake_signal_pin = 10;
 Servo brakeservo;
 
 
 
 // sterring_value
-int S_DIR = 6;
-int S_PWM = 7;
+int S_DIR = 5;
+
+PinName sterring_pin = digitalPinToPinName(D4);
+mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
+
+
 int S_SEN = A0;
-long int sterring_value = 512;
-long int error = 0;
+
+long int sterring_value = 548;
+long int error_sterring = 0;
 long int sensorValue = 0;
 
 
 // throttle
-int initial_throttle = 50;
-int max_limit = 140;
-int throttle_pin = 2;
+int initial_throttle = 76;
+int initial_throttle_backward = 70;
+int max_limit = 120;
+// int throttle_pin = 2;
 int throttle = 0;
-int input_throttle = 0;
+double input_throttle = 0;
+PinName pin = digitalPinToPinName(D2);
+mbed::PwmOut* pwm = new mbed::PwmOut(pin);
 
 
 
@@ -77,6 +86,12 @@ void send_data() {
   Serial.print(Brake);
   Serial.print(" ");
   Serial.print(sterring_value);
+  Serial.print(" ");
+  Serial.print(error_sterring);
+  Serial.print(" ");
+  Serial.print(sensorValue);
+  Serial.print(" ");
+  Serial.print(loop_time);
   Serial.println(" ");
 }
 
@@ -90,5 +105,4 @@ void loop() {
   sterring_loop();
   throttling();
   loop_time = millis() - loopstart;
-  delay(40);
 }

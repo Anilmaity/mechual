@@ -6,7 +6,8 @@ void brake_setup() {
 
 void braking() {
 
-  if (abs(Brake) > 10) {
+  if (abs(Brake) < 85) {
+    input_throttle = 0;
     digitalWrite(Brake_pin, LOW);
   } else {
     digitalWrite(Brake_pin, HIGH);
