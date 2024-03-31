@@ -2,42 +2,53 @@ void sterring_setup() {
   pinMode(S_SEN, INPUT);
 
   pinMode(S_DIR, OUTPUT);
+  pinMode(S_PWM, OUTPUT);
 
-  sterring_pwm->period_us(100); // Set PWM period to 1ms (1kHz)
-  sterring_pwm->pulsewidth_us(0); // Initialize PWM pulse width to 0
+  //sterring_pwm->period_us(100); // Set PWM period to 1ms (1kHz)
+  //sterring_pwm->pulsewidth_us(0); // Initialize PWM pulse width to 0
 
   
 }
 
 
-void sterring_loop() {
+void sterring_input(){
   sensorValue = analogRead(S_SEN);
-  error_sterring = 0.1 * (sterring_value - sensorValue) + 0.9 * error_sterring;
+  error_sterring = 0.04 * (sterring_value - sensorValue) + 0.96 * error_sterring;
+}
 
-  if (abs(error_sterring) > 6) {
+void sterring_loop() {
+
+  if (abs(error_sterring) > 8) {
     if (error_sterring > 0) {
       digitalWrite(S_DIR, HIGH);
     } 
     else {
       digitalWrite(S_DIR, LOW);
     }
+    if(abs(error_sterring) < 20 )
+    {
+      analogWrite(S_PWM,255);
 
-    if(abs(error_sterring) < 40 ){
-        sterring_pwm ->pulsewidth_us(100);
-        delayMicroseconds(abs(error_sterring)*100);
+    }
+    else{
+      analogWrite(S_PWM,255);
 
-
-        
       }
 
-      else
-      {
-        sterring_pwm ->pulsewidth_us(100);
-        delayMicroseconds(1000);
-      }
+    // if(abs(error_sterring) < 40 ){
+    //     sterring_pwm ->pulsewidth_us(100);
+    //     delayMicroseconds(abs(error_sterring)*100);
+    //   }
+    //   else
+    //   {
+    //     sterring_pwm ->pulsewidth_us(100);
+    //     delayMicroseconds(1000);
+    //   }
 
   } else {
-    sterring_pwm ->pulsewidth_us(0);
+    //sterring_pwm ->pulsewidth_us(0);
+    analogWrite(S_PWM,0);
+
   }
 }
 
@@ -69,12 +80,17 @@ void throttling() {
       else if(input_throttle < 0){
         input_throttle =  0 ;
       }
-      else{
-       input_throttle = input_throttle + 0.004;
+      else if ( input_throttle < 78){
+       input_throttle = input_throttle + 0.008;
+      }
+      else
+      {
+        input_throttle = input_throttle + 0.008;
+
       }
 
     } else if (throttle <= input_throttle) {
-      input_throttle = input_throttle - 0.008;
+      input_throttle = input_throttle - 0.03;
     } else {
       input_throttle = 0;
     }
@@ -87,12 +103,16 @@ void throttling() {
       if(input_throttle > 0){
         input_throttle = 0 ;
       }
+      else if(input_throttle > -90){
+       input_throttle = input_throttle - 0.002; // 
+
+      }
       else{
        input_throttle = input_throttle - 0.008; // 
       }
 
     } else if (throttle >= input_throttle) {
-      input_throttle = input_throttle + 0.004;
+      input_throttle = input_throttle + 0.03;
     } 
   }
   else{

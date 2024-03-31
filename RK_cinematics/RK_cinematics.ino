@@ -28,9 +28,10 @@ Servo brakeservo;
 
 // sterring_value
 int S_DIR = 5;
+int S_PWM = 4;
 
-PinName sterring_pin = digitalPinToPinName(D4);
-mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
+//PinName sterring_pin = digitalPinToPinName(D4);
+//mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
 
 
 int S_SEN = A0;
@@ -39,10 +40,11 @@ long int sterring_value = 548;
 long int error_sterring = 0;
 long int sensorValue = 0;
 
+long sterring_start_time = millis();
 
 // throttle
-int initial_throttle = 76;
-int initial_throttle_backward = 70;
+int initial_throttle = 68;
+int initial_throttle_backward = 68;
 int max_limit = 120;
 // int throttle_pin = 2;
 int throttle = 0;
@@ -99,10 +101,16 @@ void loop() {
   loopstart = millis();
   read_rc();
   braking();
-  //drive_mode();
   evaluteinputs();
   send_data();
-  sterring_loop();
   throttling();
   loop_time = millis() - loopstart;
+  sterring_input();
+  delay(1);
+  if( millis() - sterring_start_time > 40 ){
+  sterring_loop();
+  sterring_start_time = millis();
+  
+  }
+
 }
