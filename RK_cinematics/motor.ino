@@ -81,16 +81,16 @@ void throttling() {
         input_throttle =  0 ;
       }
       else if ( input_throttle < 78){
-       input_throttle = input_throttle + 0.008;
+       input_throttle = input_throttle + speed_increase_rate_forward;
       }
       else
       {
-        input_throttle = input_throttle + 0.008;
+        input_throttle = input_throttle + speed_increase_rate_forward;
 
       }
 
     } else if (throttle <= input_throttle) {
-      input_throttle = input_throttle - 0.03;
+      input_throttle = input_throttle - speed_decrease_rate;
     } else {
       input_throttle = 0;
     }
@@ -104,24 +104,24 @@ void throttling() {
         input_throttle = 0 ;
       }
       else if(input_throttle > -90){
-       input_throttle = input_throttle - 0.002; // 
+       input_throttle = input_throttle - speed_increase_rate_backward; //
 
       }
       else{
-       input_throttle = input_throttle - 0.008; // 
+       input_throttle = input_throttle - speed_increase_rate_backward; //
       }
 
     } else if (throttle >= input_throttle) {
-      input_throttle = input_throttle + 0.03;
+      input_throttle = input_throttle + speed_decrease_rate;
     } 
   }
   else{
     if(input_throttle > 0){
-      input_throttle = input_throttle - 0.03;
+      input_throttle = input_throttle - speed_decrease_rate;
     }
     else if(input_throttle < 0)
     {
-      input_throttle = input_throttle + 0.03;
+      input_throttle = input_throttle + speed_decrease_rate;
     }
     else{
       input_throttle = 0;

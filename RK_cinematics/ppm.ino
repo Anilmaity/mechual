@@ -59,11 +59,11 @@ void evaluteinputs() {
 
 
     if (ch[1] <= 2100 && ch[1] >= 1510) {
-      sterring_value = map(ch[1], 1500, 2000, 548, 900); // 912
+      sterring_value = map(ch[1], 1500, 2000, default_sterring_value, highest_sterring_value); // 912
     } else if (ch[1] <= 1490 && ch[1] >= 900) {
-      sterring_value = map(ch[1], 1000, 1500, 240, 548); // 548 // 227
+      sterring_value = map(ch[1], 1000, 1500, lowest_sterring_value, default_sterring_value); // 548 // 227
     } else {
-      sterring_value = 548;
+      sterring_value = default_sterring_value;
     }
 
 

@@ -4,7 +4,9 @@
 
 int Reverse_pin = 40;
 int Brake_pin = 38;
-
+float speed_increase_rate_forward = 0.008;
+float speed_increase_rate_backward = 0.002;
+float speed_decrease_rate = 0.03;
 
 bool flysky_connected = true;
 long int Current_Speed;
@@ -35,6 +37,11 @@ int S_PWM = 4;
 
 
 int S_SEN = A0;
+
+
+long default_sterring_value = 548;
+long highest_sterring_value = 900;
+long lowest_sterring_value = 240;
 
 long int sterring_value = 548;
 long int error_sterring = 0;
