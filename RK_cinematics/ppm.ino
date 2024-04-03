@@ -68,7 +68,7 @@ void evaluteinputs() {
 
 
     if (ch[2] <= 1510 && ch[2] >= 900) {
-      Brake = map(ch[2], 1500, 1000, 90, 42);
+      Brake = map(ch[2], 1500, 1000, 90, 90 - max_brake_angle); // max brake angle
     } 
 
 

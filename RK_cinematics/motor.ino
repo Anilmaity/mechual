@@ -20,14 +20,14 @@ void sterring_loop() {
 
   if (abs(error_sterring) > 8) {
     if (error_sterring > 0) {
-      digitalWrite(S_DIR, HIGH);
-    } 
+      digitalWrite(S_DIR, HIGH); // direction right or left
+    }
     else {
       digitalWrite(S_DIR, LOW);
     }
     if(abs(error_sterring) < 20 )
     {
-      analogWrite(S_PWM,255);
+      analogWrite(S_PWM,255); // max speed for motor
 
     }
     else{
@@ -47,7 +47,7 @@ void sterring_loop() {
 
   } else {
     //sterring_pwm ->pulsewidth_us(0);
-    analogWrite(S_PWM,0);
+    analogWrite(S_PWM,0); // 0 pwm signal
 
   }
 }

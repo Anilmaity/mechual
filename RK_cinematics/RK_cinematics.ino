@@ -4,9 +4,7 @@
 
 int Reverse_pin = 40;
 int Brake_pin = 38;
-float speed_increase_rate_forward = 0.008;
-float speed_increase_rate_backward = 0.002;
-float speed_decrease_rate = 0.03;
+
 
 bool flysky_connected = true;
 long int Current_Speed;
@@ -24,6 +22,8 @@ int x[15], ch1[15], ch[10], i;
 // Variables for brake
 int Brake = 90;
 int brake_signal_pin = 10;
+int max_brake_angle = 48;
+
 Servo brakeservo;
 
 
@@ -38,10 +38,21 @@ int S_PWM = 4;
 
 int S_SEN = A0;
 
+//------------------- steering calibrations values ----------------------------//
+/*
+steps to get the values
+1) remove the 3 pin connector from sterring motor driver
+2) rotate to left most and right most using ma mb switch available on motor driver
+3) note the values for the point from te serial monitor in arduino ide.
 
-long default_sterring_value = 548;
-long highest_sterring_value = 900;
+// 1500 1500 1500 1500 1500 0 0 85 (sterring value) "548"  0 0 1
+*/
+
+long default_sterring_value = 548; // 0 1024
+long highest_sterring_value = 900;  // Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
+                                    //for default value set steering to an obtainable straight wheels and the note down the value from serial monitor
 long lowest_sterring_value = 240;
+//----------------------------------------------------------------------------//
 
 long int sterring_value = 548;
 long int error_sterring = 0;
@@ -50,9 +61,13 @@ long int sensorValue = 0;
 long sterring_start_time = millis();
 
 // throttle
+float speed_increase_rate_forward = 0.008;   // if you want to increase bot acceleration in forward direction
+float speed_increase_rate_backward = 0.002; // if you want to increase bot acceleration in reverse direction
+float speed_decrease_rate = 0.03;          // if you want to decrease bot acceleration in both direction
+
 int initial_throttle = 68;
 int initial_throttle_backward = 68;
-int max_limit = 120;
+int max_limit = 120; // max speed limit
 // int throttle_pin = 2;
 int throttle = 0;
 double input_throttle = 0;
@@ -62,23 +77,24 @@ mbed::PwmOut* pwm = new mbed::PwmOut(pin);
 
 
 
-
+// will excecute one time
 void setup() {
 
-  Serial.begin(115200);
+  Serial.begin(115200); // for communication between PC and arduino
   pinMode(Reverse_pin, OUTPUT);
   pinMode(Brake_pin, OUTPUT);
   digitalWrite(Brake_pin, HIGH);
-  ppm_setup();
+  ppm_setup();  // RC Reciever SETUP
   //intrupptsetup();
   throttle_setup();
   brake_setup();
   sterring_setup();
-  
+
 }
+
 void send_data() {
 
-  Serial.print(ch[1]);
+  Serial.print(ch[1]); // 1500 1500 1500 1500 1500 0 0 85 548 0 0 1
   Serial.print(" ");
   Serial.print(ch[2]);
   Serial.print(" ");
@@ -106,14 +122,14 @@ void send_data() {
 
 void loop() {
   loopstart = millis();
-  read_rc();
-  braking();
+  read_rc();  // get data from reciever
+  braking();  // apply brake
   evaluteinputs();
   send_data();
   throttling();
   loop_time = millis() - loopstart;
-  sterring_input();
-  delay(1);
+  sterring_input();  // read sterring sensor value (potentiometer)
+  delay(1); // delay 1 millisecond
   if( millis() - sterring_start_time > 40 ){
   sterring_loop();
   sterring_start_time = millis();
