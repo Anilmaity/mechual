@@ -13,7 +13,7 @@ void sterring_setup() {
 
 void sterring_input(){
   sensorValue = analogRead(S_SEN);
-  error_sterring = 0.04 * (sterring_value - sensorValue) + 0.96 * error_sterring;
+  error_sterring = 0.5 * (sterring_value - sensorValue) + 0.5 * error_sterring;
 }
 
 void sterring_loop() {
@@ -56,8 +56,16 @@ void sterring_loop() {
 
 void throttle_setup() {
 
-   pwm->period_us(200); // Set PWM period to 1ms (1kHz)
-   pwm->pulsewidth_us(0); // Initialize PWM pulse width to 0
+//    pwm->period_us(200); // Set PWM period to 1ms (1kHz)
+//    pwm->pulsewidth_us(0); // Initialize PWM pulse width to 0
+
+  pinMode(throttle_pin, OUTPUT);
+    //WGM30 = set Timer mode to PWM
+  //COM3B/C1 = clear Output on compare match
+  TCCR3A = (1<<WGM30)|(1<<COM3B1)|(1<<COM3C1);
+
+  //CS30 = set prescaler to 1
+  TCCR3B = (1<<CS31);  
 
 
   // pinMode(throttle_pin, OUTPUT);
@@ -65,15 +73,19 @@ void throttle_setup() {
 
 void throttling() {
 
-    if (input_throttle > int(initial_throttle/2)) {
+    if (input_throttle > int(initial_throttle) + 2) {
     digitalWrite(Reverse_pin, HIGH);
-  } else if(input_throttle < int(-initial_throttle_backward/2)) {
+  } else if(input_throttle < int(-initial_throttle_backward) -2) {
     digitalWrite(Reverse_pin, LOW);
   }
 
 
   if (throttle > 0) {
-    if (throttle > input_throttle ) {
+    if(input_throttle < 0){
+      input_throttle = input_throttle + speed_decrease_rate;
+
+    }
+    else if (throttle > input_throttle ) {
       if(input_throttle < initial_throttle){
         input_throttle = initial_throttle;
       }
@@ -96,7 +108,11 @@ void throttling() {
     }
 
   } else if(throttle < 0){
-    if(input_throttle > -initial_throttle_backward){
+    if(input_throttle > 0){
+      input_throttle = input_throttle - speed_decrease_rate;
+
+    }
+    else if(input_throttle > -initial_throttle_backward){
         input_throttle = -initial_throttle_backward;
       }
     else if (throttle < input_throttle) {
@@ -131,12 +147,13 @@ void throttling() {
 
   if (abs(throttle) > initial_throttle_backward) {
 
-    pwm->pulsewidth_us(abs(int(input_throttle)));
-    // analogWrite(throttle_pin, abs(input_throttle));
+    //pwm->pulsewidth_us(abs(int(input_throttle)));
+     analogWrite(throttle_pin, abs(input_throttle));
 
   } else {
     
-    pwm->pulsewidth_us(abs(int(input_throttle)));
+    //pwm->pulsewidth_us(abs(int(input_throttle)));
+  analogWrite(throttle_pin, throttle);
 
   }
 }
