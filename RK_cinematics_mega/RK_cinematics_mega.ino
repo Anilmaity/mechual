@@ -49,25 +49,25 @@ steps to get the values
 // 1500 1500 1500 1500 1500 0 0 85 (sterring value) "548"  0 0 1
 */
 
-long default_sterring_value = 540; // 0 1024 346
-long highest_sterring_value = 850;  // Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
+long default_sterring_value = 522; //522 // 0 1024 346
+long highest_sterring_value = 863; //883  // Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
                                     //for default value set steering to an obtainable straight wheels and the note down the value from serial monitor
-long lowest_sterring_value = 178;
+long lowest_sterring_value = 182; //162
 //----------------------------------------------------------------------------//
 
-long int sterring_value = 525;
+long int sterring_value = 522;
 long int error_sterring = 0;
 long int sensorValue = 0;
 
 long sterring_start_time = millis();
 
 // throttle
-float speed_increase_rate_forward = 0.05;   // if you want to increase bot acceleration in forward direction
-float speed_increase_rate_backward = 0.04; // if you want to increase bot acceleration in reverse direction
-float speed_decrease_rate = 0.2;          // if you want to decrease bot acceleration in both direction
+float speed_increase_rate_forward = 0.1;   // if you want to increase bot acceleration in forward direction
+float speed_increase_rate_backward = 0.1; // if you want to increase bot acceleration in reverse direction
+float speed_decrease_rate = 0.08;          // if you want to decrease bot acceleration in both direction
 
-int initial_throttle = 50;
-int initial_throttle_backward = 50;
+int initial_throttle = 56;
+int initial_throttle_backward = 56;
 int max_limit = 100; // max speed limit
 int throttle_pin = 2;
 int throttle = 0;
@@ -133,7 +133,7 @@ void loop() {
   sterring_input();  // read sterring sensor value (potentiometer)
   delay(1); // delay 1 millisecond
   if( millis() - sterring_start_time > 40 ){
-  sterring_loop();
+  //sterring_loop();
   sterring_start_time = millis();
   }
 

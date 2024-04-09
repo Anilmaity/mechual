@@ -74,6 +74,13 @@ void throttling() {
 
   if (throttle > 0) {
     if (throttle > input_throttle ) {
+      // if ( input_throttle < 0)
+      // {
+      //   input_throttle = input_throttle + speed_decrease_rate;
+
+      // }
+      // else 
+      
       if(input_throttle < initial_throttle){
         input_throttle = initial_throttle;
       }
@@ -96,6 +103,13 @@ void throttling() {
     }
 
   } else if(throttle < 0){
+    // if(input_throttle > 0 )
+    // {
+    //   input_throttle = input_throttle - speed_decrease_rate;
+
+    // }
+    // else 
+    
     if(input_throttle > -initial_throttle_backward){
         input_throttle = -initial_throttle_backward;
       }

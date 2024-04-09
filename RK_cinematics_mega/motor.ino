@@ -13,7 +13,7 @@ void sterring_setup() {
 
 void sterring_input(){
   sensorValue = analogRead(S_SEN);
-  error_sterring = 0.5 * (sterring_value - sensorValue) + 0.5 * error_sterring;
+  error_sterring = 0.99 * (sterring_value - sensorValue) + 0.01 * error_sterring;
 }
 
 void sterring_loop() {
@@ -60,15 +60,10 @@ void throttle_setup() {
 //    pwm->pulsewidth_us(0); // Initialize PWM pulse width to 0
 
   pinMode(throttle_pin, OUTPUT);
-    //WGM30 = set Timer mode to PWM
+  TCCR3B = TCCR3B & B11111000 | B00000010;     //WGM30 = set Timer mode to PWM
   //COM3B/C1 = clear Output on compare match
-  TCCR3A = (1<<WGM30)|(1<<COM3B1)|(1<<COM3C1);
-
-  //CS30 = set prescaler to 1
-  TCCR3B = (1<<CS31);  
-
-
-  // pinMode(throttle_pin, OUTPUT);
+ //TCCR0B = TCCR0B & B11111000 | B00000010; // for PWM frequency of 7000 Hz
+  //TCCR0B = TCCR0B & B11111000 | B00000001; // for PWM frequency of 62500 Hz
 }
 
 void throttling() {
@@ -81,11 +76,7 @@ void throttling() {
 
 
   if (throttle > 0) {
-    if(input_throttle < 0){
-      input_throttle = input_throttle + speed_decrease_rate;
-
-    }
-    else if (throttle > input_throttle ) {
+   if (throttle > input_throttle ) {
       if(input_throttle < initial_throttle){
         input_throttle = initial_throttle;
       }
@@ -108,11 +99,7 @@ void throttling() {
     }
 
   } else if(throttle < 0){
-    if(input_throttle > 0){
-      input_throttle = input_throttle - speed_decrease_rate;
-
-    }
-    else if(input_throttle > -initial_throttle_backward){
+  if(input_throttle > -initial_throttle_backward){
         input_throttle = -initial_throttle_backward;
       }
     else if (throttle < input_throttle) {

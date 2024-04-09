@@ -1,4 +1,5 @@
 #include <Servo.h>
+#include <mbed.h>
 
 
 int Reverse_pin = 40;
@@ -60,7 +61,7 @@ long int sensorValue = 0;
 long sterring_start_time = millis();
 
 // throttle
-float speed_increase_rate_forward = 0.008;   // if you want to increase bot acceleration in forward direction
+float speed_increase_rate_forward = 0.006;   // if you want to increase bot acceleration in forward direction
 float speed_increase_rate_backward = 0.004; // if you want to increase bot acceleration in reverse direction
 float speed_decrease_rate = 0.03;          // if you want to decrease bot acceleration in both direction
 
