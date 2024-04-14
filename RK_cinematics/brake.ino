@@ -1,17 +1,48 @@
 
 
 void brake_setup() {
-  brakeservo.attach(brake_signal_pin);  // attaches the servo on pin 9 to the servo object
+  pinMode(brake_dir_pin, OUTPUT);
+  pinMode(brake_pwm_pin, OUTPUT);
+  
+  brake_start_time = 0;
+
 }
 
 void braking() {
 
-  if (abs(Brake) < 85) {
+  if(Brake < extented_brake && abs(input_throttle) > 80){
+    Brake = extented_brake;
+  }
+
+  
+  if (abs(Brake) > brake_point) {
     input_throttle = 0;
     digitalWrite(Brake_pin, LOW); // Motor drive realy switching
   } else {
     digitalWrite(Brake_pin, HIGH);  // Motor drive realy switching
   }
 
-  brakeservo.write(Brake); // give input to servo in degrees
+  if(((Brake*100) - brake_time) > 0)
+  {
+    brake_time = brake_time + millis() - brake_start_time;
+    digitalWrite(brake_pwm_pin, HIGH);  // Motor drive realy switching
+    digitalWrite(brake_dir_pin, HIGH);  // Motor drive realy switching
+
+  }
+  else if(((Brake*100) - brake_time) < 0)
+  {
+    brake_time = brake_time - (millis() - brake_start_time);
+    digitalWrite(brake_pwm_pin, HIGH);  // Motor drive realy switching
+    digitalWrite(brake_dir_pin, LOW);  // Motor drive realy switching
+  }
+  else{
+
+    digitalWrite(brake_pwm_pin, LOW);  // Motor drive realy switching
+    digitalWrite(brake_dir_pin, LOW);  // Motor drive realy switching
+
+  }
+
+      brake_start_time = millis();
+
+
 }

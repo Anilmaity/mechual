@@ -1,4 +1,3 @@
-#include <Servo.h>
 #include <mbed.h>
 
 
@@ -20,11 +19,15 @@ int x[15], ch1[15], ch[10], i;
 
 
 // Variables for brake
-int Brake = 90;
-int brake_signal_pin = 10;
-int max_brake_angle = 48;
+int Brake = 0;
+int initial_brake = 0;
+long int brake_time = 0;
+long int brake_start_time=0;
+int extented_brake = 32;
+int brake_point = 35;
 
-Servo brakeservo;
+int brake_pwm_pin = 6;
+int brake_dir_pin = 7;
 
 
 
@@ -48,10 +51,10 @@ steps to get the values
 // 1500 1500 1500 1500 1500 0 0 85 (sterring value) "548"  0 0 1
 */
 
-long default_sterring_value = 525; // 0 1024
-long highest_sterring_value = 873;  // Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
+long default_sterring_value = 520; // 0 1024 519
+long highest_sterring_value = 868;  //  Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
                                     //for default value set steering to an obtainable straight wheels and the note down the value from serial monitor
-long lowest_sterring_value = 178;
+long lowest_sterring_value = 175;  // 160
 //----------------------------------------------------------------------------//
 
 long int sterring_value = 525;
@@ -110,6 +113,8 @@ void send_data() {
   Serial.print(" ");
   Serial.print(Brake);
   Serial.print(" ");
+  Serial.print(brake_time);
+  Serial.print(" ");
   Serial.print(sterring_value);
   Serial.print(" ");
   Serial.print(error_sterring);
@@ -133,7 +138,8 @@ void loop() {
   if( millis() - sterring_start_time > 40 ){
   sterring_loop();
   sterring_start_time = millis();
-  
   }
+
+
 
 }
