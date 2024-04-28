@@ -21,14 +21,15 @@ int x[15], ch1[15], ch[10], i;
 // Variables for brake
 int Brake = 0;
 int initial_brake = 0;
+bool brake_time_modified = false;
 long int brake_time = 0;
 long int brake_start_time=0;
 int extented_brake = 32;
 int brake_point = 35;
-
+bool braked = false; 
 int brake_pwm_pin = 6;
 int brake_dir_pin = 7;
-
+int max_brake = 60;
 
 
 // sterring_value
@@ -51,10 +52,10 @@ steps to get the values
 // 1500 1500 1500 1500 1500 0 0 85 (sterring value) "548"  0 0 1
 */
 
-long default_sterring_value = 520; // 0 1024 519
+long default_sterring_value = 520; // 0 1024 519. //854 //572
 long highest_sterring_value = 868;  //  Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
                                     //for default value set steering to an obtainable straight wheels and the note down the value from serial monitor
-long lowest_sterring_value = 175;  // 160
+long lowest_sterring_value = 175;  // 160        //213
 //----------------------------------------------------------------------------//
 
 long int sterring_value = 525;
