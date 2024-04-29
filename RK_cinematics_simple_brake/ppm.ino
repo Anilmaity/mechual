@@ -53,16 +53,18 @@ void evaluteinputs() {
       throttle = 0.8 * throttle + 0.2 * map(ch[3], 1500, 2000, initial_throttle, max_limit);
     } else if (ch[3] <= 1480 && ch[3] >= 900) {
       throttle = 0.8 * throttle + 0.2 * map(ch[3], 1000, 1500, -max_limit, -initial_throttle_backward );
-    } else {
+    } 
+    else if (ch[3] <= 1510 && ch[3] >= 1490) {
       throttle = 0;
     }
 
 
     if (ch[1] <= 2100 && ch[1] >= 1510) {
-      sterring_value = map(ch[1], 1500, 2000, default_sterring_value, highest_sterring_value); // 912
+      sterring_value = 0.8 * sterring_value + 0.2 * map(ch[1], 1500, 2000, default_sterring_value, lowest_sterring_value); // 912
     } else if (ch[1] <= 1490 && ch[1] >= 900) {
-      sterring_value = map(ch[1], 1000, 1500, lowest_sterring_value, default_sterring_value); // 548 // 227
-    } else {
+      sterring_value = 0.8 * sterring_value + 0.2 * map(ch[1], 1000, 1500, highest_sterring_value, default_sterring_value); // 548 // 227
+    } 
+    else if(ch[1] <= 1510 && ch[1] >= 1490){
       sterring_value = default_sterring_value;
     }
 
@@ -70,7 +72,7 @@ void evaluteinputs() {
     if (ch[2] <= 1300 && ch[2] >= 900) {
       Brake = 0.9 * Brake + 0.1 * map(ch[2], 1300, 1000, initial_brake, 60); // max brake angle
     } 
-    else{
+    else if (ch[2] != 0){
       Brake = initial_brake;
     }
 

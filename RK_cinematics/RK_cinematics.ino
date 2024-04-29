@@ -52,13 +52,13 @@ steps to get the values
 // 1500 1500 1500 1500 1500 0 0 85 (sterring value) "548"  0 0 1
 */
 
-long default_sterring_value = 520; // 0 1024 519. //854 //572
-long highest_sterring_value = 868;  //  Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
+long default_sterring_value = 574; // 0 1024 519. //854 //572
+long highest_sterring_value = 844;  //  Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
                                     //for default value set steering to an obtainable straight wheels and the note down the value from serial monitor
-long lowest_sterring_value = 175;  // 160        //213
+long lowest_sterring_value = 300 ;  // 160        //213
 //----------------------------------------------------------------------------//
 
-long int sterring_value = 525;
+long int sterring_value = 574;
 long int error_sterring = 0;
 long int sensorValue = 0;
 

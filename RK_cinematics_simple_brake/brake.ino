@@ -5,7 +5,7 @@ void brake_setup() {
   pinMode(brake_pwm_pin, OUTPUT);
   
   brake_start_time = 0;
-
+  Brake = initial_brake;
 }
 
 void braking() {

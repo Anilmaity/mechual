@@ -18,7 +18,7 @@ void sterring_input(){
 
 void sterring_loop() {
 
-  if (abs(error_sterring) > 8) {
+  if (abs(error_sterring) > 4) {
     if (error_sterring > 0) {
       digitalWrite(S_DIR, HIGH); // direction right or left
     }
@@ -27,11 +27,18 @@ void sterring_loop() {
     }
     if(abs(error_sterring) < 20 )
     {
-      analogWrite(S_PWM,255); // max speed for motor
+      //analogWrite(S_PWM,100); // max speed for motor
+
+      digitalWrite(S_PWM,HIGH); // max speed for motor
+      // delaymicroseconds(10);
+      //analogWrite(S_PWM,180); // max speed for motor
+
 
     }
     else{
-      analogWrite(S_PWM,255);
+      digitalWrite(S_PWM,HIGH);
+      //analogWrite(S_PWM,180); // max speed for motor
+
 
       }
 
@@ -47,7 +54,7 @@ void sterring_loop() {
 
   } else {
     //sterring_pwm ->pulsewidth_us(0);
-    analogWrite(S_PWM,0); // 0 pwm signal
+    digitalWrite(S_PWM,LOW); // 0 pwm signal
 
   }
 }
