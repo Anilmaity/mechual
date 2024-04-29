@@ -33,10 +33,10 @@ int brake_dir_pin = 7;
 
 // sterring_value
 int S_DIR = 5;
-int S_PWM = 4;
-
-//PinName sterring_pin = digitalPinToPinName(D4);
-//mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
+// int S_PWM = 4;
+int sterring_pwm_speed = 100;
+PinName sterring_pin = digitalPinToPinName(D4);
+mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
 
 
 int S_SEN = A0;
@@ -77,7 +77,7 @@ double input_throttle = 0;
 PinName pin = digitalPinToPinName(D2);
 mbed::PwmOut* pwm = new mbed::PwmOut(pin);
 
-
+long int value_gone_time = 0;
 
 
 // will excecute one time

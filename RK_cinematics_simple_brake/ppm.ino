@@ -60,9 +60,9 @@ void evaluteinputs() {
 
 
     if (ch[1] <= 2100 && ch[1] >= 1510) {
-      sterring_value = 0.8 * sterring_value + 0.2 * map(ch[1], 1500, 2000, default_sterring_value, lowest_sterring_value); // 912
+      sterring_value = 0.6 * sterring_value + 0.4 * map(ch[1], 1500, 2000, default_sterring_value, lowest_sterring_value); // 912
     } else if (ch[1] <= 1490 && ch[1] >= 900) {
-      sterring_value = 0.8 * sterring_value + 0.2 * map(ch[1], 1000, 1500, highest_sterring_value, default_sterring_value); // 548 // 227
+      sterring_value = 0.6 * sterring_value + 0.4 * map(ch[1], 1000, 1500, highest_sterring_value, default_sterring_value); // 548 // 227
     } 
     else if(ch[1] <= 1510 && ch[1] >= 1490){
       sterring_value = default_sterring_value;
@@ -76,13 +76,17 @@ void evaluteinputs() {
       Brake = initial_brake;
     }
 
-    
+    value_gone_time = millis();
 
 
 
-  } else {
+  }
+  //  else if(millis() - value_gone_time <= 100){
 
-    throttle = 0;
+  //   throttle = throttle;
+  // }
+  else{
+      throttle = 0;
   }
 }
 

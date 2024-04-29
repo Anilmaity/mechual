@@ -2,10 +2,10 @@ void sterring_setup() {
   pinMode(S_SEN, INPUT);
 
   pinMode(S_DIR, OUTPUT);
-  pinMode(S_PWM, OUTPUT);
+  // pinMode(S_PWM, OUTPUT);
 
-  //sterring_pwm->period_us(100); // Set PWM period to 1ms (1kHz)
-  //sterring_pwm->pulsewidth_us(0); // Initialize PWM pulse width to 0
+  sterring_pwm->period_us(200); // Set PWM period to 1ms (1kHz)
+  sterring_pwm->pulsewidth_us(0); // Initialize PWM pulse width to 0
 
   
 }
@@ -25,22 +25,20 @@ void sterring_loop() {
     else {
       digitalWrite(S_DIR, LOW);
     }
-    if(abs(error_sterring) < 20 )
-    {
-      //analogWrite(S_PWM,100); // max speed for motor
+      
+    //sterring_pwm_speed +=  20;
 
-      digitalWrite(S_PWM,HIGH); // max speed for motor
-      // delaymicroseconds(10);
-      //analogWrite(S_PWM,180); // max speed for motor
-
-
-    }
-    else{
-      digitalWrite(S_PWM,HIGH);
-      //analogWrite(S_PWM,180); // max speed for motor
+           
+    // if(sterring_pwm_speed <= 200)
+    //   {
+    //     sterring_pwm_speed = 200;
+    //   }
+      // digitalWrite(S_PWM, HIGH);
+    sterring_pwm ->pulsewidth_us(200);
 
 
-      }
+ 
+      // analogWrite(S_PWM,sterring_pwm); // max speed for motor
 
     // if(abs(error_sterring) < 40 ){
     //     sterring_pwm ->pulsewidth_us(100);
@@ -53,9 +51,9 @@ void sterring_loop() {
     //   }
 
   } else {
-    //sterring_pwm ->pulsewidth_us(0);
-    digitalWrite(S_PWM,LOW); // 0 pwm signal
-
+    sterring_pwm ->pulsewidth_us(0);
+    // digitalWrite(S_PWM,LOW); // 0 pwm signal
+    // sterring_pwm_speed = 100;
   }
 }
 
