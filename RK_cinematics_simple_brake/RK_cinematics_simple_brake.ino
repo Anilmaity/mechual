@@ -52,9 +52,9 @@ steps to get the values
 */
 
 long default_sterring_value = 577; // 0 1024 519 573
-long highest_sterring_value = 844;  //  Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
+long highest_sterring_value = 834;  // 844 Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
                                     //for default value set steering to an obtainable straight wheels and the note down the value from serial monitor
-long lowest_sterring_value = 300;  // 160
+long lowest_sterring_value = 310;  // 160 300
 //----------------------------------------------------------------------------//
 
 long int sterring_value = 577;
@@ -64,8 +64,8 @@ long int sensorValue = 0;
 long sterring_start_time = millis();
 
 // throttle
-float speed_increase_rate_forward = 0.006;   // if you want to increase bot acceleration in forward direction
-float speed_increase_rate_backward = 0.004; // if you want to increase bot acceleration in reverse direction
+float speed_increase_rate_forward = 0.002;   // if you want to increase bot acceleration in forward direction
+float speed_increase_rate_backward = 0.002; // if you want to increase bot acceleration in reverse direction
 float speed_decrease_rate = 0.03;          // if you want to decrease bot acceleration in both direction
 
 int initial_throttle = 68;
