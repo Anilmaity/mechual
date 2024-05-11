@@ -33,7 +33,7 @@ void read_rc() {
     if (ch1[k] > 5500) { j = k; }
   }  //detecting separation  space 10000us in that another array
   for (i = 1; i <= 6; i++) {
-    if (ch1[i] != 0) {
+    if (ch1[i] != 0 && ch1[i] >= 900 && ch1[i] <= 2100) {
       ch[i] = ch1[i + j];
     }
   }
@@ -46,7 +46,7 @@ void read_rc() {
 
 void evaluteinputs() {
 
-  if (ch[5] >= 1600) {
+  if (ch[5] >= 1300) {
 
 
     if (ch[3] <= 2100 && ch[3] >= 1520) {
@@ -90,19 +90,21 @@ void evaluteinputs() {
 
     if (ch[2] <= 1300 && ch[2] >= 900) {
       Brake = 0.9 * Brake + 0.1 * map(ch[2], 1300, 1000, initial_brake, 60);  // max brake angle
-    } else if (ch[2] != 0) {
+    } 
+    else if (ch[2] >= 1300 && ch[2] <= 2100  ) {
       Brake = initial_brake;
     }
 
-    if (ch[6] >= 1500) {
+
+    if (ch[6] >= 1600 &&  ch[6] < 2100 ) {
       Brake = 60;
     }
 
-    if (ch[7] >= 1500) {
-      Mode = "FWD";
+    if (ch[5] >= 1700) {
+      Mode = "RWD";
     } else {
 
-      Mode = "RWD";
+      Mode = "FWD";
     }
 
     value_gone_time = millis();
@@ -113,6 +115,7 @@ void evaluteinputs() {
 
     throttle = throttle;
   } else {
+    Mode = "STOP";
     throttle = 0;
   }
 }

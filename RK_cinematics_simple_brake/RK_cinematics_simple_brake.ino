@@ -33,8 +33,8 @@ int brake_dir_pin = 7;
 
 // sterring_value
 int S_DIR = 5;
-// int S_PWM = 4;
-int sterring_pwm_speed = 100;
+//int S_PWM = 4;
+//int sterring_pwm_speed = 100;
 PinName sterring_pin = digitalPinToPinName(D4);
 mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
 
@@ -51,10 +51,10 @@ steps to get the values
 // 1500 1500 1500 1500 1500 0 0 85 (sterring value) "548"  0 0 1
 */
 
-long default_sterring_value = 577; // 0 1024 519 573
-long highest_sterring_value = 834;  // 844 Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
+long default_sterring_value = 563; // 0 1024  563
+long highest_sterring_value = 805;  // 844 832   805 Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
                                     //for default value set steering to an obtainable straight wheels and the note down the value from serial monitor
-long lowest_sterring_value = 310;  // 160 300
+long lowest_sterring_value = 321;  // 160 300  200  321
 //----------------------------------------------------------------------------//
 
 long int sterring_value = 577;
@@ -108,6 +108,10 @@ void send_data() {
   Serial.print(" ");
   Serial.print(ch[5]);
   Serial.print(" ");
+  Serial.print(ch[6]);
+  Serial.print(" ");
+  Serial.print(Mode);
+  Serial.print(" ");
   Serial.print(input_throttle);
   Serial.print(" ");
   Serial.print(throttle);
@@ -129,7 +133,6 @@ void send_data() {
 void loop() {
   loopstart = millis();
   read_rc();  // get data from reciever
-  braking();  // apply brake
   evaluteinputs();
   send_data();
   throttling();
@@ -137,8 +140,9 @@ void loop() {
   sterring_input();  // read sterring sensor value (potentiometer)
   delay(1); // delay 1 millisecond
   if( millis() - sterring_start_time > 10 ){
-  sterring_loop();
-  sterring_start_time = millis();
+    braking();  // apply brake
+    sterring_loop();
+    sterring_start_time = millis();
   }
 
 
