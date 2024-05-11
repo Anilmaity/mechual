@@ -79,6 +79,7 @@ mbed::PwmOut* pwm = new mbed::PwmOut(pin);
 
 long int value_gone_time = 0;
 
+String Mode = "FWD";
 
 // will excecute one time
 void setup() {
