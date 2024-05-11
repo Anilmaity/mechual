@@ -13,7 +13,7 @@ long int motor_driver_start_time = 0;
 long int Sterring_input = 0;
 
 unsigned long int a, b, c;
-int x[15], ch1[15], ch[10], i;
+int x[15], ch1[15], ch[15], i;
 
 
 
@@ -78,8 +78,11 @@ PinName pin = digitalPinToPinName(D2);
 mbed::PwmOut* pwm = new mbed::PwmOut(pin);
 
 long int value_gone_time = 0;
+long int mode_change_time = 0;
 
 String Mode = "FWD";
+
+bool valid_inputs = true;
 
 // will excecute one time
 void setup() {
@@ -110,6 +113,8 @@ void send_data() {
   Serial.print(" ");
   Serial.print(ch[6]);
   Serial.print(" ");
+  Serial.print(valid_inputs);
+  Serial.print(" ");
   Serial.print(Mode);
   Serial.print(" ");
   Serial.print(input_throttle);
@@ -132,14 +137,15 @@ void send_data() {
 
 void loop() {
   loopstart = millis();
-  read_rc();  // get data from reciever
-  evaluteinputs();
-  send_data();
   throttling();
   loop_time = millis() - loopstart;
   sterring_input();  // read sterring sensor value (potentiometer)
   delay(1); // delay 1 millisecond
   if( millis() - sterring_start_time > 10 ){
+
+    read_rc();  // get data from reciever
+    evaluteinputs();
+    send_data();
     braking();  // apply brake
     sterring_loop();
     sterring_start_time = millis();

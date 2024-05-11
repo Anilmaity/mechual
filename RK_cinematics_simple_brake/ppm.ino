@@ -18,7 +18,6 @@ void read_me() {
   if (i == 15) {
     for (int j = 0; j < 15; j++) {
       if (x[j] > 0) {
-
         ch1[j] = x[j];
       }
     }
@@ -28,13 +27,13 @@ void read_me() {
 
 
 void read_rc() {
-  int i, j, k = 0;
+  int j, k = 0;
   for (k = 14; k > -1; k--) {
-    if (ch1[k] > 5500) { j = k; }
+    if (ch1[k] > 5500 && ch1[k]  < 20000 ) { j = k; }
   }  //detecting separation  space 10000us in that another array
-  for (i = 1; i <= 6; i++) {
-    if (ch1[i] != 0 && ch1[i] >= 900 && ch1[i] <= 2100) {
-      ch[i] = ch1[i + j];
+  for (int ai = 1; ai <= 8; ai++) {
+    if (ch1[ai] >= 980 && ch1[ai] <= 2020) {
+      ch[ai] = ch1[ai + j];
     }
   }
 }
@@ -45,8 +44,24 @@ void read_rc() {
 
 
 void evaluteinputs() {
+  valid_inputs = true;
+  for (int temp = 1; temp <= 8; temp++) {
+    if (ch[temp] <= 980 && ch[temp] >= 2020) {
+      valid_inputs = false;
+    }
+  }
 
-  if (ch[5] >= 1300) {
+
+  if (ch[5] >= 1300 && valid_inputs) {
+
+    if (ch[5] >= 1700) {
+      Mode = "RWD";
+      mode_change_time = millis();
+
+    } else if (millis() - mode_change_time > 200) {
+      Mode = "FWD";
+    }
+
 
 
     if (ch[3] <= 2100 && ch[3] >= 1520) {
@@ -54,7 +69,7 @@ void evaluteinputs() {
       if (Mode == "FWD") {
         throttle = 0.8 * throttle + 0.2 * map(ch[3], 1500, 2000, initial_throttle, max_limit);
       } else {
-        throttle = 0.8 * throttle + 0.2 * map(ch[3], 1000, 1500, -max_limit, -initial_throttle_backward);
+        throttle = 0.8 * throttle + 0.2 * map(ch[3], 1500, 2000, -initial_throttle_backward, -max_limit);
       }
 
 
@@ -62,7 +77,7 @@ void evaluteinputs() {
       if (Mode == "FWD") {
         throttle = 0.8 * throttle + 0.2 * map(ch[3], 1000, 1500, -max_limit, -initial_throttle_backward);
       } else {
-        throttle = 0.8 * throttle + 0.2 * map(ch[3], 1500, 2000, initial_throttle, max_limit);
+        throttle = 0.8 * throttle + 0.2 * map(ch[3], 1000, 1500, max_limit, initial_throttle_backward);
       }
     } else if (ch[3] <= 1510 && ch[3] >= 1490) {
       throttle = 0;
@@ -73,14 +88,14 @@ void evaluteinputs() {
       if (Mode == "FWD") {
         sterring_value = 0.6 * sterring_value + 0.4 * map(ch[1], 1500, 2000, default_sterring_value, lowest_sterring_value);  // 912
       } else {
-        sterring_value = 0.6 * sterring_value + 0.4 * map(ch[1], 1000, 1500, highest_sterring_value, default_sterring_value);  // 548 // 227
+        sterring_value = 0.6 * sterring_value + 0.4 * map(ch[1], 1500, 2000, default_sterring_value, highest_sterring_value);  // 548 // 227
       }
 
-    } else if (ch[1] <= 1490 && ch[1] >= 900) {
+    } else if (ch[1] <= 1490 && ch[1] >= 980) {
       if (Mode == "FWD") {
         sterring_value = 0.6 * sterring_value + 0.4 * map(ch[1], 1000, 1500, highest_sterring_value, default_sterring_value);  // 548 // 227
       } else {
-        sterring_value = 0.6 * sterring_value + 0.4 * map(ch[1], 1500, 2000, default_sterring_value, lowest_sterring_value);  // 912
+        sterring_value = 0.6 * sterring_value + 0.4 * map(ch[1], 1000, 1500, lowest_sterring_value, default_sterring_value);  // 912
       }
 
     } else if (ch[1] <= 1510 && ch[1] >= 1490) {
@@ -88,32 +103,26 @@ void evaluteinputs() {
     }
 
 
-    if (ch[2] <= 1300 && ch[2] >= 900) {
+    if (ch[2] <= 1300 && ch[2] >= 980) {
       Brake = 0.9 * Brake + 0.1 * map(ch[2], 1300, 1000, initial_brake, 60);  // max brake angle
-    } 
-    else if (ch[2] >= 1300 && ch[2] <= 2100  ) {
+    } else if (ch[2] >= 1300 && ch[2] <= 2100) {
       Brake = initial_brake;
     }
 
 
-    if (ch[6] >= 1600 &&  ch[6] < 2100 ) {
+    if (ch[6] >= 980 && ch[6] < 1300) {
       Brake = 60;
     }
 
-    if (ch[5] >= 1700) {
-      Mode = "RWD";
-    } else {
-
-      Mode = "FWD";
-    }
 
     value_gone_time = millis();
 
 
 
-  } else if (millis() - value_gone_time <= 100) {
+  } else if (millis() - value_gone_time <= 700) {
 
     throttle = throttle;
+
   } else {
     Mode = "STOP";
     throttle = 0;
