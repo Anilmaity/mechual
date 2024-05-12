@@ -11,7 +11,7 @@ void sterring_setup() {
 
 void sterring_input() {
   sensorValue = analogRead(S_SEN);
-  if(abs(sterring_value - sensorValue) > 20 && noise_count < 4)
+  if(abs(sterring_value - sensorValue) > 20 && noise_count < 2)
     {
       noise_count = noise_count +1;
       error_sterring =  0.004*(sterring_value - sensorValue) + 0.996* error_sterring;
@@ -19,7 +19,7 @@ void sterring_input() {
     }
     else {
       noise_count = 0;
-      error_sterring = 0.05*(sterring_value - sensorValue) + 0.95* error_sterring;
+      error_sterring = 0.02*(sterring_value - sensorValue) + 0.98* error_sterring;
     }
   
 }

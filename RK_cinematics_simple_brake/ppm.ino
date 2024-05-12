@@ -42,14 +42,14 @@ void read_rc() {
           ch[i] = 0.98 * ch[i] + 0.02 * ch1[i + j];
         } else if (i == 1) 
         {
-            ch[i] = 0.7 * ch[i] + 0.3 * ch1[i + j];
+            ch[i] = 0.5 * ch[i] + 0.5 * ch1[i + j];
 
         }
           else if (i == 5) {
-            ch[i] = 0.998 * ch[i] + 0.002 * ch1[i + j];
+            ch[i] = 0.98 * ch[i] + 0.02 * ch1[i + j];
           }
           else if (i == 3) {
-          if (abs(ch[i] - ch1[i + j]) > 200 && thr_noise_count < 40) {
+          if (abs(ch[i] - ch1[i + j]) > 200 && thr_noise_count < 5) {
             ch[i] = ch[i];
           thr_noise_count++;
           } else {
@@ -59,7 +59,13 @@ void read_rc() {
 
           }
           else if (i == 6) {
-            ch[i] = 0.998 * ch[i] + 0.002 * ch1[i + j];
+          if (abs(ch[i] - ch1[i + j]) > 300 && rev_noise_count < 300) {
+            ch[i] = ch[i];
+            rev_noise_count++;
+          } else {
+            rev_noise_count = 0;
+            ch[i] = 0.7 * ch[i] + 0.3 * ch1[i + j];
+          }
           }
           else {
             ch[i] = ch1[i + j];
@@ -78,15 +84,15 @@ void read_rc() {
 
     if (ch[5] >= 1200) {
 
-      // if (ch[6] >= 1500) {
+      if (ch[6] >= 1500) {
 
-      //   lowest_sterring_value = 805;
-      //   highest_sterring_value = 321;
+        lowest_sterring_value = 805;
+        highest_sterring_value = 321;
 
-      // } else {
-      //   lowest_sterring_value = 321;
-      //   highest_sterring_value = 805;
-      // }
+      } else {
+        lowest_sterring_value = 321;
+        highest_sterring_value = 805;
+      }
 
 
       if (ch[3] <= 2100 && ch[3] >= 1520) {
