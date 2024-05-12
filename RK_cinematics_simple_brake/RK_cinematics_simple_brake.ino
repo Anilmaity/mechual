@@ -38,6 +38,9 @@ int S_PWM = 4;
 PinName sterring_pin = digitalPinToPinName(D4);
 mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
 int noise_count = 0;
+int str_noise_count = 0;
+int thr_noise_count = 0;
+int rev_noise_count = 0;
 
 int S_SEN = A0;
 
@@ -129,13 +132,15 @@ void send_data() {
 
 void loop() {
   loopstart = millis();
+  read_rc();  // get data from reciever
+  braking();  // apply brake
+  evaluteinputs();
   send_data();
   throttling();
   loop_time = millis() - loopstart;
   sterring_input();  // read sterring sensor value (potentiometer)
   delay(1); // delay 1 millisecond
-  if( millis() - sterring_start_time > 10 ){
-  braking();  // apply brake
+  if( millis() - sterring_start_time > 5 ){
   sterring_loop();
   sterring_start_time = millis();
   }
