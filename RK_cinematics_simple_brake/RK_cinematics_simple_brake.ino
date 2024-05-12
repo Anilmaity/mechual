@@ -33,8 +33,8 @@ int brake_dir_pin = 7;
 
 // sterring_value
 int S_DIR = 5;
-// int S_PWM = 4;
-int sterring_pwm_speed = 100;
+int S_PWM = 4;
+//int sterring_pwm_speed = 100;
 PinName sterring_pin = digitalPinToPinName(D4);
 mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
 
@@ -127,15 +127,13 @@ void send_data() {
 
 void loop() {
   loopstart = millis();
-  read_rc();  // get data from reciever
-  braking();  // apply brake
-  evaluteinputs();
   send_data();
   throttling();
   loop_time = millis() - loopstart;
   sterring_input();  // read sterring sensor value (potentiometer)
   delay(1); // delay 1 millisecond
   if( millis() - sterring_start_time > 10 ){
+  braking();  // apply brake
   sterring_loop();
   sterring_start_time = millis();
   }

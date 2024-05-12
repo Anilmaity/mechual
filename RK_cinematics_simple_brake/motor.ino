@@ -77,7 +77,7 @@ void throttling() {
   }
 
 
-  if (throttle > 0) {
+  if (throttle > 0) {  
     if (throttle > input_throttle ) {
       // if ( input_throttle < 0)
       // {
