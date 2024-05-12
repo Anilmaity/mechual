@@ -20,7 +20,7 @@ void sterring_input() {
     else {
       noise_count = 0;
       error_sterring = 0.04 * (sterring_value - sensorValue) + 0.96 * error_sterring;
-    
+
     }
 }
 
@@ -101,6 +101,7 @@ void throttling() {
         input_throttle = input_throttle + speed_increase_rate_forward;
       } else {
         input_throttle = input_throttle + speed_increase_rate_forward;
+
       }
 
     } else if (throttle <= input_throttle) {
@@ -151,5 +152,6 @@ void throttling() {
   } else {
 
     pwm->pulsewidth_us(abs(int(input_throttle)));
+
   }
 }

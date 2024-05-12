@@ -43,16 +43,16 @@ void read_rc() {
         }
         else if (i == 1) {
           ch[i] = 0.9 * ch[i] + 0.1 * ch1[i + j];
-        } 
+        }
         else if (i == 5) {
           ch[i] = 0.98 * ch[i] + 0.02 * ch1[i + j];
-        } 
+        }
         else if (i == 3) {
           ch[i] = 0.95 * ch[i] + 0.05 * ch1[i + j];
-        } 
+        }
         else if (i == 6) {
           ch[i] = 0.98 * ch[i] + 0.02 * ch1[i + j];
-        } 
+        }
          else {
           ch[i] = ch1[i + j];
         }
