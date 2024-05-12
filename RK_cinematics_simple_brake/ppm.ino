@@ -32,9 +32,31 @@ void read_rc() {
   for (k = 14; k > -1; k--) {
     if (ch1[k] > 5500) { j = k; }
   }  //detecting separation  space 10000us in that another array
-  for (i = 1; i <= 6; i++) {
-    if (ch1[i] != 0) {
-      ch[i] = ch1[i + j];
+
+  if (i + j < 6) {
+    for (i = 1; i <= 6; i++) {
+      if (ch1[i + j] > 980 && ch1[i + j] < 2020) {
+        if (i == 4) {
+          ch[i] = 0.96 * ch[i] + 0.04 * ch1[i + j];
+        } else if (i == 2) {
+          ch[i] = 0.96 * ch[i] + 0.04 * ch1[i + j];
+        }
+        else if (i == 1) {
+          ch[i] = 0.9 * ch[i] + 0.1 * ch1[i + j];
+        } 
+        else if (i == 5) {
+          ch[i] = 0.98 * ch[i] + 0.02 * ch1[i + j];
+        } 
+        else if (i == 3) {
+          ch[i] = 0.95 * ch[i] + 0.05 * ch1[i + j];
+        } 
+        else if (i == 6) {
+          ch[i] = 0.98 * ch[i] + 0.02 * ch1[i + j];
+        } 
+         else {
+          ch[i] = ch1[i + j];
+        }
+      }
     }
   }
 }
@@ -46,9 +68,9 @@ void read_rc() {
 
 void evaluteinputs() {
 
-  if (ch[5] >= 1300) {
+  if (ch[5] >= 1200) {
 
-    if (ch[5] >= 1700) {
+    if (ch[6] >= 1500) {
 
       lowest_sterring_value = 805;
       highest_sterring_value = 321;
@@ -61,7 +83,7 @@ void evaluteinputs() {
 
     if (ch[3] <= 2100 && ch[3] >= 1520) {
 
-      if (ch[5] >= 1700) {
+      if (ch[6] >= 1500) {
         throttle = 0.8 * throttle + 0.2 * map(ch[3], 1500, 2000, -initial_throttle_backward, -max_limit);
 
       } else {
@@ -70,18 +92,18 @@ void evaluteinputs() {
 
 
     } else if (ch[3] <= 1480 && ch[3] >= 900) {
-      if (ch[5] >= 1700) {
+      if (ch[6] >= 1500) {
         throttle = 0.8 * throttle + 0.2 * map(ch[3], 1000, 1500, max_limit, initial_throttle_backward);
 
       } else {
         throttle = 0.8 * throttle + 0.2 * map(ch[3], 1000, 1500, -max_limit, -initial_throttle_backward);
       }
-    } else if (ch[3] <= 1510 && ch[3] >= 1490) {
+    } else if (ch[3] <= 1510 && ch[3] >= 1480) {
       throttle = 0;
     }
 
 
-    if (ch[1] <= 2100 && ch[1] >= 1510) {
+    if (ch[1] <= 2100 && ch[1] >= 1520) {
       sterring_value = 0.6 * sterring_value + 0.4 * map(ch[1], 1500, 2000, default_sterring_value, lowest_sterring_value);  // 912
     } else if (ch[1] <= 1490 && ch[1] >= 900) {
       sterring_value = 0.6 * sterring_value + 0.4 * map(ch[1], 1000, 1500, highest_sterring_value, default_sterring_value);  // 548 // 227
@@ -97,7 +119,7 @@ void evaluteinputs() {
     }
 
 
-    if (ch[6] >= 980 && ch[6] < 1300) {
+    if (ch[4] >= 980 && ch[4] < 1300) {
       Brake = 60;
     }
 

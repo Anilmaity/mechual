@@ -13,7 +13,7 @@ long int motor_driver_start_time = 0;
 long int Sterring_input = 0;
 
 unsigned long int a, b, c;
-int x[15], ch1[15], ch[10], i;
+int x[15], ch1[15], ch[15], i;
 
 
 
@@ -37,7 +37,7 @@ int S_DIR = 5;
 int sterring_pwm_speed = 100;
 PinName sterring_pin = digitalPinToPinName(D4);
 mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
-
+int noise_count = 0;
 
 int S_SEN = A0;
 
@@ -106,6 +106,8 @@ void send_data() {
   Serial.print(ch[4]);
   Serial.print(" ");
   Serial.print(ch[5]);
+  Serial.print(" ");
+  Serial.print(ch[6]);
   Serial.print(" ");
   Serial.print(input_throttle);
   Serial.print(" ");
