@@ -42,13 +42,8 @@ void read_rc() {
           ch[i] = 0.98 * ch[i] + 0.02 * ch1[i + j];
         } else if (i == 1) 
         {
-          if (abs(ch[i] - ch1[i + j]) > 200 && str_noise_count < 10) {
-            ch[i] =  0.99 * ch[i] + 0.01 * ch1[i + j];
-            str_noise_count++;
-          } else {
-            str_noise_count =0;
-            ch[i] = 0.5 * ch[i] + 0.5 * ch1[i + j];
-          }
+            ch[i] = 0.7 * ch[i] + 0.3 * ch1[i + j];
+
         }
           else if (i == 5) {
             ch[i] = 0.998 * ch[i] + 0.002 * ch1[i + j];
