@@ -41,6 +41,8 @@ int noise_count = 0;
 int str_noise_count = 0;
 int thr_noise_count = 0;
 int rev_noise_count = 0;
+int emr_brk_noise_count = 0;
+int brk_noise_count = 0;
 
 int S_SEN = A0;
 
@@ -140,7 +142,7 @@ void loop() {
   loop_time = millis() - loopstart;
   sterring_input();  // read sterring sensor value (potentiometer)
   delay(1); // delay 1 millisecond
-  if( millis() - sterring_start_time > 5 ){
+  if( millis() - sterring_start_time > 10 ){
   sterring_loop();
   sterring_start_time = millis();
   }
