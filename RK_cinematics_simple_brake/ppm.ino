@@ -29,7 +29,7 @@ void read_me() {
 
 void read_rc() {
   int i, j, k = 0;
-  for (k = 14; k > -1; k--) {
+  for (k = 10; k > -1; k--) {
     if (ch1[k] > 5500) { j = k; }
   }  //detecting separation  space 10000us in that another array
 
@@ -38,7 +38,7 @@ void read_rc() {
       if (ch1[i + j] > 980 && ch1[i + j] < 2020) {
         if (i == 4) {
 
-          if (abs(ch[i] - ch1[i + j]) > 300 && emr_brk_noise_count < 300) {
+          if (abs(ch[i] - ch1[i + j]) > 100 && emr_brk_noise_count < 100) {
             ch[i] = ch[i];
             emr_brk_noise_count++;
           } else {
@@ -47,7 +47,7 @@ void read_rc() {
           }
 
         } else if (i == 2) {
-          if (abs(ch[i] - ch1[i + j]) > 300 && brk_noise_count < 300) {
+          if (abs(ch[i] - ch1[i + j]) > 100 && brk_noise_count < 100) {
             ch[i] = ch[i];
             brk_noise_count++;
           } else {
@@ -136,15 +136,18 @@ void evaluteinputs() {
     }
 
 
-    if (ch[2] <= 1300 && ch[2] >= 900) {
-      Brake = 0.9 * Brake + 0.1 * map(ch[2], 1300, 1000, initial_brake, 60);  // max brake angle
-    } else if (ch[2] != 0) {
-      Brake = initial_brake;
-    }
+    // if (ch[2] <= 1300 && ch[2] >= 900) {
+    //   Brake = 0.9 * Brake + 0.1 * map(ch[2], 1300, 1000, initial_brake, 60);  // max brake angle
+    // } else if (ch[2] != 0) {
+    //   Brake = initial_brake;
+    // }
 
 
     if (ch[4] >= 980 && ch[4] < 1300) {
       Brake = 60;
+    }
+    else{
+      Brake = 0;
     }
 
 

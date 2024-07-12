@@ -34,9 +34,9 @@ int brake_dir_pin = 7;
 // sterring_value
 int S_DIR = 5;
 int S_PWM = 4;
-//int sterring_pwm_speed = 100;
-PinName sterring_pin = digitalPinToPinName(D4);
-mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
+// //int sterring_pwm_speed = 100;
+// PinName sterring_pin = digitalPinToPinName(D4);
+// mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
 int noise_count = 0;
 int str_noise_count = 0;
 int thr_noise_count = 0;
@@ -57,15 +57,15 @@ steps to get the values
 */
 
 long default_sterring_value = 563; // 0 1024 519 573
-long highest_sterring_value = 805;  // 844 Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
+long highest_sterring_value = 795;  // 844 Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
                                     //for default value set steering to an obtainable straight wheels and the note down the value from serial monitor
-long lowest_sterring_value = 321;  // 160 300
+long lowest_sterring_value = 331;  // 160 300
 //----------------------------------------------------------------------------//
 
-long int sterring_value = 563;
-long int error_sterring = 0;
+long int sterring_value = 563; //563
+int error_sterring = 0;
 long int sensorValue = 0;
-
+int clearance = 14 ;
 long sterring_start_time = millis();
 
 // throttle
@@ -73,8 +73,8 @@ float speed_increase_rate_forward = 0.002;   // if you want to increase bot acce
 float speed_increase_rate_backward = 0.002; // if you want to increase bot acceleration in reverse direction
 float speed_decrease_rate = 0.03;          // if you want to decrease bot acceleration in both direction
 
-int initial_throttle = 68;
-int initial_throttle_backward = 68;
+int initial_throttle = 68.8;
+int initial_throttle_backward = 68.8;
 int max_limit = 120; // max speed limit
 // int throttle_pin = 2;
 int throttle = 0;
@@ -114,10 +114,6 @@ void send_data() {
   Serial.print(" ");
   Serial.print(ch[6]);
   Serial.print(" ");
-  Serial.print(input_throttle);
-  Serial.print(" ");
-  Serial.print(throttle);
-  Serial.print(" ");
   Serial.print(Brake);
   Serial.print(" ");
   Serial.print(brake_time);
@@ -129,6 +125,13 @@ void send_data() {
   Serial.print(sensorValue);
   Serial.print(" ");
   Serial.print(loop_time);
+  Serial.print(" ");
+  Serial.print(" ");
+  Serial.print(input_throttle);
+  Serial.print(" ");
+  Serial.print(clearance);
+  Serial.print(" ");
+  Serial.print(throttle);
   Serial.println(" ");
 }
 
@@ -137,14 +140,17 @@ void loop() {
   read_rc();  // get data from reciever
   braking();  // apply brake
   evaluteinputs();
-  send_data();
   throttling();
   loop_time = millis() - loopstart;
   sterring_input();  // read sterring sensor value (potentiometer)
   delay(1); // delay 1 millisecond
-  if( millis() - sterring_start_time > 10 ){
-  sterring_loop();
-  sterring_start_time = millis();
+  send_data();
+
+  if( millis() - sterring_start_time > 50 ){
+    // sterring_input();  // read sterring sensor value (potentiometer)
+    sterring_loop();
+    sterring_start_time = millis();
+
   }
 
 

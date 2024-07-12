@@ -2,36 +2,53 @@ void sterring_setup() {
   pinMode(S_SEN, INPUT);
 
   pinMode(S_DIR, OUTPUT);
-  // pinMode(S_PWM, OUTPUT);
+  pinMode(S_PWM, OUTPUT);
 
-  sterring_pwm->period_us(200);    // Set PWM period to 1ms (1kHz)
-  sterring_pwm->pulsewidth_us(0);  // Initialize PWM pulse width to 0
+  // sterring_pwm->period_us(200);    // Set PWM period to 1ms (1kHz)
+  // sterring_pwm->pulsewidth_us(0);  // Initialize PWM pulse width to 0
 }
 
 
 void sterring_input() {
   sensorValue = analogRead(S_SEN);
-  if(abs(sterring_value - sensorValue) > 20 && noise_count < 2)
+  if(abs(sterring_value - sensorValue) > 10 && noise_count < 1)
     {
       noise_count = noise_count +1;
-      error_sterring =  0.004*(sterring_value - sensorValue) + 0.996* error_sterring;
+      error_sterring =  0.002*(sterring_value - sensorValue) + 0.998* error_sterring;
 
     }
     else {
       noise_count = 0;
-      error_sterring = 0.04*(sterring_value - sensorValue) + 0.96* error_sterring;
-    }
-  
+      error_sterring = 0.06*(sterring_value - sensorValue) + 0.94* error_sterring;
+  }
+  //error_sterring = 0.04*(sterring_value - sensorValue) + 0.96* error_sterring;
+
 }
 
 void sterring_loop() {
 
-  if (abs(error_sterring) > 8) {
-    if (error_sterring > 0) {
+
+  // if(abs(error_sterring) >= 30){
+  //   clearance = 4;
+
+  // }
+
+
+
+
+  if (abs(error_sterring) > clearance) {
+    
+    // if(abs(error_sterring) <= 4){
+    //   clearance = 14;
+
+    //   }
+
+    if (error_sterring >= 0) {
       digitalWrite(S_DIR, HIGH);  // direction right or left
     } else {
       digitalWrite(S_DIR, LOW);
     }
+
 
     //sterring_pwm_speed +=  20;
 
@@ -40,14 +57,17 @@ void sterring_loop() {
     //   {
     //     sterring_pwm_speed = 200;
     //   }
-    // digitalWrite(S_PWM, HIGH);
+    digitalWrite(S_PWM, HIGH);
+
+    //analogWrite(S_PWM,210); // 0 pwm signal
+  
 
 
 
     // analogWrite(S_PWM,sterring_pwm); // max speed for motor
 
 
-    sterring_pwm->pulsewidth_us(200);
+    // sterring_pwm->pulsewidth_us(200);
 
     //   else
     //   {
@@ -57,10 +77,10 @@ void sterring_loop() {
 
   } else {
     
-    sterring_pwm->pulsewidth_us(0);
+    // sterring_pwm->pulsewidth_us(0);
 
 
-    // digitalWrite(S_PWM,LOW); // 0 pwm signal
+    digitalWrite(S_PWM,LOW); // 0 pwm signal
     // sterring_pwm_speed = 100;
   }
 }
