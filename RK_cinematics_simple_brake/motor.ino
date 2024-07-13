@@ -21,7 +21,10 @@ void sterring_input() {
       noise_count = 0;
       error_sterring = 0.06*(sterring_value - sensorValue) + 0.94* error_sterring;
   }
-  //error_sterring = 0.04*(sterring_value - sensorValue) + 0.96* error_sterring;
+
+  // error_sterring = 0.04*(sterring_value - sensorValue) + 0.96* error_sterring;
+
+  
 
 }
 
