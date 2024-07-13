@@ -8,11 +8,11 @@ float speed_increase_rate_forward = 0.006;   // if you want to increase bot acce
 float speed_increase_rate_backward = 0.004; // if you want to increase bot acceleration in reverse direction
 float speed_decrease_rate = 0.03;          // if you want to decrease bot acceleration in both direction
 
-int initial_throttle = 68;
+int initial_throttle = 45;
 int initial_throttle_backward = 68;
-int max_limit = 120; // max speed limit
-// int throttle_pin = 2;
+int max_limit = 75; // max speed limit
 int throttle = 0;
+float input_throttle = 45;
 
 
 
@@ -35,7 +35,7 @@ void send_data() {
 
   Serial.print(throttle); // 1500 1500 1500 1500 1500 0 0 85 548 0 0 1
   Serial.print(" ");
-  Serial.print(joystick_value); // 1500 1500 1500 1500 1500 0 0 85 548 0 0 1
+  Serial.print(input_throttle); // 1500 1500 1500 1500 1500 0 0 85 548 0 0 1
   Serial.print(" ");
   Serial.print(joystick_value); // 1500 1500 1500 1500 1500 0 0 85 548 0 0 1
   Serial.println(" ");
@@ -59,9 +59,82 @@ void throttle_setup(){
 
 }
 
-void throttling(){
-     analogWrite(throttle_pin, abs(throttle));
+void throttling() {
+
+
+
+  if (throttle > 0) {
+    if (throttle > input_throttle) {
+      // if ( input_throttle < 0)
+      // {
+      //   input_throttle = input_throttle + speed_decrease_rate;
+
+      // }
+      // else
+
+      if (input_throttle < initial_throttle) {
+        input_throttle = initial_throttle;
+      } else if (input_throttle < 0) {
+        input_throttle = 0;
+      } else if (input_throttle < 78) {
+        input_throttle = input_throttle + speed_increase_rate_forward;
+      } else {
+        input_throttle = input_throttle + speed_increase_rate_forward;
+
+      }
+
+    } else if (throttle <= input_throttle) {
+      input_throttle = input_throttle - speed_decrease_rate;
+    } else {
+      input_throttle = 0;
+    }
+
+  } else if (throttle < 0) {
+    // if(input_throttle > 0 )
+    // {
+    //   input_throttle = input_throttle - speed_decrease_rate;
+
+    // }
+    // else
+
+    if (input_throttle > -initial_throttle_backward) {
+      input_throttle = -initial_throttle_backward;
+    } else if (throttle < input_throttle) {
+      if (input_throttle > 0) {
+        input_throttle = 0;
+      } else if (input_throttle > -90) {
+        input_throttle = input_throttle - speed_increase_rate_backward;  //
+
+      } else {
+        input_throttle = input_throttle - speed_increase_rate_backward;  //
+      }
+
+    } else if (throttle >= input_throttle) {
+      input_throttle = input_throttle + speed_decrease_rate;
+    }
+  } else {
+    if (input_throttle > 0) {
+      input_throttle = input_throttle - speed_decrease_rate;
+    } else if (input_throttle < 0) {
+      input_throttle = input_throttle + speed_decrease_rate;
+    } else {
+      input_throttle = 0;
+    }
+  }
+
+
+  if (abs(throttle) > initial_throttle_backward) {
+
+    analogWrite(throttle_pin,abs(int(input_throttle)));
+    // analogWrite(throttle_pin, abs(input_throttle));
+
+  } else {
+
+    analogWrite(throttle_pin,abs(int(input_throttle)));
+
+  }
 }
+
 
 
 void loop() {
