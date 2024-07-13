@@ -4,15 +4,15 @@ int joystick_value = 0;
 
 
 // throttle
-float speed_increase_rate_forward = 0.006;   // if you want to increase bot acceleration in forward direction
-float speed_increase_rate_backward = 0.004; // if you want to increase bot acceleration in reverse direction
+float speed_increase_rate_forward = 0.002;   // if you want to increase bot acceleration in forward direction
+float speed_increase_rate_backward = 0.002; // if you want to increase bot acceleration in reverse direction
 float speed_decrease_rate = 0.03;          // if you want to decrease bot acceleration in both direction
 
-int initial_throttle = 45;
-int initial_throttle_backward = 68;
-int max_limit = 75; // max speed limit
+int initial_throttle = 88;
+int initial_throttle_backward = 88;
+int max_limit = 100; // max speed limit
 int throttle = 0;
-float input_throttle = 45;
+float input_throttle = 0;
 
 
 
@@ -21,7 +21,7 @@ void setup() {
 
   Serial.begin(115200); // for communication between PC and arduino
   joystick_setup();
-
+  throttle_setup();
 }
 
 void joystick_setup() {
@@ -44,17 +44,21 @@ void send_data() {
 void get_joystick_input(){
   joystick_value = analogRead(joystick_pin);
 
-  throttle = map(joystick_value, 320, 700, initial_throttle, max_limit);
+  throttle = map(joystick_value, 320, 705, initial_throttle, max_limit);
+  if (joystick_value < 320){
+    throttle = 0;
+  }
 
 }
 
 void throttle_setup(){
 
-  //  TCCR3B = TCCR3B & B11111000 | B00000010;     //WGM30 = set Timer mode to PWM
+  //TCCR3B = TCCR3B & B11111000 | B00000010;     //WGM30 = set Timer mode to PWM
   //COM3B/C1 = clear Output on compare match
  //TCCR0B = TCCR0B & B11111000 | B00000010; // for PWM frequency of 7000 Hz
-  //TCCR0B = TCCR0B & B11111000 | B00000001; // for PWM frequency of 62500 Hz
-  
+// TCCR0B = TCCR0B & B11111000 | B00000001; // for PWM frequency of 62500 Hz
+    TCCR2B = TCCR2B & B11111000 | B00000010;
+
     pinMode(throttle_pin, OUTPUT);
 
 }
@@ -141,5 +145,6 @@ void loop() {
   get_joystick_input();
   throttling();
   send_data();
+  delay(1);
 
 }
