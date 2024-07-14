@@ -43,7 +43,7 @@ int thr_noise_count = 0;
 int rev_noise_count = 0;
 int emr_brk_noise_count = 0;
 int brk_noise_count = 0;
-
+bool corrected = true;
 int S_SEN = A0;
 
 //------------------- steering calibrations values ----------------------------//
@@ -134,6 +134,8 @@ void send_data() {
   Serial.print(clearance);
   Serial.print(" ");
   Serial.print(throttle);
+  Serial.print(" ");
+  Serial.print(corrected);
   Serial.println(" ");
 }
 
@@ -142,13 +144,13 @@ void loop() {
   read_rc();  // get data from reciever
   braking();  // apply brake
   evaluteinputs();
-  throttling();
+  //throttling();
   loop_time = millis() - loopstart;
   sterring_input();  // read sterring sensor value (potentiometer)
-  delay(1); // delay 1 millisecond
+  delay(2); // delay 1 millisecond
   send_data();
 
-  if( millis() - sterring_start_time > 50 ){
+  if( millis() - sterring_start_time > 5 ){
     // sterring_input();  // read sterring sensor value (potentiometer)
     sterring_loop();
     sterring_start_time = millis();

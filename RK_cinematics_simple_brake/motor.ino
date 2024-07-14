@@ -11,10 +11,10 @@ void sterring_setup() {
 
 void sterring_input() {
   sensorValue = analogRead(S_SEN);
-  if(abs(sterring_value - sensorValue) > 10 && noise_count < 1)
+  if(abs(sterring_value - sensorValue) > 10 && noise_count < 1 && abs(sterring_value - sensorValue) < 60)
     {
       noise_count = noise_count +1;
-      error_sterring =  0.002*(sterring_value - sensorValue) + 0.998* error_sterring;
+      error_sterring =  0.004*(sterring_value - sensorValue) + 0.996* error_sterring;
 
     }
     else {
@@ -30,22 +30,8 @@ void sterring_input() {
 
 void sterring_loop() {
 
-
-  // if(abs(error_sterring) >= 30){
-  //   clearance = 4;
-
-  // }
-
-
-
-
   if (abs(error_sterring) > clearance) {
     
-    // if(abs(error_sterring) <= 4){
-    //   clearance = 14;
-
-    //   }
-
     if (error_sterring >= 0) {
       digitalWrite(S_DIR, HIGH);  // direction right or left
     } else {
@@ -53,34 +39,25 @@ void sterring_loop() {
     }
 
 
-    //sterring_pwm_speed +=  20;
-
-
-    // if(sterring_pwm_speed <= 200)
-    //   {
-    //     sterring_pwm_speed = 200;
-    //   }
     digitalWrite(S_PWM, HIGH);
 
-    //analogWrite(S_PWM,210); // 0 pwm signal
-  
-
-
-
-    // analogWrite(S_PWM,sterring_pwm); // max speed for motor
-
-
-    // sterring_pwm->pulsewidth_us(200);
-
-    //   else
-    //   {
-    //     sterring_pwm ->pulsewidth_us(100);
-    //     delayMicroseconds(1000);
-    //   }
 
   } else {
-    
-    // sterring_pwm->pulsewidth_us(0);
+
+    // if(abs(error_sterring) > 6){
+
+
+    //   analogWrite(S_PWM,100); // max speed for motor
+    //   delay(2);
+    //   analogWrite(S_PWM,0); // max speed for motor
+
+    // }
+
+      if (error_sterring >= 5) {
+        digitalWrite(S_DIR, HIGH);  // direction right or left
+      } else {
+        digitalWrite(S_DIR, LOW);
+      }
 
 
     digitalWrite(S_PWM,LOW); // 0 pwm signal
