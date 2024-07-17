@@ -2,27 +2,30 @@ void sterring_setup() {
   pinMode(S_SEN, INPUT);
 
   pinMode(S_DIR, OUTPUT);
-  pinMode(S_PWM, OUTPUT);
+  // pinMode(S_PWM, OUTPUT);
 
-  // sterring_pwm->period_us(200);    // Set PWM period to 1ms (1kHz)
-  // sterring_pwm->pulsewidth_us(0);  // Initialize PWM pulse width to 0
+  sterring_pwm->period_us(200);    // Set PWM period to 1ms (1kHz)
+  sterring_pwm->pulsewidth_us(0);  // Initialize PWM pulse width to 0
 }
 
 
 void sterring_input() {
+  // noInterrupts();
+
   sensorValue = analogRead(S_SEN);
-  if(abs(sterring_value - sensorValue) > 10 && noise_count < 1 && abs(sterring_value - sensorValue) < 60)
-    {
-      noise_count = noise_count +1;
-      error_sterring =  0.004*(sterring_value - sensorValue) + 0.996* error_sterring;
+  // if(abs(sterring_value - sensorValue) > 10 && noise_count < 1 && abs(sterring_value - sensorValue) < 60)
+  //   {
+  //     noise_count = noise_count +1;
+  //     error_sterring =  0.004*(sterring_value - sensorValue) + 0.996* error_sterring;
 
-    }
-    else {
-      noise_count = 0;
-      error_sterring = 0.06*(sterring_value - sensorValue) + 0.94* error_sterring;
-  }
+  //   }
+  //   else {
+  //     noise_count = 0;
+  //     error_sterring = 0.06*(sterring_value - sensorValue) + 0.94* error_sterring;
+  // }
 
-  // error_sterring = 0.04*(sterring_value - sensorValue) + 0.96* error_sterring;
+  error_sterring = 0.02*(sterring_value - sensorValue) + 0.98* error_sterring;
+  // interrupts();
 
   
 
@@ -31,36 +34,77 @@ void sterring_input() {
 void sterring_loop() {
 
   if (abs(error_sterring) > clearance) {
-    
+
     if (error_sterring >= 0) {
       digitalWrite(S_DIR, HIGH);  // direction right or left
     } else {
       digitalWrite(S_DIR, LOW);
     }
 
+    // if (corrected == true ){
+    //   analogWrite(S_PWM,200); // max speed for motor
+    //   corrected = false;
+    // }
 
-    digitalWrite(S_PWM, HIGH);
+    // if(abs(error_sterring) < 20){
+    //   digitalWrite(S_PWM, HIGH);
+    //   delay(21);
+    //   digitalWrite(S_PWM, LOW);
+    //   corrected = false;
+
+    // }
+    // // else{
+    //   digitalWrite(S_PWM, HIGH);
+    //   corrected = false;
+    // // }
+
+    if(corrected == true){
+      sterring_pwm->pulsewidth_us(100);
+      delay(3);
+      // sterring_input();  // read sterring sensor value (potentiometer)
+
+      sterring_pwm->pulsewidth_us(150);
+      delay(3);
+      // sterring_input();  // read sterring sensor value (potentiometer)
+
+      sterring_pwm->pulsewidth_us(200);
+      delay(3);
+
+      corrected = false;
+    }
+
 
 
   } else {
 
-    // if(abs(error_sterring) > 6){
-
-
-    //   analogWrite(S_PWM,100); // max speed for motor
-    //   delay(2);
-    //   analogWrite(S_PWM,0); // max speed for motor
+    // if(corrected == false){
+    //   analogWrite(S_PWM,200); // max speed for motor
 
     // }
 
-      if (error_sterring >= 5) {
-        digitalWrite(S_DIR, HIGH);  // direction right or left
-      } else {
-        digitalWrite(S_DIR, LOW);
-      }
+      // if (error_sterring >= 0) {
+      //   digitalWrite(S_DIR, HIGH);  // direction right or left
+      // } else {
+      //   digitalWrite(S_DIR, LOW);
+      // }
+      
+    if(corrected == false){
+      sterring_pwm->pulsewidth_us(150);
+      delay(3);
+      // sterring_input();  // read sterring sensor value (potentiometer)
+
+      sterring_pwm->pulsewidth_us(100);
+      delay(3);
+      // sterring_input();  // read sterring sensor value (potentiometer)
+      
+
+      sterring_pwm->pulsewidth_us(0);
+      delay(3);
+
+      corrected = true;
+    }
 
 
-    digitalWrite(S_PWM,LOW); // 0 pwm signal
     // sterring_pwm_speed = 100;
   }
 }

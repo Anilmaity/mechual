@@ -34,9 +34,9 @@ int brake_dir_pin = 7;
 // sterring_value
 int S_DIR = 5;
 int S_PWM = 4;
-// //int sterring_pwm_speed = 100;
-// PinName sterring_pin = digitalPinToPinName(D4);
-// mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
+// int sterring_pwm_speed = 100;
+PinName sterring_pin = digitalPinToPinName(D4);
+mbed::PwmOut* sterring_pwm = new mbed::PwmOut(sterring_pin);
 int noise_count = 0;
 int str_noise_count = 0;
 int thr_noise_count = 0;
@@ -67,7 +67,7 @@ long lowest_sterring_value = 331;  // 160 300  """" full right """"
 long int sterring_value = 563; //563
 int error_sterring = 0;
 long int sensorValue = 0;
-int clearance = 14 ;
+int clearance = 18 ;
 long sterring_start_time = millis();
 
 // throttle
@@ -146,12 +146,12 @@ void loop() {
   evaluteinputs();
   //throttling();
   loop_time = millis() - loopstart;
+  delay(2); // delay 1 millisecond
   sterring_input();  // read sterring sensor value (potentiometer)
   delay(2); // delay 1 millisecond
-  send_data();
 
-  if( millis() - sterring_start_time > 5 ){
-    // sterring_input();  // read sterring sensor value (potentiometer)
+  if( millis() - sterring_start_time > 10 ){
+    send_data();
     sterring_loop();
     sterring_start_time = millis();
 
