@@ -2,8 +2,8 @@
 
 #define MAX_CHANNELS 10
 
-iBus receiver(Serial3, MAX_CHANNELS);  // Serial on ATMega328 boards(Uno, Nano, etc.)
-                                     // Serial1 on ATMega32u4 boards(Micro, Leonardo)
+iBus receiver(Serial3, MAX_CHANNELS);  // Serial2 pins in arduino giga
+                                     
 void setup() {
   receiver.begin();
 }
