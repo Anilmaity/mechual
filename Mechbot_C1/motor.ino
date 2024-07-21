@@ -67,7 +67,7 @@ void sterring_loop() {
     //   delay(3);
     //   // sterring_input();  // read sterring sensor value (potentiometer)
 
-    //   sterring_pwm->pulsewidth_us(200);
+      sterring_pwm->pulsewidth_us(200);
     //   delay(3);
 
     //   corrected = false;
@@ -98,7 +98,7 @@ void sterring_loop() {
     //   // sterring_input();  // read sterring sensor value (potentiometer)
       
 
-    //   sterring_pwm->pulsewidth_us(0);
+      sterring_pwm->pulsewidth_us(0);
     //   delay(3);
 
     //   corrected = true;
@@ -122,9 +122,9 @@ void throttle_setup() {
 
 void throttling() {
 
-  if (input_throttle > int(initial_throttle / 2)) {
+  if (input_throttle > int(initial_throttle + 0.2)) {
     digitalWrite(Reverse_pin, HIGH);
-  } else if (input_throttle < int(-initial_throttle_backward / 2)) {
+  } else if (input_throttle < int(-initial_throttle_backward - 0.2)) {
     digitalWrite(Reverse_pin, LOW);
   }
 

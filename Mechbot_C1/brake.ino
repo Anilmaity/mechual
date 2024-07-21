@@ -3,8 +3,9 @@
 void brake_setup() {
   pinMode(brake_dir_pin, OUTPUT);
   pinMode(brake_pwm_pin, OUTPUT);
-  pinMode(brake_in_pin, INPUT);
-
+  // pinMode(brake_in_pin, INPUT);
+  pinMode(52, OUTPUT);
+  digitalWrite(52,HIGH);
 
 
   brake_start_time = 0;
@@ -13,7 +14,7 @@ void brake_setup() {
 
 
 void braking() {
-  brake_sensorValue = 0.1 * analogRead(A0) + 0.9 * brake_sensorValue;
+  brake_sensorValue = 0.1 * analogRead(A10) + 0.9 * brake_sensorValue;
 
   error_brake = (Brake - brake_sensorValue);
 

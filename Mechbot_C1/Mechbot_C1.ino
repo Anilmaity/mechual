@@ -30,9 +30,11 @@ float brake_sensorValue = 0;
 float error_brake = 0;
 float error_brake_value = 0 ;
 
-int brake_pwm_pin = 2;
-int brake_dir_pin = 3;
-int brake_in_pin = A0;
+#define ANALOG_PIN(pin) pin
+
+int brake_pwm_pin = 6;
+int brake_dir_pin = 7;
+
 
 
 
@@ -49,7 +51,7 @@ int rev_noise_count = 0;
 int emr_brk_noise_count = 0;
 int brk_noise_count = 0;
 bool corrected = true;
-int S_SEN = A1;
+int S_SEN = A0;
 
 //------------------- steering calibrations values ----------------------------//
 /*
@@ -63,16 +65,16 @@ steps to get the values
 
 // for 100ms - 1 s do not take value from sensor
 
-long default_sterring_value = 563;  // 0 1024 519 573  """""" centervalue """"""""
-long highest_sterring_value = 795;  // 844 Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
+long default_sterring_value = 556;  // 0 1024 519 556  """""" centervalue """"""""
+long highest_sterring_value = 785;  // 785 Turn the robot after fixing potentiometer, max left and max right. note heighest and lowest value.
                                     //for default value set steering to an obtainable straight wheels and the note down the value from serial monitor
-long lowest_sterring_value = 331;   // 160 300  """" full right """"
+long lowest_sterring_value = 327;   // 160 300  """" full right """"
                                     //----------------------------------------------------------------------------//
 
-long int sterring_value = 563;  //563
+long int sterring_value = 563;  //556
 int error_sterring = 0;
 long int sensorValue = 0;
-int clearance = 18;
+int clearance = 14;
 long sterring_start_time = millis();
 
 // throttle
@@ -86,7 +88,7 @@ int max_limit = 120;  // max speed limit
 // int throttle_pin = 2;
 int throttle = 0;
 double input_throttle = 0;
-PinName pin = digitalPinToPinName(D6);  //d2
+PinName pin = digitalPinToPinName(D2);  //d2
 mbed::PwmOut* pwm = new mbed::PwmOut(pin);
 
 long int value_gone_time = 0;
