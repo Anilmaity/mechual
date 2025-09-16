@@ -620,5 +620,6 @@ void ui_ABMode_screen_init(void)
     lv_obj_add_event_cb(ui_Slider9, ui_event_Slider9, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Button14, ui_event_Button14, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ABMode, ui_event_ABMode, LV_EVENT_ALL, NULL);
+    uic_Header2_battery = ui_comp_get_child(ui_Header2, UI_COMP_HEADER_BATTERY);
 
 }

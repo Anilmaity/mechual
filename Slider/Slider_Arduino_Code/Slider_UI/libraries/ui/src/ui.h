@@ -109,6 +109,7 @@ extern lv_obj_t * ui_Image11;
 extern lv_obj_t * ui_power2;
 extern lv_obj_t * ui_Image9;
 // CUSTOM VARIABLES
+extern lv_obj_t * uic_Header1_battery;
 extern lv_obj_t * uic_TabView2;
 
 // SCREEN: ui_ABMode
@@ -169,6 +170,7 @@ extern lv_obj_t * ui_Label9;
 extern lv_obj_t * ui_SetB2;
 extern lv_obj_t * ui_Label20;
 // CUSTOM VARIABLES
+extern lv_obj_t * uic_Header2_battery;
 
 // SCREEN: ui_Calibration
 void ui_Calibration_screen_init(void);
@@ -201,6 +203,7 @@ extern lv_obj_t * ui_SliderPosition2;
 void ui_event_Slider3(lv_event_t * e);
 extern lv_obj_t * ui_Slider3;
 // CUSTOM VARIABLES
+extern lv_obj_t * uic_Header4_battery;
 
 // EVENTS
 

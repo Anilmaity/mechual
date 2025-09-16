@@ -495,6 +495,7 @@ void ui_ManualMode_screen_init(void)
     lv_obj_add_event_cb(ui_Slider8, ui_event_Slider8, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Slider4, ui_event_Slider4, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Button12, ui_event_Button12, LV_EVENT_ALL, NULL);
+    uic_Header1_battery = ui_comp_get_child(ui_Header1, UI_COMP_HEADER_BATTERY);
     uic_TabView2 = ui_TabView2;
 
 }

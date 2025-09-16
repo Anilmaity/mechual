@@ -298,5 +298,6 @@ void ui_Calibration_screen_init(void)
     lv_obj_add_event_cb(ui_Button15, ui_event_Button15, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Slider3, ui_event_Slider3, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Calibration, ui_event_Calibration, LV_EVENT_ALL, NULL);
+    uic_Header4_battery = ui_comp_get_child(ui_Header4, UI_COMP_HEADER_BATTERY);
 
 }

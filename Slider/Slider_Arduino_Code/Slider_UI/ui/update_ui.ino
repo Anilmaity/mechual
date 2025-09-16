@@ -5,6 +5,9 @@ void update_ui() {
   battery_level = analogRead(A0);
 
   lv_slider_set_value(uic_Header_battery, battery_level/255, LV_ANIM_ON);  // Set slider to 30 with smooth animation
+  lv_slider_set_value(uic_Header1_battery, battery_level/255, LV_ANIM_ON);  // Set slider to 30 with smooth animation
+  lv_slider_set_value(uic_Header2_battery, battery_level/255, LV_ANIM_ON);  // Set slider to 30 with smooth animation
+  lv_slider_set_value(uic_Header4_battery, battery_level/255, LV_ANIM_ON);  // Set slider to 30 with smooth animation
 
 
   
