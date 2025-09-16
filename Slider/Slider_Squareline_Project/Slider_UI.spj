@@ -2626,6 +2626,14 @@
                     "compnid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "battery",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "battery",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -8042,6 +8050,14 @@
                     "compnid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "battery",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "battery",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -18676,6 +18692,14 @@
                     "compnid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "battery",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "battery",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -19966,8 +19990,7 @@
                 "InheritedType": 11
               }
             ],
-            "saved_objtypeKey": "CONTAINER",
-            "tree_closed": true
+            "saved_objtypeKey": "CONTAINER"
           },
           {
             "guid": "GUID74054774-725780S68384256",
@@ -30816,6 +30839,14 @@
                     "compnid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "battery",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "battery",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -36393,7 +36424,7 @@
     "uiExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI/./libraries/ui/src",
     "projectExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI",
     "custom_variable_prefix": "uic",
-    "backup_cnt": 24,
+    "backup_cnt": 25,
     "autosave_cnt": 0,
     "group_color_cnt": 0,
     "lvgl_version": "9.1.0",
