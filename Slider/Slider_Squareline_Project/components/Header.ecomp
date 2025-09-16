@@ -627,6 +627,12 @@
           "InheritedType": 6
         },
         {
+          "nid": 1060,
+          "strtype": "IMAGE/Inner_align",
+          "strval": "CENTER",
+          "InheritedType": 3
+        },
+        {
           "part": "lv.PART.MAIN",
           "childs": [],
           "nid": 1060,
@@ -930,12 +936,6 @@
           "strtype": "LABEL/Text",
           "strval": "Home",
           "InheritedType": 10
-        },
-        {
-          "nid": 1040,
-          "strtype": "LABEL/Recolor",
-          "strval": "False",
-          "InheritedType": 2
         },
         {
           "part": "lv.PART.MAIN",
@@ -1284,6 +1284,12 @@
           "InheritedType": 6
         },
         {
+          "nid": 1060,
+          "strtype": "IMAGE/Inner_align",
+          "strval": "CENTER",
+          "InheritedType": 3
+        },
+        {
           "part": "lv.PART.MAIN",
           "childs": [],
           "nid": 1060,
@@ -1293,6 +1299,408 @@
         }
       ],
       "saved_objtypeKey": "IMAGE"
+    },
+    {
+      "guid": "GUID25364168-760246S9674259",
+      "deepid": -1172633762,
+      "dont_export": false,
+      "locked": false,
+      "properties": [
+        {
+          "nid": 10,
+          "strtype": "OBJECT/Name",
+          "strval": "battery",
+          "InheritedType": 10
+        },
+        {
+          "nid": 20,
+          "flags": 1048576,
+          "strtype": "OBJECT/Layout",
+          "InheritedType": 1
+        },
+        {
+          "Flow": 0,
+          "Wrap": false,
+          "Reversed": false,
+          "MainAlignment": 0,
+          "CrossAlignment": 0,
+          "TrackAlignment": 0,
+          "LayoutType": 0,
+          "nid": 30,
+          "strtype": "OBJECT/Layout_type",
+          "strval": "No_layout",
+          "InheritedType": 13
+        },
+        {
+          "nid": 40,
+          "flags": 1048576,
+          "strtype": "OBJECT/Transform",
+          "InheritedType": 1
+        },
+        {
+          "nid": 50,
+          "flags": 17,
+          "strtype": "OBJECT/Position",
+          "intarray": [
+            179,
+            0
+          ],
+          "InheritedType": 7
+        },
+        {
+          "nid": 60,
+          "flags": 17,
+          "strtype": "OBJECT/Size",
+          "intarray": [
+            88,
+            32
+          ],
+          "InheritedType": 7
+        },
+        {
+          "nid": 70,
+          "strtype": "OBJECT/Align",
+          "strval": "CENTER",
+          "InheritedType": 3
+        },
+        {
+          "nid": 90,
+          "flags": 1048576,
+          "strtype": "OBJECT/Flags",
+          "InheritedType": 1
+        },
+        {
+          "nid": 100,
+          "strtype": "OBJECT/Hidden",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 110,
+          "strtype": "OBJECT/Clickable",
+          "strval": "True",
+          "InheritedType": 2
+        },
+        {
+          "nid": 120,
+          "strtype": "OBJECT/Checkable",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 130,
+          "strtype": "OBJECT/Press_lock",
+          "strval": "True",
+          "InheritedType": 2
+        },
+        {
+          "nid": 140,
+          "strtype": "OBJECT/Click_focusable",
+          "strval": "True",
+          "InheritedType": 2
+        },
+        {
+          "nid": 150,
+          "strtype": "OBJECT/Adv_hittest",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 160,
+          "strtype": "OBJECT/Ignore_layout",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 170,
+          "strtype": "OBJECT/Floating",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 180,
+          "strtype": "OBJECT/Overflow_visible",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 190,
+          "strtype": "OBJECT/Flex_in_new_track",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 200,
+          "strtype": "OBJECT/Event_bubble",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 210,
+          "strtype": "OBJECT/Gesture_bubble",
+          "strval": "True",
+          "InheritedType": 2
+        },
+        {
+          "nid": 220,
+          "strtype": "OBJECT/Snappable",
+          "strval": "True",
+          "InheritedType": 2
+        },
+        {
+          "nid": 225,
+          "flags": 1048576,
+          "strtype": "OBJECT/Scrolling",
+          "InheritedType": 1
+        },
+        {
+          "nid": 260,
+          "strtype": "OBJECT/Scroll_on_focus",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 280,
+          "strtype": "OBJECT/Scroll_with_arrow",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 314,
+          "strtype": "OBJECT/Scroll_snap_x",
+          "strval": "NONE",
+          "InheritedType": 3
+        },
+        {
+          "nid": 315,
+          "strtype": "OBJECT/Scroll_snap_y",
+          "strval": "NONE",
+          "InheritedType": 3
+        },
+        {
+          "nid": 320,
+          "flags": 1048576,
+          "strtype": "OBJECT/States",
+          "InheritedType": 1
+        },
+        {
+          "nid": 330,
+          "strtype": "OBJECT/Checked",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 340,
+          "strtype": "OBJECT/Disabled",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 350,
+          "strtype": "OBJECT/Focused",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 360,
+          "strtype": "OBJECT/Pressed",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 370,
+          "strtype": "OBJECT/Edited",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 380,
+          "strtype": "OBJECT/User_1",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 390,
+          "strtype": "OBJECT/User_2",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 400,
+          "strtype": "OBJECT/User_3",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 410,
+          "strtype": "OBJECT/User_4",
+          "strval": "False",
+          "InheritedType": 2
+        },
+        {
+          "nid": 1010,
+          "strtype": "SLIDER/Slider",
+          "InheritedType": 1
+        },
+        {
+          "nid": 1020,
+          "strtype": "SLIDER/Range",
+          "intarray": [
+            0,
+            100
+          ],
+          "InheritedType": 7
+        },
+        {
+          "nid": 1030,
+          "strtype": "SLIDER/Mode",
+          "strval": "NORMAL",
+          "InheritedType": 3
+        },
+        {
+          "nid": 1040,
+          "strtype": "SLIDER/Value",
+          "integer": 20,
+          "InheritedType": 6
+        },
+        {
+          "nid": 1050,
+          "strtype": "SLIDER/Value_left",
+          "InheritedType": 6
+        },
+        {
+          "part": "lv.PART.MAIN",
+          "childs": [
+            {
+              "nid": 10000,
+              "strtype": "_style/StyleState",
+              "strval": "DEFAULT",
+              "childs": [
+                {
+                  "nid": 10510,
+                  "strtype": "_style/Bg_Radius",
+                  "InheritedType": 6
+                },
+                {
+                  "nid": 10520,
+                  "strtype": "_style/Bg_Color",
+                  "intarray": [
+                    0,
+                    192,
+                    94,
+                    0
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 10530,
+                  "strtype": "_style/Bg_gradiens_Color",
+                  "intarray": [
+                    9,
+                    237,
+                    94
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 10550,
+                  "strtype": "_style/Gradient direction",
+                  "strval": "HOR",
+                  "InheritedType": 3
+                }
+              ],
+              "InheritedType": 1
+            }
+          ],
+          "nid": 1060,
+          "strtype": "SLIDER/Style_main",
+          "strval": "lv.PART.MAIN, Rectangle, Pad, Transform",
+          "InheritedType": 11
+        },
+        {
+          "part": "lv.PART.INDICATOR",
+          "childs": [
+            {
+              "nid": 10000,
+              "strtype": "_style/StyleState",
+              "strval": "DEFAULT",
+              "childs": [
+                {
+                  "nid": 10510,
+                  "strtype": "_style/Bg_Radius",
+                  "InheritedType": 6
+                },
+                {
+                  "nid": 10520,
+                  "strtype": "_style/Bg_Color",
+                  "intarray": [
+                    2,
+                    210,
+                    96,
+                    255
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 10530,
+                  "strtype": "_style/Bg_gradiens_Color",
+                  "intarray": [
+                    0,
+                    228,
+                    16
+                  ],
+                  "InheritedType": 7
+                },
+                {
+                  "nid": 10550,
+                  "strtype": "_style/Gradient direction",
+                  "strval": "HOR",
+                  "InheritedType": 3
+                }
+              ],
+              "InheritedType": 1
+            }
+          ],
+          "nid": 1070,
+          "strtype": "SLIDER/Style_indicator",
+          "strval": "lv.PART.INDICATOR, Rectangle",
+          "InheritedType": 11
+        },
+        {
+          "part": "lv.PART.KNOB",
+          "childs": [
+            {
+              "nid": 10000,
+              "strtype": "_style/StyleState",
+              "strval": "DEFAULT",
+              "childs": [
+                {
+                  "nid": 10510,
+                  "strtype": "_style/Bg_Radius",
+                  "InheritedType": 6
+                },
+                {
+                  "nid": 10520,
+                  "strtype": "_style/Bg_Color",
+                  "intarray": [
+                    255,
+                    255,
+                    255,
+                    0
+                  ],
+                  "InheritedType": 7
+                }
+              ],
+              "InheritedType": 1
+            }
+          ],
+          "nid": 1080,
+          "strtype": "SLIDER/Style_knob",
+          "strval": "lv.PART.KNOB, Rectangle, Pad",
+          "InheritedType": 11
+        }
+      ],
+      "saved_objtypeKey": "SLIDER"
     }
   ],
   "dont_export": false,
@@ -1333,7 +1741,7 @@
       "strtype": "OBJECT/Position",
       "intarray": [
         0,
-        -357
+        -360
       ],
       "InheritedType": 7
     },

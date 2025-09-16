@@ -16,6 +16,7 @@ void ui_Calibration_screen_init(void)
 
     lv_label_set_text(ui_comp_get_child(ui_Header4, UI_COMP_HEADER_LABEL1), "Calibration");
 
+    //Compensating for LVGL9.1 draw crash with bar/slider max value when top-padding is nonzero and right-padding is 0
     ui_Button1 = lv_button_create(ui_Calibration);
     lv_obj_set_width(ui_Button1, 150);
     lv_obj_set_height(ui_Button1, 150);

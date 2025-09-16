@@ -18,7 +18,8 @@ extern "C" {
 #define UI_COMP_HEADER_IMAGE2 2
 #define UI_COMP_HEADER_LABEL1 3
 #define UI_COMP_HEADER_IMAGE3 4
-#define _UI_COMP_HEADER_NUM 5
+#define UI_COMP_HEADER_BATTERY 5
+#define _UI_COMP_HEADER_NUM 6
 lv_obj_t * ui_Header_create(lv_obj_t * comp_parent);
 
 #ifdef __cplusplus

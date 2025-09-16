@@ -39,6 +39,7 @@ void ui_event_Manual4(lv_event_t * e);
 lv_obj_t * ui_Manual4;
 lv_obj_t * ui_Label4;
 // CUSTOM VARIABLES
+lv_obj_t * uic_Header_battery;
 
 // SCREEN: ui_ManualMode
 void ui_ManualMode_screen_init(void);
@@ -66,19 +67,19 @@ lv_obj_t * ui_SliderPosition;
 void ui_event_Slider2(lv_event_t * e);
 lv_obj_t * ui_Slider2;
 lv_obj_t * ui_Position_Mode;
-lv_obj_t * ui_Slider7;
-lv_obj_t * ui_Image31;
-lv_obj_t * ui_Container4;
-lv_obj_t * ui_Sliderbox5;
-lv_obj_t * ui_Image24;
-lv_obj_t * ui_Label34;
-lv_obj_t * ui_Image25;
 void ui_event_Slider8(lv_event_t * e);
 lv_obj_t * ui_Slider8;
 lv_obj_t * ui_Panel7;
 lv_obj_t * ui_PositionValue;
 lv_obj_t * ui_Button13;
 lv_obj_t * ui_Label8;
+lv_obj_t * ui_Slider10;
+lv_obj_t * ui_Image20;
+lv_obj_t * ui_Container4;
+lv_obj_t * ui_Image18;
+lv_obj_t * ui_SliderPosition6;
+void ui_event_Slider4(lv_event_t * e);
+lv_obj_t * ui_Slider4;
 lv_obj_t * ui_Footer2;
 lv_obj_t * ui_Panel5;
 lv_obj_t * ui_Container5;
@@ -93,6 +94,7 @@ lv_obj_t * uic_TabView2;
 
 // SCREEN: ui_ABMode
 void ui_ABMode_screen_init(void);
+void ui_event_ABMode(lv_event_t * e);
 lv_obj_t * ui_ABMode;
 lv_obj_t * ui_Header2;
 lv_obj_t * ui_Move2;
@@ -269,11 +271,31 @@ void ui_event_Slider8(lv_event_t * e)
     }
 }
 
+void ui_event_Slider4(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+
+    if(event_code == LV_EVENT_VALUE_CHANGED) {
+        _ui_slider_set_text_value(ui_SliderPosition, target, "", "");
+    }
+}
+
 void ui_event_Button12(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_Home, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Home_screen_init);
+    }
+}
+
+void ui_event_ABMode(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_LEFT) {
+        lv_indev_wait_release(lv_indev_active());
         _ui_screen_change(&ui_Home, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Home_screen_init);
     }
 }
@@ -304,6 +326,10 @@ void ui_event_Calibration(lv_event_t * e)
 
     if(event_code == LV_EVENT_VALUE_CHANGED) {
         _ui_slider_set_text_value(ui_SliderPosition1, target, "", "");
+    }
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_LEFT) {
+        lv_indev_wait_release(lv_indev_active());
+        _ui_screen_change(&ui_Home, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_Home_screen_init);
     }
 }
 

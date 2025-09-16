@@ -15,6 +15,6 @@ void setup() {
 
 void loop()
 {
-  lv_timer_handler();
+  update_ui();
   delay(5);
 }

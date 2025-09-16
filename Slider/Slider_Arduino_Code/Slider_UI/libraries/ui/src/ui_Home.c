@@ -14,6 +14,7 @@ void ui_Home_screen_init(void)
     lv_obj_set_x(ui_Header, 0);
     lv_obj_set_y(ui_Header, -360);
 
+    //Compensating for LVGL9.1 draw crash with bar/slider max value when top-padding is nonzero and right-padding is 0
     ui_Container2 = lv_obj_create(ui_Home);
     lv_obj_remove_style_all(ui_Container2);
     lv_obj_set_width(ui_Container2, 150);
@@ -164,5 +165,6 @@ void ui_Home_screen_init(void)
     lv_obj_add_event_cb(ui_Manual, ui_event_Manual, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Manual3, ui_event_Manual3, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Manual4, ui_event_Manual4, LV_EVENT_ALL, NULL);
+    uic_Header_battery = ui_comp_get_child(ui_Header, UI_COMP_HEADER_BATTERY);
 
 }

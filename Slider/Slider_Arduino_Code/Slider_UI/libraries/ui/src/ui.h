@@ -58,6 +58,7 @@ void ui_event_Manual4(lv_event_t * e);
 extern lv_obj_t * ui_Manual4;
 extern lv_obj_t * ui_Label4;
 // CUSTOM VARIABLES
+extern lv_obj_t * uic_Header_battery;
 
 // SCREEN: ui_ManualMode
 void ui_ManualMode_screen_init(void);
@@ -85,19 +86,19 @@ extern lv_obj_t * ui_SliderPosition;
 void ui_event_Slider2(lv_event_t * e);
 extern lv_obj_t * ui_Slider2;
 extern lv_obj_t * ui_Position_Mode;
-extern lv_obj_t * ui_Slider7;
-extern lv_obj_t * ui_Image31;
-extern lv_obj_t * ui_Container4;
-extern lv_obj_t * ui_Sliderbox5;
-extern lv_obj_t * ui_Image24;
-extern lv_obj_t * ui_Label34;
-extern lv_obj_t * ui_Image25;
 void ui_event_Slider8(lv_event_t * e);
 extern lv_obj_t * ui_Slider8;
 extern lv_obj_t * ui_Panel7;
 extern lv_obj_t * ui_PositionValue;
 extern lv_obj_t * ui_Button13;
 extern lv_obj_t * ui_Label8;
+extern lv_obj_t * ui_Slider10;
+extern lv_obj_t * ui_Image20;
+extern lv_obj_t * ui_Container4;
+extern lv_obj_t * ui_Image18;
+extern lv_obj_t * ui_SliderPosition6;
+void ui_event_Slider4(lv_event_t * e);
+extern lv_obj_t * ui_Slider4;
 extern lv_obj_t * ui_Footer2;
 extern lv_obj_t * ui_Panel5;
 extern lv_obj_t * ui_Container5;
@@ -112,6 +113,7 @@ extern lv_obj_t * uic_TabView2;
 
 // SCREEN: ui_ABMode
 void ui_ABMode_screen_init(void);
+void ui_event_ABMode(lv_event_t * e);
 extern lv_obj_t * ui_ABMode;
 extern lv_obj_t * ui_Header2;
 extern lv_obj_t * ui_Move2;

@@ -16,7 +16,7 @@ lv_obj_t * ui_Header_create(lv_obj_t * comp_parent)
     lv_obj_set_width(cui_Header, 484);
     lv_obj_set_height(cui_Header, 80);
     lv_obj_set_x(cui_Header, 0);
-    lv_obj_set_y(cui_Header, -357);
+    lv_obj_set_y(cui_Header, -360);
     lv_obj_set_align(cui_Header, LV_ALIGN_CENTER);
     lv_obj_remove_flag(cui_Header, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
@@ -65,12 +65,41 @@ lv_obj_t * ui_Header_create(lv_obj_t * comp_parent)
     lv_obj_add_flag(cui_Image3, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
     lv_obj_remove_flag(cui_Image3, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
+    lv_obj_t * cui_battery;
+    cui_battery = lv_slider_create(cui_Header);
+    lv_slider_set_value(cui_battery, 20, LV_ANIM_OFF);
+    if(lv_slider_get_mode(cui_battery) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(cui_battery, 0, LV_ANIM_OFF);
+    lv_obj_set_width(cui_battery, 88);
+    lv_obj_set_height(cui_battery, 32);
+    lv_obj_set_x(cui_battery, 179);
+    lv_obj_set_y(cui_battery, 0);
+    lv_obj_set_align(cui_battery, LV_ALIGN_CENTER);
+    lv_obj_set_style_radius(cui_battery, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(cui_battery, lv_color_hex(0x00C05E), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(cui_battery, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(cui_battery, lv_color_hex(0x09ED5E), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(cui_battery, LV_GRAD_DIR_HOR, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_set_style_radius(cui_battery, 0, LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(cui_battery, lv_color_hex(0x02D260), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(cui_battery, 255, LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_color(cui_battery, lv_color_hex(0x00E410), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_grad_dir(cui_battery, LV_GRAD_DIR_HOR, LV_PART_INDICATOR | LV_STATE_DEFAULT);
+
+    lv_obj_set_style_radius(cui_battery, 0, LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(cui_battery, lv_color_hex(0xFFFFFF), LV_PART_KNOB | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(cui_battery, 0, LV_PART_KNOB | LV_STATE_DEFAULT);
+
+    //Compensating for LVGL9.1 draw crash with bar/slider max value when top-padding is nonzero and right-padding is 0
+    if(lv_obj_get_style_pad_top(cui_battery, LV_PART_MAIN) > 0) lv_obj_set_style_pad_right(cui_battery,
+                                                                                               lv_obj_get_style_pad_right(cui_battery, LV_PART_MAIN) + 1, LV_PART_MAIN);
     lv_obj_t ** children = lv_malloc(sizeof(lv_obj_t *) * _UI_COMP_HEADER_NUM);
     children[UI_COMP_HEADER_HEADER] = cui_Header;
     children[UI_COMP_HEADER_PANEL3] = cui_Panel3;
     children[UI_COMP_HEADER_IMAGE2] = cui_Image2;
     children[UI_COMP_HEADER_LABEL1] = cui_Label1;
     children[UI_COMP_HEADER_IMAGE3] = cui_Image3;
+    children[UI_COMP_HEADER_BATTERY] = cui_battery;
     lv_obj_add_event_cb(cui_Header, get_component_child_event_cb, LV_EVENT_GET_COMP_CHILD, children);
     lv_obj_add_event_cb(cui_Header, del_component_child_event_cb, LV_EVENT_DELETE, children);
     ui_comp_Header_create_hook(cui_Header);
