@@ -48,15 +48,15 @@ lv_obj_t * ui_Header1;
 lv_obj_t * ui_TabView2;
 lv_obj_t * ui_Jog_Mode;
 lv_obj_t * ui_Move;
-lv_obj_t * ui_Button2;
+lv_obj_t * ui_leftMove;
 lv_obj_t * ui_Image4;
 lv_obj_t * ui_Panel1;
 lv_obj_t * ui_SpeedValue;
-lv_obj_t * ui_Button3;
+lv_obj_t * ui_rightMove;
 lv_obj_t * ui_Image5;
 lv_obj_t * ui_Container3;
-void ui_event_Slider1(lv_event_t * e);
-lv_obj_t * ui_Slider1;
+void ui_event_speedSet(lv_event_t * e);
+lv_obj_t * ui_speedSet;
 lv_obj_t * ui_Panel2;
 lv_obj_t * ui_Label6;
 lv_obj_t * ui_Slider;
@@ -64,16 +64,16 @@ lv_obj_t * ui_Image6;
 lv_obj_t * ui_Container10;
 lv_obj_t * ui_Image7;
 lv_obj_t * ui_SliderPosition;
-void ui_event_Slider2(lv_event_t * e);
-lv_obj_t * ui_Slider2;
+void ui_event_positionJM(lv_event_t * e);
+lv_obj_t * ui_positionJM;
 lv_obj_t * ui_Position_Mode;
-void ui_event_Slider8(lv_event_t * e);
-lv_obj_t * ui_Slider8;
+void ui_event_positionSlider(lv_event_t * e);
+lv_obj_t * ui_positionSlider;
 lv_obj_t * ui_Panel7;
 lv_obj_t * ui_PositionValue;
 lv_obj_t * ui_Button13;
 lv_obj_t * ui_Label8;
-lv_obj_t * ui_Slider10;
+lv_obj_t * ui_positionPM;
 lv_obj_t * ui_Image20;
 lv_obj_t * ui_Container4;
 lv_obj_t * ui_Image18;
@@ -99,19 +99,19 @@ void ui_event_ABMode(lv_event_t * e);
 lv_obj_t * ui_ABMode;
 lv_obj_t * ui_Header2;
 lv_obj_t * ui_Move2;
-lv_obj_t * ui_Button11;
+lv_obj_t * ui_leftMoveAB;
 lv_obj_t * ui_Image17;
 lv_obj_t * ui_Panel6;
 lv_obj_t * ui_Label17;
-lv_obj_t * ui_Button5;
+lv_obj_t * ui_rightMoveAB;
 lv_obj_t * ui_Image14;
 lv_obj_t * ui_Slider6;
 lv_obj_t * ui_Image13;
 lv_obj_t * ui_Container9;
 lv_obj_t * ui_Image15;
 lv_obj_t * ui_SliderPosition3;
-void ui_event_Slider9(lv_event_t * e);
-lv_obj_t * ui_Slider9;
+void ui_event_positionAB(lv_event_t * e);
+lv_obj_t * ui_positionAB;
 lv_obj_t * ui_Image10;
 lv_obj_t * ui_SliderPosition1;
 lv_obj_t * ui_Image16;
@@ -125,6 +125,8 @@ lv_obj_t * ui_Label23;
 lv_obj_t * ui_Image27;
 lv_obj_t * ui_power3;
 lv_obj_t * ui_Image28;
+lv_obj_t * ui_Save;
+lv_obj_t * ui_Label28;
 lv_obj_t * ui_Panel9;
 lv_obj_t * ui_Start;
 lv_obj_t * ui_Label21;
@@ -132,8 +134,6 @@ lv_obj_t * ui_Stop;
 lv_obj_t * ui_Label27;
 lv_obj_t * ui_Loop;
 lv_obj_t * ui_Label22;
-lv_obj_t * ui_Save;
-lv_obj_t * ui_Label28;
 lv_obj_t * ui_TimeValue;
 lv_obj_t * ui_Label30;
 lv_obj_t * ui_SetA;
@@ -146,10 +146,12 @@ lv_obj_t * ui_Time;
 lv_obj_t * ui_Label26;
 lv_obj_t * ui_SetB;
 lv_obj_t * ui_Label31;
-lv_obj_t * ui_SetB1;
+lv_obj_t * ui_BackA;
 lv_obj_t * ui_Label9;
-lv_obj_t * ui_SetB2;
+lv_obj_t * ui_BackB;
 lv_obj_t * ui_Label20;
+lv_obj_t * ui_loopValue;
+lv_obj_t * ui_lopValue;
 // CUSTOM VARIABLES
 lv_obj_t * uic_Header2_battery;
 
@@ -181,8 +183,8 @@ lv_obj_t * ui_Image12;
 lv_obj_t * ui_Container7;
 lv_obj_t * ui_Image8;
 lv_obj_t * ui_SliderPosition2;
-void ui_event_Slider3(lv_event_t * e);
-lv_obj_t * ui_Slider3;
+void ui_event_positionCM(lv_event_t * e);
+lv_obj_t * ui_positionCM;
 // CUSTOM VARIABLES
 lv_obj_t * uic_Header4_battery;
 
@@ -244,7 +246,7 @@ void ui_event_Manual4(lv_event_t * e)
     }
 }
 
-void ui_event_Slider1(lv_event_t * e)
+void ui_event_speedSet(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
@@ -254,7 +256,7 @@ void ui_event_Slider1(lv_event_t * e)
     }
 }
 
-void ui_event_Slider2(lv_event_t * e)
+void ui_event_positionJM(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
@@ -264,7 +266,7 @@ void ui_event_Slider2(lv_event_t * e)
     }
 }
 
-void ui_event_Slider8(lv_event_t * e)
+void ui_event_positionSlider(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
@@ -303,7 +305,7 @@ void ui_event_ABMode(lv_event_t * e)
     }
 }
 
-void ui_event_Slider9(lv_event_t * e)
+void ui_event_positionAB(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
@@ -345,7 +347,7 @@ void ui_event_Button15(lv_event_t * e)
     }
 }
 
-void ui_event_Slider3(lv_event_t * e)
+void ui_event_positionCM(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
