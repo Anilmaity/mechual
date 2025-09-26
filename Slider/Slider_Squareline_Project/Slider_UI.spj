@@ -8,7 +8,7 @@
         "deepid": -1700180784,
         "isPage": true,
         "editor_posx": 600,
-        "editor_posy": -780,
+        "editor_posy": -720,
         "dont_export": false,
         "locked": false,
         "properties": [
@@ -379,8 +379,8 @@
           }
         ],
         "isPage": true,
-        "editor_posx": 1200,
-        "editor_posy": -720,
+        "editor_posx": 1290,
+        "editor_posy": -690,
         "dont_export": false,
         "locked": false,
         "properties": [
@@ -3925,7 +3925,8 @@
                 "InheritedType": 11
               }
             ],
-            "saved_objtypeKey": "CONTAINER"
+            "saved_objtypeKey": "CONTAINER",
+            "tree_closed": true
           },
           {
             "guid": "GUID84728186-332794S7984249",
@@ -5880,7 +5881,7 @@
           }
         ],
         "isPage": true,
-        "editor_posx": 1770,
+        "editor_posx": 2310,
         "editor_posy": -690,
         "dont_export": false,
         "locked": false,
@@ -16469,7 +16470,7 @@
           }
         ],
         "isPage": true,
-        "editor_posx": 2310,
+        "editor_posx": 2850,
         "editor_posy": -660,
         "dont_export": false,
         "locked": false,
@@ -27945,8 +27946,8 @@
                     "flags": 17,
                     "strtype": "OBJECT/Position",
                     "intarray": [
-                      68,
-                      73
+                      67,
+                      78
                     ],
                     "InheritedType": 7
                   },
@@ -28082,8 +28083,7 @@
                     "InheritedType": 11
                   }
                 ],
-                "saved_objtypeKey": "BUTTON",
-                "tree_closed": true
+                "saved_objtypeKey": "BUTTON"
               },
               {
                 "guid": "GUID41409725-726401S62404256",
@@ -28130,7 +28130,7 @@
                         "strtype": "OBJECT/Position",
                         "intarray": [
                           0,
-                          6
+                          -1
                         ],
                         "InheritedType": 7
                       },
@@ -28439,8 +28439,7 @@
                     "InheritedType": 11
                   }
                 ],
-                "saved_objtypeKey": "BUTTON",
-                "tree_closed": true
+                "saved_objtypeKey": "BUTTON"
               },
               {
                 "guid": "GUID95122246-695614S694269",
@@ -28928,12 +28927,11 @@
                 "InheritedType": 11
               }
             ],
-            "saved_objtypeKey": "PANEL",
-            "tree_closed": true
+            "saved_objtypeKey": "PANEL"
           }
         ],
         "isPage": true,
-        "editor_posx": 3450,
+        "editor_posx": 3990,
         "editor_posy": -600,
         "dont_export": false,
         "locked": false,
@@ -33316,8 +33314,7 @@
                 "InheritedType": 11
               }
             ],
-            "saved_objtypeKey": "BUTTON",
-            "tree_closed": true
+            "saved_objtypeKey": "BUTTON"
           },
           {
             "guid": "GUID23291212-725766S399934256",
@@ -36461,7 +36458,7 @@
           }
         ],
         "isPage": true,
-        "editor_posx": 2910,
+        "editor_posx": 3450,
         "editor_posy": -660,
         "dont_export": false,
         "locked": false,
@@ -36760,10 +36757,10 @@
     "theme_dark": false,
     "theme_color1": 5,
     "theme_color2": 0,
-    "uiExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI/./libraries/ui/src",
-    "projectExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI",
+    "uiExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI_v1/Slider_UI/./libraries/ui/src",
+    "projectExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI_v1/Slider_UI",
     "custom_variable_prefix": "uic",
-    "backup_cnt": 28,
+    "backup_cnt": 29,
     "autosave_cnt": 0,
     "group_color_cnt": 0,
     "lvgl_version": "9.1.0",
