@@ -176,7 +176,7 @@ void ui_ManualMode_screen_init(void)
     lv_obj_set_x(ui_Label6, -1);
     lv_obj_set_y(ui_Label6, -3);
     lv_obj_set_align(ui_Label6, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label6, "Speed");
+    lv_label_set_text(ui_Label6, "Set");
     lv_obj_set_style_text_font(ui_Label6, &lv_font_montserrat_24, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Slider = lv_obj_create(ui_Jog_Mode);
@@ -498,5 +498,10 @@ void ui_ManualMode_screen_init(void)
     lv_obj_add_event_cb(ui_Button12, ui_event_Button12, LV_EVENT_ALL, NULL);
     uic_Header1_battery = ui_comp_get_child(ui_Header1, UI_COMP_HEADER_BATTERY);
     uic_TabView2 = ui_TabView2;
+    uic_leftMove = ui_leftMove;
+    uic_rightMove = ui_rightMove;
+    uic_speedSet = ui_speedSet;
+    uic_positionJM = ui_positionJM;
+    uic_positionSlider = ui_positionSlider;
 
 }

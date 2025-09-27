@@ -111,6 +111,11 @@ extern lv_obj_t * ui_Image9;
 // CUSTOM VARIABLES
 extern lv_obj_t * uic_Header1_battery;
 extern lv_obj_t * uic_TabView2;
+extern lv_obj_t * uic_leftMove;
+extern lv_obj_t * uic_rightMove;
+extern lv_obj_t * uic_speedSet;
+extern lv_obj_t * uic_positionJM;
+extern lv_obj_t * uic_positionSlider;
 
 // SCREEN: ui_ABMode
 void ui_ABMode_screen_init(void);
@@ -173,6 +178,20 @@ extern lv_obj_t * ui_loopValue;
 extern lv_obj_t * ui_lopValue;
 // CUSTOM VARIABLES
 extern lv_obj_t * uic_Header2_battery;
+extern lv_obj_t * uic_leftMoveAB;
+extern lv_obj_t * uic_rightMoveAB;
+extern lv_obj_t * uic_positionAB;
+extern lv_obj_t * uic_Start;
+extern lv_obj_t * uic_Stop;
+extern lv_obj_t * uic_Loop;
+extern lv_obj_t * uic_SetA;
+extern lv_obj_t * uic_SetAValue;
+extern lv_obj_t * uic_SetAValue1;
+extern lv_obj_t * uic_Time;
+extern lv_obj_t * uic_SetB;
+extern lv_obj_t * uic_BackA;
+extern lv_obj_t * uic_BackB;
+extern lv_obj_t * uic_loopValue;
 
 // SCREEN: ui_Calibration
 void ui_Calibration_screen_init(void);
@@ -180,11 +199,11 @@ void ui_event_Calibration(lv_event_t * e);
 extern lv_obj_t * ui_Calibration;
 extern lv_obj_t * ui_Header4;
 extern lv_obj_t * ui_Button1;
-extern lv_obj_t * ui_Button6;
+extern lv_obj_t * ui_calibrate;
 extern lv_obj_t * ui_Label13;
-extern lv_obj_t * ui_Button7;
+extern lv_obj_t * ui_left;
 extern lv_obj_t * ui_Label14;
-extern lv_obj_t * ui_Button9;
+extern lv_obj_t * ui_homebtn;
 extern lv_obj_t * ui_Label16;
 extern lv_obj_t * ui_Footer4;
 extern lv_obj_t * ui_Panel12;
@@ -195,10 +214,12 @@ extern lv_obj_t * ui_Label24;
 extern lv_obj_t * ui_Image29;
 extern lv_obj_t * ui_power4;
 extern lv_obj_t * ui_Image30;
-extern lv_obj_t * ui_Button8;
+extern lv_obj_t * ui_right;
 extern lv_obj_t * ui_Label15;
 extern lv_obj_t * ui_Slider5;
 extern lv_obj_t * ui_Image12;
+extern lv_obj_t * ui_rightlimit;
+extern lv_obj_t * ui_leftlimit;
 extern lv_obj_t * ui_Container7;
 extern lv_obj_t * ui_Image8;
 extern lv_obj_t * ui_SliderPosition2;
@@ -206,6 +227,13 @@ void ui_event_positionCM(lv_event_t * e);
 extern lv_obj_t * ui_positionCM;
 // CUSTOM VARIABLES
 extern lv_obj_t * uic_Header4_battery;
+extern lv_obj_t * uic_calibrate;
+extern lv_obj_t * uic_left;
+extern lv_obj_t * uic_homebtn;
+extern lv_obj_t * uic_right;
+extern lv_obj_t * uic_rightlimit;
+extern lv_obj_t * uic_leftlimit;
+extern lv_obj_t * uic_positionCM;
 
 // EVENTS
 

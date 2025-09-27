@@ -92,6 +92,11 @@ lv_obj_t * ui_Image9;
 // CUSTOM VARIABLES
 lv_obj_t * uic_Header1_battery;
 lv_obj_t * uic_TabView2;
+lv_obj_t * uic_leftMove;
+lv_obj_t * uic_rightMove;
+lv_obj_t * uic_speedSet;
+lv_obj_t * uic_positionJM;
+lv_obj_t * uic_positionSlider;
 
 // SCREEN: ui_ABMode
 void ui_ABMode_screen_init(void);
@@ -154,6 +159,20 @@ lv_obj_t * ui_loopValue;
 lv_obj_t * ui_lopValue;
 // CUSTOM VARIABLES
 lv_obj_t * uic_Header2_battery;
+lv_obj_t * uic_leftMoveAB;
+lv_obj_t * uic_rightMoveAB;
+lv_obj_t * uic_positionAB;
+lv_obj_t * uic_Start;
+lv_obj_t * uic_Stop;
+lv_obj_t * uic_Loop;
+lv_obj_t * uic_SetA;
+lv_obj_t * uic_SetAValue;
+lv_obj_t * uic_SetAValue1;
+lv_obj_t * uic_Time;
+lv_obj_t * uic_SetB;
+lv_obj_t * uic_BackA;
+lv_obj_t * uic_BackB;
+lv_obj_t * uic_loopValue;
 
 // SCREEN: ui_Calibration
 void ui_Calibration_screen_init(void);
@@ -161,11 +180,11 @@ void ui_event_Calibration(lv_event_t * e);
 lv_obj_t * ui_Calibration;
 lv_obj_t * ui_Header4;
 lv_obj_t * ui_Button1;
-lv_obj_t * ui_Button6;
+lv_obj_t * ui_calibrate;
 lv_obj_t * ui_Label13;
-lv_obj_t * ui_Button7;
+lv_obj_t * ui_left;
 lv_obj_t * ui_Label14;
-lv_obj_t * ui_Button9;
+lv_obj_t * ui_homebtn;
 lv_obj_t * ui_Label16;
 lv_obj_t * ui_Footer4;
 lv_obj_t * ui_Panel12;
@@ -176,10 +195,12 @@ lv_obj_t * ui_Label24;
 lv_obj_t * ui_Image29;
 lv_obj_t * ui_power4;
 lv_obj_t * ui_Image30;
-lv_obj_t * ui_Button8;
+lv_obj_t * ui_right;
 lv_obj_t * ui_Label15;
 lv_obj_t * ui_Slider5;
 lv_obj_t * ui_Image12;
+lv_obj_t * ui_rightlimit;
+lv_obj_t * ui_leftlimit;
 lv_obj_t * ui_Container7;
 lv_obj_t * ui_Image8;
 lv_obj_t * ui_SliderPosition2;
@@ -187,6 +208,13 @@ void ui_event_positionCM(lv_event_t * e);
 lv_obj_t * ui_positionCM;
 // CUSTOM VARIABLES
 lv_obj_t * uic_Header4_battery;
+lv_obj_t * uic_calibrate;
+lv_obj_t * uic_left;
+lv_obj_t * uic_homebtn;
+lv_obj_t * uic_right;
+lv_obj_t * uic_rightlimit;
+lv_obj_t * uic_leftlimit;
+lv_obj_t * uic_positionCM;
 
 // EVENTS
 lv_obj_t * ui____initial_actions0;

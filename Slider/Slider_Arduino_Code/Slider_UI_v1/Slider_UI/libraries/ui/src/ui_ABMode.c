@@ -647,5 +647,19 @@ void ui_ABMode_screen_init(void)
     lv_obj_add_event_cb(ui_Button14, ui_event_Button14, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_ABMode, ui_event_ABMode, LV_EVENT_ALL, NULL);
     uic_Header2_battery = ui_comp_get_child(ui_Header2, UI_COMP_HEADER_BATTERY);
+    uic_leftMoveAB = ui_leftMoveAB;
+    uic_rightMoveAB = ui_rightMoveAB;
+    uic_positionAB = ui_positionAB;
+    uic_Start = ui_Start;
+    uic_Stop = ui_Stop;
+    uic_Loop = ui_Loop;
+    uic_SetA = ui_SetA;
+    uic_SetAValue = ui_SetAValue;
+    uic_SetAValue1 = ui_SetAValue1;
+    uic_Time = ui_Time;
+    uic_SetB = ui_SetB;
+    uic_BackA = ui_BackA;
+    uic_BackB = ui_BackB;
+    uic_loopValue = ui_loopValue;
 
 }

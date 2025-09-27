@@ -9545,6 +9545,14 @@
                             "nid": 10,
                             "strtype": "OBJECT/Name",
                             "strval": "leftMove",
+                            "childs": [
+                              {
+                                "nid": 15,
+                                "strtype": "_codename/Codename",
+                                "strval": "leftMove",
+                                "InheritedType": 10
+                              }
+                            ],
                             "InheritedType": 10
                           },
                           {
@@ -10005,8 +10013,7 @@
                             "InheritedType": 11
                           }
                         ],
-                        "saved_objtypeKey": "PANEL",
-                        "tree_closed": true
+                        "saved_objtypeKey": "PANEL"
                       },
                       {
                         "guid": "GUID27620596-582296S173304250",
@@ -10189,6 +10196,14 @@
                             "nid": 10,
                             "strtype": "OBJECT/Name",
                             "strval": "rightMove",
+                            "childs": [
+                              {
+                                "nid": 15,
+                                "strtype": "_codename/Codename",
+                                "strval": "rightMove",
+                                "InheritedType": 10
+                              }
+                            ],
                             "InheritedType": 10
                           },
                           {
@@ -10472,6 +10487,14 @@
                             "nid": 10,
                             "strtype": "OBJECT/Name",
                             "strval": "speedSet",
+                            "childs": [
+                              {
+                                "nid": 15,
+                                "strtype": "_codename/Codename",
+                                "strval": "speedSet",
+                                "InheritedType": 10
+                              }
+                            ],
                             "InheritedType": 10
                           },
                           {
@@ -10887,7 +10910,7 @@
                               {
                                 "nid": 1030,
                                 "strtype": "LABEL/Text",
-                                "strval": "Speed",
+                                "strval": "Set",
                                 "InheritedType": 10
                               },
                               {
@@ -10901,7 +10924,7 @@
                                       {
                                         "nid": 10450,
                                         "strtype": "_style/Text_Font",
-                                        "strval": "montserrat_24",
+                                        "strval": "montserrat_16",
                                         "InheritedType": 3
                                       }
                                     ],
@@ -11768,6 +11791,14 @@
                                 "nid": 10,
                                 "strtype": "OBJECT/Name",
                                 "strval": "positionJM",
+                                "childs": [
+                                  {
+                                    "nid": 15,
+                                    "strtype": "_codename/Codename",
+                                    "strval": "positionJM",
+                                    "InheritedType": 10
+                                  }
+                                ],
                                 "InheritedType": 10
                               },
                               {
@@ -12323,7 +12354,8 @@
                         "InheritedType": 11
                       }
                     ],
-                    "saved_objtypeKey": "CONTAINER"
+                    "saved_objtypeKey": "CONTAINER",
+                    "tree_closed": true
                   }
                 ],
                 "dont_export": false,
@@ -12589,6 +12621,14 @@
                         "nid": 10,
                         "strtype": "OBJECT/Name",
                         "strval": "positionSlider",
+                        "childs": [
+                          {
+                            "nid": 15,
+                            "strtype": "_codename/Codename",
+                            "strval": "positionSlider",
+                            "InheritedType": 10
+                          }
+                        ],
                         "InheritedType": 10
                       },
                       {
@@ -15123,8 +15163,7 @@
                 "InheritedType": 11
               }
             ],
-            "saved_objtypeKey": "TABVIEW",
-            "tree_closed": true
+            "saved_objtypeKey": "TABVIEW"
           },
           {
             "guid": "GUID31794401-726290S399904256",
@@ -20176,6 +20215,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "leftMoveAB",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "leftMoveAB",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -20637,8 +20684,7 @@
                     "InheritedType": 11
                   }
                 ],
-                "saved_objtypeKey": "PANEL",
-                "tree_closed": true
+                "saved_objtypeKey": "PANEL"
               },
               {
                 "guid": "GUID89810404-725779S68374256",
@@ -20821,6 +20867,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "rightMoveAB",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "rightMoveAB",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -21617,6 +21671,14 @@
                         "nid": 10,
                         "strtype": "OBJECT/Name",
                         "strval": "positionAB",
+                        "childs": [
+                          {
+                            "nid": 15,
+                            "strtype": "_codename/Codename",
+                            "strval": "positionAB",
+                            "InheritedType": 10
+                          }
+                        ],
                         "InheritedType": 10
                       },
                       {
@@ -24745,6 +24807,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "Start",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "Start",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -25102,6 +25172,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "Stop",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "Stop",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -25459,6 +25537,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "Loop",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "Loop",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -26159,6 +26245,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "SetA",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "SetA",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -26510,6 +26604,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "SetAValue",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "SetAValue",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -26853,6 +26955,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "SetAValue1",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "SetAValue1",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -27202,6 +27312,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "Time",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "Time",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -27559,6 +27677,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "SetB",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "SetB",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -27916,6 +28042,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "BackA",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "BackA",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -28272,6 +28406,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "BackB",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "BackB",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -28622,6 +28764,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "loopValue",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "loopValue",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -32789,7 +32939,15 @@
               {
                 "nid": 10,
                 "strtype": "OBJECT/Name",
-                "strval": "Button6",
+                "strval": "calibrate",
+                "childs": [
+                  {
+                    "nid": 15,
+                    "strtype": "_codename/Codename",
+                    "strval": "calibrate",
+                    "InheritedType": 10
+                  }
+                ],
                 "InheritedType": 10
               },
               {
@@ -32957,8 +33115,7 @@
                 "InheritedType": 11
               }
             ],
-            "saved_objtypeKey": "BUTTON",
-            "tree_closed": true
+            "saved_objtypeKey": "BUTTON"
           },
           {
             "guid": "GUID92626304-725762S370674256",
@@ -33146,7 +33303,15 @@
               {
                 "nid": 10,
                 "strtype": "OBJECT/Name",
-                "strval": "Button7",
+                "strval": "left",
+                "childs": [
+                  {
+                    "nid": 15,
+                    "strtype": "_codename/Codename",
+                    "strval": "left",
+                    "InheritedType": 10
+                  }
+                ],
                 "InheritedType": 10
               },
               {
@@ -33502,7 +33667,15 @@
               {
                 "nid": 10,
                 "strtype": "OBJECT/Name",
-                "strval": "Button9",
+                "strval": "homebtn",
+                "childs": [
+                  {
+                    "nid": 15,
+                    "strtype": "_codename/Codename",
+                    "strval": "homebtn",
+                    "InheritedType": 10
+                  }
+                ],
                 "InheritedType": 10
               },
               {
@@ -35201,7 +35374,15 @@
               {
                 "nid": 10,
                 "strtype": "OBJECT/Name",
-                "strval": "Button8",
+                "strval": "right",
+                "childs": [
+                  {
+                    "nid": 15,
+                    "strtype": "_codename/Codename",
+                    "strval": "right",
+                    "InheritedType": 10
+                  }
+                ],
                 "InheritedType": 10
               },
               {
@@ -35369,8 +35550,7 @@
                 "InheritedType": 11
               }
             ],
-            "saved_objtypeKey": "BUTTON",
-            "tree_closed": true
+            "saved_objtypeKey": "BUTTON"
           },
           {
             "guid": "GUID12038730-760129S121914259",
@@ -35886,7 +36066,8 @@
                         "InheritedType": 11
                       }
                     ],
-                    "saved_objtypeKey": "IMAGE"
+                    "saved_objtypeKey": "IMAGE",
+                    "tree_closed": true
                   },
                   {
                     "guid": "GUID93567807-760127S121914259",
@@ -35898,6 +36079,14 @@
                         "nid": 10,
                         "strtype": "OBJECT/Name",
                         "strval": "positionCM",
+                        "childs": [
+                          {
+                            "nid": 15,
+                            "strtype": "_codename/Codename",
+                            "strval": "positionCM",
+                            "InheritedType": 10
+                          }
+                        ],
                         "InheritedType": 10
                       },
                       {
@@ -36760,7 +36949,7 @@
     "uiExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI_v1/Slider_UI/./libraries/ui/src",
     "projectExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI_v1/Slider_UI",
     "custom_variable_prefix": "uic",
-    "backup_cnt": 29,
+    "backup_cnt": 30,
     "autosave_cnt": 0,
     "group_color_cnt": 0,
     "lvgl_version": "9.1.0",
