@@ -3,16 +3,7 @@
 // Debug serial on pins 2 (RX, unused) and 3 (TX)
 SoftwareSerial debugSerial(2, 3);  // RX, TX
 
-// Global variables for parsed data
-String currentMode = "";  // "JM", "PM", "AB", "CA"
-int jogSpeed = 0;
-char jogCommand = ' ';  // 'R', 'L', 'I'
-int position = 0;
-int pointA = 0;
-int pointB = 0;
-int shuttleTime = 0;
-int shuttleLoops = 0;
-char calCommand = ' ';  // 'C', 'R', 'L'
+
 
 // Function prototypes for modular parsing
 bool parseCommand(String& cmd);
@@ -22,16 +13,16 @@ bool parseABShuttleMode(String& cmd);
 bool parseCalibrationMode(String& cmd);
 void printParsedValues();  // For debug
 
-void setup() {
+void com_setup() {
   // Hardware Serial for receiving from Giga at 1 Mbps
   Serial.begin(1000000);
   
   // Debug Serial
   debugSerial.begin(115200);
-  debugSerial.println("Nano: Ready to receive and parse commands from Giga...");
+  Serial.println("Nano: Ready to receive and parse commands from Giga...");
 }
 
-void loop() {
+void readlogs() {
   if (Serial.available() > 0) {
     // Read full command until newline
     String received = Serial.readStringUntil('\n');
@@ -43,10 +34,10 @@ void loop() {
         printParsedValues();  // Output to debug for verification
         // TODO: Add your logic here, e.g., act on variables (move motors, etc.)
       } else {
-        debugSerial.println("Error: Failed to parse command");
+        Serial.println("Error: Failed to parse command");
       }
     } else {
-      debugSerial.println("Error: Invalid command format");
+      Serial.println("Error: Invalid command format");
     }
   }
 }
@@ -63,16 +54,20 @@ bool parseCommand(String& cmd) {
   
   // Call mode-specific parser
   if (currentMode == "JM") {
+    modeCurrent = JOGGING;
     return parseJogMode(cmd);
   } else if (currentMode == "PM") {
+    modeCurrent = POSITIONING;
     return parsePositionMode(cmd);
   } else if (currentMode == "AB") {
+    modeCurrent = AB_SHUTTLE;
     return parseABShuttleMode(cmd);
   } else if (currentMode == "CA") {
+    modeCurrent = CALIBRATING;
     return parseCalibrationMode(cmd);
   } else {
-    debugSerial.print("Error: Unknown mode - ");
-    debugSerial.println(currentMode);
+    Serial.print("Error: Unknown mode - ");
+    Serial.println(currentMode);
     return false;
   }
 }
@@ -158,29 +153,36 @@ bool parseCalibrationMode(String& cmd) {
 
 // Debug function to print current variables
 void printParsedValues() {
-  debugSerial.print("Mode: ");
-  debugSerial.println(currentMode);
+  Serial.print("Mode: ");
+  Serial.println(currentMode);
   
   if (currentMode == "JM") {
-    debugSerial.print("Jog Speed: ");
-    debugSerial.println(jogSpeed);
-    debugSerial.print("Jog Command: ");
-    debugSerial.println(jogCommand);
+    Serial.print("Jog Speed: ");
+    Serial.println(jogSpeed);
+    Serial.print("Jog Command: ");
+    Serial.println(jogCommand);
   } else if (currentMode == "PM") {
-    debugSerial.print("Position: ");
-    debugSerial.println(position);
+    Serial.print("Position: ");
+    Serial.println(position);
   } else if (currentMode == "AB") {
-    debugSerial.print("Point A: ");
-    debugSerial.println(pointA);
-    debugSerial.print("Point B: ");
-    debugSerial.println(pointB);
-    debugSerial.print("Shuttle Time (s): ");
-    debugSerial.println(shuttleTime);
-    debugSerial.print("Shuttle Loops: ");
-    debugSerial.println(shuttleLoops);
+    Serial.print("Point A: ");
+    Serial.println(pointA);
+    Serial.print("Point B: ");
+    Serial.println(pointB);
+    Serial.print("Shuttle Time (s): ");
+    Serial.println(shuttleTime);
+    Serial.print("Shuttle Loops: ");
+    Serial.println(shuttleLoops);
   } else if (currentMode == "CA") {
-    debugSerial.print("Calibration Command: ");
-    debugSerial.println(calCommand);
+    Serial.print("Calibration Command: ");
+    Serial.println(calCommand);
   }
-  debugSerial.println("---");
+  Serial.println("---");
+}
+
+
+void sendlogs(){
+
+
+  
 }
