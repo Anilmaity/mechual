@@ -181,8 +181,3 @@ void printParsedValues() {
 }
 
 
-void sendlogs(){
-
-
-  
-}

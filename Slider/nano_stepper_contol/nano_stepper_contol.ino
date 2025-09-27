@@ -17,6 +17,8 @@ const uint8_t DIR_PIN = 3;               // Direction pin
 const uint8_t STEP_PIN = 2;              // Step pin
 const uint8_t LIMIT_SWITCH_RIGHT = A0;   // Right limit switch (CW direction)
 const uint8_t LIMIT_SWITCH_LEFT = A1;    // Left limit switch (CCW direction)
+const uint8_t BATTERY_PIN = A2;          // Battery voltage analog pin
+
 
 // Stepper motor configurations
 const uint16_t FULL_STEPS_PER_REV = 200; // Steps per revolution for 1.8° motor
@@ -29,6 +31,13 @@ const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Ste
 const float DEFAULT_ACCELERATION = DEFAULT_RPM * 10.0;                    // Acceleration
 const long LARGE_DISTANCE = 10000000L;   // Arbitrary large distance for limit seeking
 const unsigned long TIMEOUT_MS = 60000;  // Timeout in milliseconds per phase
+const float BATTERY_DIVIDER_RATIO = 5.72; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
+
+
+// Emergency state
+bool emergency = false;
+
+
 
 // SECTION 2: Global Objects and States
 // Stepper object
@@ -168,7 +177,32 @@ void safetyCheck() {
 }
 
 
+// Get battery voltage
+float getBatteryVoltage() {
+    float adc = analogRead(BATTERY_PIN);
+    float volt = adc * (5.0 / 1023.0);
+    return volt * BATTERY_DIVIDER_RATIO;  // Adjust ratio for actual voltage
+}
 
+void sendlogs() {
+    long pos = getStepsFromRight();
+    float bat = getBatteryVoltage();
+    int e = emergency ? 1 : 0;
+    int lr = isRightLimitTriggered() ? 1 : 0;
+    int ll = isLeftLimitTriggered() ? 1 : 0;
+
+    Serial.print("P ");
+    Serial.print(pos);
+    Serial.print(" , B ");
+    Serial.print(bat, 1);
+    Serial.print(" , E ");
+    Serial.print(e);
+    Serial.print(" , LR ");
+    Serial.print(lr);
+    Serial.print(" , LL ");
+    Serial.print(ll);
+    Serial.println(" .");
+}
 
 
 // SECTION 9: Setup and Loop
