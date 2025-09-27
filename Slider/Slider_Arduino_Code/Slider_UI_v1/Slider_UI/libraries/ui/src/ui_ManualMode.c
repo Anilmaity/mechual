@@ -217,17 +217,17 @@ void ui_ManualMode_screen_init(void)
     lv_obj_add_flag(ui_Image7, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
     lv_obj_remove_flag(ui_Image7, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_SliderPosition = lv_label_create(ui_Image7);
-    lv_obj_set_width(ui_SliderPosition, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_SliderPosition, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_SliderPosition, 0);
-    lv_obj_set_y(ui_SliderPosition, 9);
-    lv_obj_set_align(ui_SliderPosition, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_SliderPosition, "0");
-    lv_obj_set_style_text_color(ui_SliderPosition, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_SliderPosition, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_SliderPosition, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_SliderPosition, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_SliderPositionJM = lv_label_create(ui_Image7);
+    lv_obj_set_width(ui_SliderPositionJM, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_SliderPositionJM, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_SliderPositionJM, 0);
+    lv_obj_set_y(ui_SliderPositionJM, 9);
+    lv_obj_set_align(ui_SliderPositionJM, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_SliderPositionJM, "0");
+    lv_obj_set_style_text_color(ui_SliderPositionJM, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_SliderPositionJM, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_SliderPositionJM, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_SliderPositionJM, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_positionJM = lv_slider_create(ui_Container10);
     lv_slider_set_value(ui_positionJM, 0, LV_ANIM_OFF);
@@ -368,17 +368,17 @@ void ui_ManualMode_screen_init(void)
     lv_obj_add_flag(ui_Image18, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
     lv_obj_remove_flag(ui_Image18, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_SliderPosition6 = lv_label_create(ui_Image18);
-    lv_obj_set_width(ui_SliderPosition6, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_SliderPosition6, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_SliderPosition6, 0);
-    lv_obj_set_y(ui_SliderPosition6, 9);
-    lv_obj_set_align(ui_SliderPosition6, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_SliderPosition6, "0");
-    lv_obj_set_style_text_color(ui_SliderPosition6, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_SliderPosition6, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_SliderPosition6, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_SliderPosition6, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_SliderPositionPM = lv_label_create(ui_Image18);
+    lv_obj_set_width(ui_SliderPositionPM, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_SliderPositionPM, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_SliderPositionPM, 0);
+    lv_obj_set_y(ui_SliderPositionPM, 9);
+    lv_obj_set_align(ui_SliderPositionPM, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_SliderPositionPM, "0");
+    lv_obj_set_style_text_color(ui_SliderPositionPM, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_SliderPositionPM, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_SliderPositionPM, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_SliderPositionPM, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Slider4 = lv_slider_create(ui_Container4);
     lv_slider_set_value(ui_Slider4, 0, LV_ANIM_OFF);
@@ -501,7 +501,9 @@ void ui_ManualMode_screen_init(void)
     uic_leftMove = ui_leftMove;
     uic_rightMove = ui_rightMove;
     uic_speedSet = ui_speedSet;
+    uic_SliderPositionJM = ui_SliderPositionJM;
     uic_positionJM = ui_positionJM;
     uic_positionSlider = ui_positionSlider;
+    uic_SliderPositionPM = ui_SliderPositionPM;
 
 }

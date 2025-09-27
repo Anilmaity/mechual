@@ -281,17 +281,17 @@ void ui_Calibration_screen_init(void)
     lv_obj_add_flag(ui_Image8, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
     lv_obj_remove_flag(ui_Image8, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_SliderPosition2 = lv_label_create(ui_Image8);
-    lv_obj_set_width(ui_SliderPosition2, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_SliderPosition2, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_SliderPosition2, 0);
-    lv_obj_set_y(ui_SliderPosition2, 9);
-    lv_obj_set_align(ui_SliderPosition2, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_SliderPosition2, "0");
-    lv_obj_set_style_text_color(ui_SliderPosition2, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_SliderPosition2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_SliderPosition2, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_SliderPosition2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_SliderPositionCA = lv_label_create(ui_Image8);
+    lv_obj_set_width(ui_SliderPositionCA, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_SliderPositionCA, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_SliderPositionCA, 0);
+    lv_obj_set_y(ui_SliderPositionCA, 9);
+    lv_obj_set_align(ui_SliderPositionCA, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_SliderPositionCA, "0");
+    lv_obj_set_style_text_color(ui_SliderPositionCA, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_SliderPositionCA, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_SliderPositionCA, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_SliderPositionCA, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_positionCM = lv_slider_create(ui_Container7);
     lv_slider_set_value(ui_positionCM, 0, LV_ANIM_OFF);
@@ -327,6 +327,7 @@ void ui_Calibration_screen_init(void)
     uic_right = ui_right;
     uic_rightlimit = ui_rightlimit;
     uic_leftlimit = ui_leftlimit;
+    uic_SliderPositionCA = ui_SliderPositionCA;
     uic_positionCM = ui_positionCM;
 
 }

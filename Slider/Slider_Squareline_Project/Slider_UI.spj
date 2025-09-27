@@ -10471,7 +10471,8 @@
                         "InheritedType": 11
                       }
                     ],
-                    "saved_objtypeKey": "CONTAINER"
+                    "saved_objtypeKey": "CONTAINER",
+                    "tree_closed": true
                   },
                   {
                     "guid": "GUID59662494-582305S534250",
@@ -11263,7 +11264,8 @@
                         "InheritedType": 11
                       }
                     ],
-                    "saved_objtypeKey": "CONTAINER"
+                    "saved_objtypeKey": "CONTAINER",
+                    "tree_closed": true
                   },
                   {
                     "guid": "GUID30180462-725697S208574256",
@@ -11455,7 +11457,15 @@
                                   {
                                     "nid": 10,
                                     "strtype": "OBJECT/Name",
-                                    "strval": "SliderPosition",
+                                    "strval": "SliderPositionJM",
+                                    "childs": [
+                                      {
+                                        "nid": 15,
+                                        "strtype": "_codename/Codename",
+                                        "strval": "SliderPositionJM",
+                                        "InheritedType": 10
+                                      }
+                                    ],
                                     "InheritedType": 10
                                   },
                                   {
@@ -12354,8 +12364,7 @@
                         "InheritedType": 11
                       }
                     ],
-                    "saved_objtypeKey": "CONTAINER",
-                    "tree_closed": true
+                    "saved_objtypeKey": "CONTAINER"
                   }
                 ],
                 "dont_export": false,
@@ -13791,7 +13800,15 @@
                                   {
                                     "nid": 10,
                                     "strtype": "OBJECT/Name",
-                                    "strval": "SliderPosition6",
+                                    "strval": "SliderPositionPM",
+                                    "childs": [
+                                      {
+                                        "nid": 15,
+                                        "strtype": "_codename/Codename",
+                                        "strval": "SliderPositionPM",
+                                        "InheritedType": 10
+                                      }
+                                    ],
                                     "InheritedType": 10
                                   },
                                   {
@@ -21334,7 +21351,15 @@
                           {
                             "nid": 10,
                             "strtype": "OBJECT/Name",
-                            "strval": "SliderPosition3",
+                            "strval": "SliderPositionAB",
+                            "childs": [
+                              {
+                                "nid": 15,
+                                "strtype": "_codename/Codename",
+                                "strval": "SliderPositionAB",
+                                "InheritedType": 10
+                              }
+                            ],
                             "InheritedType": 10
                           },
                           {
@@ -21658,8 +21683,7 @@
                         "InheritedType": 11
                       }
                     ],
-                    "saved_objtypeKey": "IMAGE",
-                    "tree_closed": true
+                    "saved_objtypeKey": "IMAGE"
                   },
                   {
                     "guid": "GUID17624778-760133S441854259",
@@ -24446,6 +24470,14 @@
                 "nid": 10,
                 "strtype": "OBJECT/Name",
                 "strval": "Save",
+                "childs": [
+                  {
+                    "nid": 15,
+                    "strtype": "_codename/Codename",
+                    "strval": "Save",
+                    "InheritedType": 10
+                  }
+                ],
                 "InheritedType": 10
               },
               {
@@ -24613,8 +24645,7 @@
                 "InheritedType": 11
               }
             ],
-            "saved_objtypeKey": "BUTTON",
-            "tree_closed": true
+            "saved_objtypeKey": "BUTTON"
           },
           {
             "guid": "GUID39092417-725874S8324256",
@@ -25896,6 +25927,14 @@
                     "nid": 10,
                     "strtype": "OBJECT/Name",
                     "strval": "TimeValue",
+                    "childs": [
+                      {
+                        "nid": 15,
+                        "strtype": "_codename/Codename",
+                        "strval": "TimeValue",
+                        "InheritedType": 10
+                      }
+                    ],
                     "InheritedType": 10
                   },
                   {
@@ -26954,12 +26993,12 @@
                   {
                     "nid": 10,
                     "strtype": "OBJECT/Name",
-                    "strval": "SetAValue1",
+                    "strval": "SetBValue",
                     "childs": [
                       {
                         "nid": 15,
                         "strtype": "_codename/Codename",
-                        "strval": "SetAValue1",
+                        "strval": "SetBValue",
                         "InheritedType": 10
                       }
                     ],
@@ -36072,7 +36111,16 @@
                           {
                             "nid": 10,
                             "strtype": "OBJECT/Name",
-                            "strval": "SliderPosition2",
+                            "strval": "SliderPositionCA",
+                            "childs": [
+                              {
+                                "nid": 15,
+                                "flags": 1048576,
+                                "strtype": "_codename/Codename",
+                                "strval": "SliderPositionCA",
+                                "InheritedType": 10
+                              }
+                            ],
                             "InheritedType": 10
                           },
                           {
@@ -36396,8 +36444,7 @@
                         "InheritedType": 11
                       }
                     ],
-                    "saved_objtypeKey": "IMAGE",
-                    "tree_closed": true
+                    "saved_objtypeKey": "IMAGE"
                   },
                   {
                     "guid": "GUID93567807-760127S121914259",
@@ -37279,7 +37326,7 @@
     "uiExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI_v1/Slider_UI/./libraries/ui/src",
     "projectExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI_v1/Slider_UI",
     "custom_variable_prefix": "uic",
-    "backup_cnt": 31,
+    "backup_cnt": 32,
     "autosave_cnt": 0,
     "group_color_cnt": 0,
     "lvgl_version": "9.1.0",
