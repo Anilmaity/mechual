@@ -1,9 +1,5 @@
 // Global variables for parsed logs (from Nano)
-float Battery = 0.0;
-bool emergency = false;
-bool limitleft = false;
-bool limitright = false;
-int position = 0;
+
 
 // Function to send Jog Mode command: "M JM , S 100 , C R ."
 void sendJogMode(int speed, char c) {  // c = 'R', 'L', or 'I'
