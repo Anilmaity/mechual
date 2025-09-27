@@ -17,4 +17,7 @@ void loop()
 {
   update_ui();
   delay(5);
+  readlogs();
+
+
 }
