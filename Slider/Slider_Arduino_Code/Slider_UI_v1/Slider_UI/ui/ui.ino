@@ -18,6 +18,11 @@ bool limitright = false;
 bool limitleft = false;
 long TS = 0;
 
+int speedVal  = 10;
+int posVal = 0 ;
+
+
+
 void setup() {
   Serial.begin(115200);
   Serial1.begin(115200);
@@ -28,6 +33,7 @@ void setup() {
 
   pinMode(RIGHT_BTN, INPUT_PULLUP); // Right button
   pinMode(LEFT_BTN, INPUT_PULLUP);  // Left button
+  lv_slider_set_range(ui_speedSet, 10, 500);
 
 
 }

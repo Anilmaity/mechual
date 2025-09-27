@@ -261,7 +261,7 @@ void loop() {
     //     lastPrint = millis();
     // }
 
-    if (millis() - lastPrint >= 100) {
+    if (millis() - lastPrint >= 10000) {
         sendlogs();
         lastPrint = millis();
     }
