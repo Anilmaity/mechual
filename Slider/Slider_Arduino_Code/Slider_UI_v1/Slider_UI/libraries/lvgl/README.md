@@ -1,9 +1,3 @@
-This LVGL-9.1.0 is modified by SquareLine Team here and there to provide the best experience even with this experimental 9.1 LVGL version, added fixes:
- - Bar/Slider widget drawing caused a crash when value was maximum and top_padding was nonzero and right_padding was 0  (`lv_bar.c`, also adding +1 to right_padding in SquareLine Studio export if there's top-padding set.)
- - The swipe gesture was improved to not get double value aka 0 velocity from timer based callback when 'EVENT'-mode is set for the indev (as in built-in SDL2 driver). (`lv_indev.c`)
-   Also a modification can be enabled with `LV_SQUARELINE_MOD__SWIPE` defined and set to 1 in `lv_conf.h`, that brings back old 8.3 swipe-gesture behaviour, i.e. not abandonings wipe process when a new object comes across swipe-path.
- - For the Visual Studio board-template with resizable window, some extra window-size setting code was added into `lv_windows_display.c`, so the window is set to guarantee the wished client-size for the exported UI.
-
 
 <a href="https://github.com/sponsors/lvgl" target="_blank"><img align="left" src="https://lvgl.io/assets/images/sponsor.png" height="32px"></a>
 

@@ -522,7 +522,7 @@ static void draw_indic(lv_event_t * e)
 
         lv_draw_mask_rect_dsc_t mask_dsc;
         lv_draw_mask_rect_dsc_init(&mask_dsc);
-        if(radius_issue) { bar_coords.x2 += 1; //workaround for a drawing crash in LVGL9.1 bar/slider when top-padding is nonzero and right-padding is less than 1
+        if(radius_issue) {
             mask_dsc.area = bar_coords;
             mask_dsc.radius = bg_radius;
             lv_draw_mask_rect(layer_indic, &mask_dsc);

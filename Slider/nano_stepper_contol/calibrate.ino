@@ -1,32 +1,4 @@
 
-// SECTION 6: Calibration Functions
-// Start the calibration process
-void startCalibration() {
-    calState.phase = 1;
-    stepper.setCurrentPosition(0);
-    calState.startPosition = 0;
-    calState.phaseStartTime = millis();
-    Serial.println("Starting calibration: Moving CW to right limit...");
-    
-    if (isRightLimitTriggered()) {
-        Serial.println("Warning: Right limit switch already triggered at start!");
-        calState.rightPosition = 0;
-        calState.rightSteps = 0;
-        calState.phase = 2;
-        if (isLeftLimitTriggered()) {
-            Serial.println("Warning: Left limit switch also triggered at start!");
-            calState.leftPosition = 0;
-            calState.leftSteps = 0;
-            calState.centerPosition = 0;
-            calState.phase = 3;
-            stepper.moveTo(0);
-        } else {
-            stepper.moveTo(LARGE_DISTANCE);
-        }
-    } else {
-        stepper.moveTo(-LARGE_DISTANCE);
-    }
-}
 
 // Handle calibration logic
 void handleCalibration() {
@@ -39,6 +11,8 @@ void handleCalibration() {
     }
 
     if (calState.phase == 1) { // Move CW to right limit
+        stepper.setSpeed(-1000);
+
         if (isRightLimitTriggered()) {
             stepper.stop();
             calState.rightPosition = stepper.currentPosition();
@@ -67,6 +41,8 @@ void handleCalibration() {
             return;
         }
     } else if (calState.phase == 2) { // Move CCW to left limit
+        stepper.setSpeed(1000);
+
         if (isLeftLimitTriggered()) {
             stepper.stop();
             calState.leftPosition = stepper.currentPosition();
@@ -89,6 +65,8 @@ void handleCalibration() {
             return;
         }
     } else if (calState.phase == 3) { // Move to center
+        stepper.setSpeed(-1000);
+
         if (stepper.distanceToGo() == 0) {
             Serial.println("Calibration complete. At center position.");
             Serial.print("Final Right Steps (from initial): ");

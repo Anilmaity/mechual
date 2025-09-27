@@ -7,118 +7,117 @@ extern lv_obj_t *uic_Header1_battery;
 extern lv_obj_t *uic_Header2_battery;
 extern lv_obj_t *uic_Header4_battery;
 
-extern lv_obj_t *uic_positionPM;
+extern lv_obj_t *ui_Slider4;
 extern lv_obj_t *uic_positionJM;
-extern lv_obj_t *uic_positionCM;
-extern lv_obj_t *uic_positionAB;
+extern lv_obj_t *ui_positionCM;
+extern lv_obj_t *ui_positionAB;
 
 // LVGL button objects for different screens
-static lv_obj_t *leftMove_btn, *rightMove_btn;
-static lv_obj_t *leftMoveAB_btn, *rightMoveAB_btn, *setA_btn, *setB_btn;
-static lv_obj_t *time_btn, *loop_btn, *start_btn, *stop_btn;
-static lv_obj_t *backA_btn, *backB_btn, *save_btn;
-static lv_obj_t *home_btn, *calibrate_btn, *leftCal_btn, *rightCal_btn;
+extern lv_obj_t *ui_leftMove, *ui_rightMove;
+extern lv_obj_t *ui_leftMoveAB, *ui_rightMoveAB_btn, *ui_SetA, *ui_SetB;
+extern lv_obj_t *ui_time_btn, *ui_loop, *ui_start, *ui_stop;
+extern lv_obj_t *ui_backA, *ui_backB_btn, *ui_save;
+extern lv_obj_t *uic_homebtn, *ui_calibrate, *uic_left, *uic_right;
 
 // LVGL slider objects for manual mode
-static lv_obj_t *speedSet_slider, *positionSlider;
+extern lv_obj_t *speedSet_slider, *positionSlider;
 
-// Button event callback
-static void button_event_cb(lv_event_t *e) {
-  lv_obj_t *btn = (lv_obj_t *)lv_event_get_target(e); // Cast void* to lv_obj_t*
-  const char *btn_name = (const char *)lv_obj_get_user_data(btn); // Cast void* to const char*
-  Serial.print("Button Pressed: ");
-  Serial.println(btn_name);
-}
 
-// Slider event callback
-static void slider_event_cb(lv_event_t *e) {
-  lv_obj_t *slider = (lv_obj_t *)lv_event_get_target(e); // Cast void* to lv_obj_t*
-  const char *slider_name = (const char *)lv_obj_get_user_data(slider); // Cast void* to const char*
-  int32_t value = lv_slider_get_value(slider);
-  Serial.print("Slider ");
-  Serial.print(slider_name);
-  Serial.print(": ");
-  Serial.print(value);
-  Serial.println("%");
-}
 
-void screen_setup() {
+
+
+void read_value() {
   // Create Jog mode screen
-  lv_obj_t *jog_screen = lv_obj_create(NULL);
-  leftMove_btn = lv_btn_create(jog_screen);
-  lv_obj_add_event_cb(leftMove_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Left Move");
-  rightMove_btn = lv_btn_create(jog_screen);
-  lv_obj_add_event_cb(rightMove_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Right Move");
+  if (lv_obj_has_state(ui_leftMove, LV_STATE_PRESSED)) {
+      Serial.println("M JM , S 100 , C L.");
+      Serial1.println("M JM , S 100 , C L.");
+    
+            // Your code here (send command, toggle relay, etc.)
+    }
+  else if (lv_obj_has_state(ui_rightMove, LV_STATE_PRESSED)) {
+      Serial.println("M JM , S 100 , C R.");
+      Serial1.println("M JM , S 100 , C R.");
+            // Your code here (send command, toggle relay, etc.)
+    }
+  
+  // lv_obj_add_event_cb(ui_leftMoveAB, button_event_cb, LV_EVENT_CLICKED, (void *)"Left Move AB");
+  //lv_obj_add_event_cb(ui_SetA, button_event_cb, LV_EVENT_CLICKED, NULL);
 
-  // Create AB shuttle screen
-  lv_obj_t *ab_shuttle_screen = lv_obj_create(NULL);
-  leftMoveAB_btn = lv_btn_create(ab_shuttle_screen);
-  lv_obj_add_event_cb(leftMoveAB_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Left Move AB");
-  rightMoveAB_btn = lv_btn_create(ab_shuttle_screen);
-  lv_obj_add_event_cb(rightMoveAB_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Right Move AB");
-  setA_btn = lv_btn_create(ab_shuttle_screen);
-  lv_obj_add_event_cb(setA_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Set A");
-  setB_btn = lv_btn_create(ab_shuttle_screen);
-  lv_obj_add_event_cb(setB_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Set B");
-  time_btn = lv_btn_create(ab_shuttle_screen);
-  lv_obj_add_event_cb(time_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Time");
-  loop_btn = lv_btn_create(ab_shuttle_screen);
-  lv_obj_add_event_cb(loop_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Loop");
-  start_btn = lv_btn_create(ab_shuttle_screen);
-  lv_obj_add_event_cb(start_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Start");
-  stop_btn = lv_btn_create(ab_shuttle_screen);
-  lv_obj_add_event_cb(stop_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Stop");
-  backA_btn = lv_btn_create(ab_shuttle_screen);
-  lv_obj_add_event_cb(backA_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Back A");
-  backB_btn = lv_btn_create(ab_shuttle_screen);
-  lv_obj_add_event_cb(backB_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Back B");
-  save_btn = lv_btn_create(ab_shuttle_screen);
-  lv_obj_add_event_cb(save_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Save");
 
-  // Create Calibrate screen
-  lv_obj_t *calibrate_screen = lv_obj_create(NULL);
-  home_btn = lv_btn_create(calibrate_screen);
-  lv_obj_add_event_cb(home_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Home");
-  calibrate_btn = lv_btn_create(calibrate_screen);
-  lv_obj_add_event_cb(calibrate_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Calibrate");
-  leftCal_btn = lv_btn_create(calibrate_screen);
-  lv_obj_add_event_cb(leftCal_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Left Cal");
-  rightCal_btn = lv_btn_create(calibrate_screen);
-  lv_obj_add_event_cb(rightCal_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Right Cal");
 
-  // Create Manual mode sliders
-  lv_obj_t *manual_screen = lv_obj_create(NULL);
-  speedSet_slider = lv_slider_create(manual_screen);
-  lv_slider_set_range(speedSet_slider, 0, 100);
-  lv_obj_add_event_cb(speedSet_slider, slider_event_cb, LV_EVENT_VALUE_CHANGED, (void *)"Speed Set");
-  positionSlider = lv_slider_create(manual_screen);
-  lv_slider_set_range(positionSlider, 0, 100);
-  lv_obj_add_event_cb(positionSlider, slider_event_cb, LV_EVENT_VALUE_CHANGED, (void *)"Position Slider");
 
-  // Load the initial screen (e.g., Jog mode)
-  lv_scr_load(jog_screen);
+  // // Create AB shuttle screen
+  // lv_obj_add_event_cb(leftMoveAB_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Left Move AB");
+  // lv_obj_add_event_cb(rightMoveAB_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Right Move AB");
+
+  //lv_obj_add_event_cb(ui_SetA, button_event_cb, LV_EVENT_CLICKED, (void *)"Set A");
+  //lv_obj_add_event_cb(ui_SetB, button_event_cb, LV_EVENT_CLICKED, (void *)"Set B");
+
+  // lv_obj_add_event_cb(time_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Time");
+  // lv_obj_add_event_cb(loop_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Loop");
+  // lv_obj_add_event_cb(start_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Start");
+  // lv_obj_add_event_cb(stop_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Stop");
+  // lv_obj_add_event_cb(backA_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Back A");
+  // lv_obj_add_event_cb(backB_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Back B");
+  // lv_obj_add_event_cb(save_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Save");
+
+  // // Create Calibrate screen
+  
+    if (lv_obj_has_state(ui_calibrate, LV_STATE_PRESSED)) {
+        Serial.println("M CA , M C.");
+        Serial1.println("M CA , M C.");
+            // Your code here (send command, toggle relay, etc.)
+    }
+    if (lv_obj_has_state(uic_homebtn, LV_STATE_PRESSED)) {
+        Serial.println("Calibrate button pressed");
+        // Your code here (send command, toggle relay, etc.)
+    }
+    if (lv_obj_has_state(uic_right, LV_STATE_PRESSED)) {
+        Serial.println("Calibrate button pressed");
+        // Your code here (send command, toggle relay, etc.)
+    }
+    if (lv_obj_has_state(uic_left, LV_STATE_PRESSED)) {
+        Serial.println("Calibrate button pressed");
+        // Your code here (send command, toggle relay, etc.)
+    }
+
+
+  // // Create Manual mode sliders
+
+  // // Create Manual mode sliders
+  // lv_obj_add_event_cb(ui_speedSet, Button_evt_handler, LV_EVENT_VALUE_CHANGED, (void *)"Speed Set");
+  // lv_obj_add_event_cb(ui_positionSlider, slider_event_cb, LV_EVENT_VALUE_CHANGED, (void *)"Position Slider");
+
+
 }
 
 void update_ui() {
-  battery_level = analogRead(A0); // Returns 0–1023
+  battery_level = Battery; // Returns 0–1023
   int scaled_battery = map(battery_level, 0, 1023, 0, 100); // Map to 0–100
 
   lv_slider_set_value(uic_Header_battery, scaled_battery, LV_ANIM_ON);
   lv_slider_set_value(uic_Header1_battery, scaled_battery, LV_ANIM_ON);
   lv_slider_set_value(uic_Header2_battery, scaled_battery, LV_ANIM_ON);
   lv_slider_set_value(uic_Header4_battery, scaled_battery, LV_ANIM_ON);
+
+  setSlider();
+
+  lv_timer_handler();
 }
 
 void setSlider() {
-  lv_slider_set_range(uic_positionPM, 0, 100);
-  lv_slider_set_range(uic_positionJM, 0, 100);
-  lv_slider_set_range(uic_positionCM, 0, 100);
-  lv_slider_set_range(uic_positionAB, 0, 100);
+  if(TS> 0){
+  lv_slider_set_range(ui_positionPM, 0, TS);
+  lv_slider_set_range(ui_positionJM, 0, TS);
+  lv_slider_set_range(ui_positionCM, 0, TS);
+  lv_slider_set_range(ui_positionAB, 0, TS);
 
-  lv_slider_set_value(uic_positionPM, 50, LV_ANIM_ON);
-  lv_slider_set_value(uic_positionJM, 50, LV_ANIM_ON);
-  lv_slider_set_value(uic_positionCM, 50, LV_ANIM_ON);
-  lv_slider_set_value(uic_positionAB, 50, LV_ANIM_ON);
+  lv_slider_set_value(uic_positionJM, position, LV_ANIM_ON);
+  lv_slider_set_value(ui_Slider4, position, LV_ANIM_ON);
+  lv_slider_set_value(uic_positionCM, position, LV_ANIM_ON);
+  lv_slider_set_value(uic_positionAB, position, LV_ANIM_ON);
+  }
+
 }
 
 void logs() {

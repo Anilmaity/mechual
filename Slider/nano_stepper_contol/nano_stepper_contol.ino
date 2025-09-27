@@ -13,8 +13,8 @@
 
 // Pin definitions
 const uint8_t EN_PIN = 4;                // Enable pin
-const uint8_t DIR_PIN = 3;               // Direction pin
-const uint8_t STEP_PIN = 2;              // Step pin
+const uint8_t DIR_PIN = 2;               // Direction pin
+const uint8_t STEP_PIN = 3;              // Step pin
 const uint8_t LIMIT_SWITCH_RIGHT = A0;   // Right limit switch (CW direction)
 const uint8_t LIMIT_SWITCH_LEFT = A1;    // Left limit switch (CCW direction)
 const uint8_t BATTERY_PIN = A2;          // Battery voltage analog pin
@@ -22,15 +22,15 @@ const uint8_t BATTERY_PIN = A2;          // Battery voltage analog pin
 
 // Stepper motor configurations
 const uint16_t FULL_STEPS_PER_REV = 200; // Steps per revolution for 1.8° motor
-const uint16_t MICROSTEPS = 16;          // Microstepping (must match DM542 DIP switch setting, e.g., 16)
+const uint16_t MICROSTEPS = 4;          // Microstepping (must match DM542 DIP switch setting, e.g., 16)
 const long STEPS_PER_REV = FULL_STEPS_PER_REV * MICROSTEPS;
 
 // Default operational settings
-const float DEFAULT_RPM = 80.0;          // Default RPM
+const float DEFAULT_RPM = 1000.0;          // Default RPM
 const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
 const float DEFAULT_ACCELERATION = DEFAULT_RPM * 10.0;                    // Acceleration
-const long LARGE_DISTANCE = 10000000L;   // Arbitrary large distance for limit seeking
-const unsigned long TIMEOUT_MS = 60000;  // Timeout in milliseconds per phase
+const long LARGE_DISTANCE = 100000L;   // Arbitrary large distance for limit seeking
+const unsigned long TIMEOUT_MS = 100000;  // Timeout in milliseconds per phase
 const float BATTERY_DIVIDER_RATIO = 5.72; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
 
 
@@ -90,7 +90,7 @@ void configureStepper() {
 
 // Initialize hardware pins and peripherals
 void initializeHardware() {
-    Serial.begin(1000000);               // High baud rate for serial
+    Serial.begin(115200);               // High baud rate for serial
     while (!Serial) {}                   // Wait for serial to initialize
     
     pinMode(LIMIT_SWITCH_RIGHT, INPUT_PULLUP);
@@ -100,13 +100,13 @@ void initializeHardware() {
 // SECTION 4: Limit Switch Functions
 // Check if right limit switch is triggered
 bool isRightLimitTriggered() {
-    bool triggered = digitalRead(LIMIT_SWITCH_RIGHT) == HIGH;
+    bool triggered = digitalRead(LIMIT_SWITCH_RIGHT) == LOW;
     return triggered;
 }
 
 // Check if left limit switch is triggered
 bool isLeftLimitTriggered() {
-    bool triggered = digitalRead(LIMIT_SWITCH_LEFT) == HIGH;
+    bool triggered = digitalRead(LIMIT_SWITCH_LEFT) == LOW;
     return triggered;
 }
 
@@ -128,7 +128,7 @@ void printStatus() {
     Serial.print(", Current Position: ");
     Serial.print(stepper.currentPosition());
     Serial.print(", Target Position: ");
-    Serial.print(stepper.targetPosition());
+    Serial.print(stepper.distanceToGo());
     Serial.print(", Moving: ");
     Serial.println(stepper.isRunning() ? "Yes" : "No");
     
@@ -201,7 +201,10 @@ void sendlogs() {
     Serial.print(lr);
     Serial.print(" , LL ");
     Serial.print(ll);
+    Serial.print(" , TS ");
+    Serial.print(totalStepsBetweenLimits);
     Serial.println(" .");
+
 }
 
 
@@ -210,24 +213,24 @@ void setup() {
     initializeHardware();
     configureStepper();
     
-    // Print initial states
-    Serial.println("Initial Limit Switch States:");
-    Serial.print("Right: ");
-    Serial.println(isRightLimitTriggered() ? "Triggered" : "Not triggered");
-    Serial.print("Left: ");
-    Serial.println(isLeftLimitTriggered() ? "Triggered" : "Not triggered");
+    // // Print initial states
+    // Serial.println("Initial Limit Switch States:");
+    // Serial.print("Right: ");
+    // Serial.println(isRightLimitTriggered() ? "Triggered" : "Not triggered");
+    // Serial.print("Left: ");
+    // Serial.println(isLeftLimitTriggered() ? "Triggered" : "Not triggered");
     
-    Serial.println("System ready. Send commands via serial.");
-    Serial.print("Note: Ensure DM542 microsteps match MICROSTEPS=");
-    Serial.println(MICROSTEPS);
+    // Serial.println("System ready. Send commands via serial.");
+    // Serial.print("Note: Ensure DM542 microsteps match MICROSTEPS=");
+    // Serial.println(MICROSTEPS);
 }
 
 void loop() {
-    safetyCheck();
     readlogs();
 
     if (modeCurrent == CALIBRATING) {
-      if (calCommand == "C")
+
+      if (String(calCommand) == "C")
       {
         stepper.run();
         handleCalibration();
@@ -242,15 +245,28 @@ void loop() {
       }
       
     } else if (modeCurrent == POSITIONING) {
-        handlePositioning( 1000);
+         safetyCheck();
+
+        handlePositioning(1000);
     } else if (modeCurrent == JOGGING) {
-        handleJogging(80 , "L");
+         safetyCheck();
+
+      handleJogging(jogSpeed , jogCommand);
     }
 
     // Periodic status print during calibration
     static unsigned long lastPrint = 0;
-    if (modeCurrent == CALIBRATING && millis() - lastPrint >= 1000) {
-        printStatus();
+    // if (modeCurrent == CALIBRATING && millis() - lastPrint >= 1000) {
+    //     printStatus();
+    //     lastPrint = millis();
+    // }
+
+    if (millis() - lastPrint >= 100) {
+        sendlogs();
         lastPrint = millis();
     }
+
+
 }
+
+

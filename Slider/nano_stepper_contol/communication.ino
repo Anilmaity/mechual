@@ -1,7 +1,7 @@
-#include <SoftwareSerial.h>
+// #include <SoftwareSerial.h>
 
-// Debug serial on pins 2 (RX, unused) and 3 (TX)
-SoftwareSerial debugSerial(2, 3);  // RX, TX
+// // Debug serial on pins 2 (RX, unused) and 3 (TX)
+// SoftwareSerial debugSerial(8, 9);  // RX, TX
 
 
 
@@ -13,19 +13,13 @@ bool parseABShuttleMode(String& cmd);
 bool parseCalibrationMode(String& cmd);
 void printParsedValues();  // For debug
 
-void com_setup() {
-  // Hardware Serial for receiving from Giga at 1 Mbps
-  Serial.begin(1000000);
-  
-  // Debug Serial
-  debugSerial.begin(115200);
-  Serial.println("Nano: Ready to receive and parse commands from Giga...");
-}
 
 void readlogs() {
   if (Serial.available() > 0) {
     // Read full command until newline
     String received = Serial.readStringUntil('\n');
+    Serial.println(received);
+
     received.trim();
     
     // Parse if it matches expected format (starts with "M", ends with ".")
@@ -74,6 +68,7 @@ bool parseCommand(String& cmd) {
 
 // Parser for Jog Mode: "M JM , S 100 , C R ."
 bool parseJogMode(String& cmd) {
+
   int sComma = cmd.indexOf("S", 0);
   int cComma = cmd.indexOf("C", sComma);
   if (sComma < 0 || cComma < 0) return false;
@@ -86,6 +81,8 @@ bool parseJogMode(String& cmd) {
   // Extract C (command)
   String cmdStr = cmd.substring(cComma + 2, cmd.length() - 1);  // Skip "C ", exclude "."
   cmdStr.trim();
+
+
   if (cmdStr.length() == 1) {
     jogCommand = cmdStr[0];  // 'R', 'L', 'I'
     return true;
@@ -161,6 +158,9 @@ void printParsedValues() {
     Serial.println(jogSpeed);
     Serial.print("Jog Command: ");
     Serial.println(jogCommand);
+
+    // handleJogging(jogSpeed , jogCommand);
+
   } else if (currentMode == "PM") {
     Serial.print("Position: ");
     Serial.println(position);

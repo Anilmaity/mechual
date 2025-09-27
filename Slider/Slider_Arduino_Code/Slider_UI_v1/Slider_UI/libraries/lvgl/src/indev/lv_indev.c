@@ -92,7 +92,7 @@ static inline void indev_scroll_throw_anim_reset(lv_indev_t * indev)
 /**********************
  *  STATIC VARIABLES
  **********************/
-static char IndevReadFromTimerCallback = 0; //A fix by SquareLine Team: sometimes timer callback calls indev_gesture beside SDL-event based with the same coordinate (0 difference), resetting accumulated distance
+
 /**********************
  *      MACROS
  **********************/
@@ -193,7 +193,7 @@ void indev_read_core(lv_indev_t * indev, lv_indev_data_t * data)
 }
 
 void lv_indev_read_timer_cb(lv_timer_t * timer)
-{   IndevReadFromTimerCallback = 1;
+{
     lv_indev_read(timer->user_data);
 }
 
@@ -1150,17 +1150,9 @@ static void indev_proc_press(lv_indev_t * indev)
             if(indev_reset_check(indev)) return;
 
             /*Do nothing until release and a new press*/
-            #ifndef LV_SQUARELINE_MOD__SWIPE
-                lv_indev_reset(indev, NULL);
-                lv_indev_wait_release(indev);
-                return;
-            #else
-                #if (LV_SQUARELINE_MOD__SWIPE == 0)
-                    lv_indev_reset(indev, NULL);
-                    lv_indev_wait_release(indev);
-                    return;
-                #endif
-            #endif
+            lv_indev_reset(indev, NULL);
+            lv_indev_wait_release(indev);
+            return;
         }
 
         indev->pointer.act_obj  = indev_obj_act; /*Save the pressed object*/
@@ -1497,10 +1489,10 @@ void indev_gesture(lv_indev_t * indev)
     if(gesture_obj == NULL) return;
 
     if((LV_ABS(indev->pointer.vect.x) < indev_act->gesture_min_velocity) &&
-       (LV_ABS(indev->pointer.vect.y) < indev_act->gesture_min_velocity) && !( indev->mode==LV_INDEV_MODE_EVENT && IndevReadFromTimerCallback && !indev->pointer.vect.x && !indev->pointer.vect.y ) ) {
+       (LV_ABS(indev->pointer.vect.y) < indev_act->gesture_min_velocity)) {
         indev->pointer.gesture_sum.x = 0;
         indev->pointer.gesture_sum.y = 0;
-    } IndevReadFromTimerCallback = 0;
+    }
 
     /*Count the movement by gesture*/
     indev->pointer.gesture_sum.x += indev->pointer.vect.x;

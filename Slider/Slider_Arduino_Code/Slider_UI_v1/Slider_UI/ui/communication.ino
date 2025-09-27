@@ -1,70 +1,74 @@
-// Define variables to store parsed values
-float Battery = 0.0;
-bool emergency = false;
-bool limitleft = false;
-bool limitright = false;
-int position = 0;
 
 
 void readlogs() {
-  // Check for incoming data
-  if (Serial.available() > 0) {
-    // Read the full string until newline
+  if (Serial1.available() > 0) {
     String received = Serial1.readStringUntil('\n');
-    received.trim();  // Remove any whitespace or carriage returns
-
-    // Verify the string starts with "P" and ends with "."
-    if (received.startsWith("P") && received.endsWith(".")) {
-      // Split the string by commas
-      int firstComma = received.indexOf(',');
-      int secondComma = received.indexOf(',', firstComma + 1);
-      int thirdComma = received.indexOf(',', secondComma + 1);
-      int fourthComma = received.indexOf(',', thirdComma + 1);
-
-      // Extract and parse each field
-      if (firstComma > 0 && secondComma > firstComma && thirdComma > secondComma && fourthComma > thirdComma) {
-        // Extract position (P <int>)
-        String posStr = received.substring(2, firstComma);  // Skip "P "
-        posStr.trim();
-        position = posStr.toInt();
-
-        // Extract Battery (B <float>)
-        String batStr = received.substring(firstComma + 3, secondComma);  // Skip ", B "
-        batStr.trim();
-        Battery = batStr.toFloat();
-
-        // Extract emergency (E <0/1>)
-        String emergStr = received.substring(secondComma + 3, thirdComma);  // Skip ", E "
-        emergStr.trim();
-        emergency = (emergStr == "1");
-
-        // Extract limitright (LR <0/1>)
-        String lrStr = received.substring(thirdComma + 4, fourthComma);  // Skip ", LR "
-        lrStr.trim();
-        limitright = (lrStr == "1");
-
-        // Extract limitleft (LL <0/1>)
-        String llStr = received.substring(fourthComma + 4, received.length() - 1);  // Skip ", LL ", exclude "."
-        llStr.trim();
-        limitleft = (llStr == "1");
-
-        // Print parsed values to USB Serial for verification
-        Serial.println("Parsed values:");
-        Serial.print("Position: "); Serial.println(position);
-        Serial.print("Battery: "); Serial.println(Battery, 1);  // 1 decimal place
-        Serial.print("Emergency: "); Serial.println(emergency ? "true" : "false");
-        Serial.print("Limit Right: "); Serial.println(limitright ? "true" : "false");
-        Serial.print("Limit Left: "); Serial.println(limitleft ? "true" : "false");
-        Serial.println("---");
-      } else {
-        Serial.println("Error: Invalid string format");
-      }
-    } else {
-      Serial.println("Error: String does not match expected format");
+    received.trim();
+    // Optionally remove trailing dot
+    if (received.endsWith(".")) {
+      received = received.substring(0, received.length()-1);
     }
+
+    // Expect it to start with "P"
+    if (!received.startsWith("P")) {
+      Serial.println("Error: does not start with P");
+      return;
+    }
+
+    // Split by commas
+    // We'll loop, finding comma separators
+    // Or we can use a simpler method using String::indexOf in a loop
+    int start = 0;
+    while (start < received.length()) {
+      int commaPos = received.indexOf(',', start);
+      String token;
+      if (commaPos < 0) {
+        token = received.substring(start);
+        start = received.length();
+      } else {
+        token = received.substring(start, commaPos);
+        start = commaPos + 1;
+      }
+      token.trim();  // remove leading/trailing whitespace
+
+      // Now parse token, of form "P 1000", or "B 20.6", or "E 0", etc.
+      if (token.length() < 2) continue;
+      // Find first space
+      int sp = token.indexOf(' ');
+      if (sp < 0) {
+        // malformed
+        continue;
+      }
+      String key = token.substring(0, sp);
+      String val = token.substring(sp + 1);
+      val.trim();
+
+      if (key == "P") {
+        position = val.toInt();
+      } else if (key == "B") {
+        Battery = val.toFloat();
+      } else if (key == "E") {
+        emergency = (val == "1");
+      } else if (key == "LR") {
+        limitright = (val == "1");
+      } else if (key == "LL") {
+        limitleft = (val == "1");
+      } else if (key == "TS") {
+        TS = val.toInt();
+      } else {
+        // unknown key — ignore or log
+        Serial.print("Unknown key: "); Serial.println(key);
+      }
+    }
+
+    // Print parsed values
+    Serial.println("Parsed values:");
+    Serial.print("Position: "); Serial.println(position);
+    Serial.print("Battery: "); Serial.println(Battery, 1);
+    Serial.print("Emergency: "); Serial.println(emergency ? "true" : "false");
+    Serial.print("Limit Right: "); Serial.println(limitright ? "true" : "false");
+    Serial.print("Limit Left: "); Serial.println(limitleft ? "true" : "false");
+    Serial.print("TS: "); Serial.println(TS);
+    Serial.println("---");
   }
 }
-
-
-
-
