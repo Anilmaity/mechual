@@ -11,8 +11,12 @@ Arduino_GigaDisplayTouch TouchDetector;
 #define LEFT_BTN  A1
 
 
-long position = 0;
-float Battery = 0.0;
+
+
+// LENGTH  840  mm 
+
+long position = 50;
+float Battery = 20;
 bool emergency = false;
 bool limitright = false;
 bool limitleft = false;
@@ -24,8 +28,8 @@ int posVal = 0 ;
 
 
 void setup() {
-  Serial.begin(115200);
-  Serial1.begin(115200);
+  Serial.begin(1000000);
+  Serial1.begin(1000000);
 
   Display.begin();
   TouchDetector.begin();
@@ -33,7 +37,7 @@ void setup() {
 
   pinMode(RIGHT_BTN, INPUT_PULLUP); // Right button
   pinMode(LEFT_BTN, INPUT_PULLUP);  // Left button
-  lv_slider_set_range(ui_speedSet, 10, 500);
+  lv_slider_set_range(ui_speedSet, 10, 200);
 
 
 }

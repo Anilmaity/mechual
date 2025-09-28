@@ -91,14 +91,33 @@ bool parseJogMode(String& cmd) {
 }
 
 // Parser for Position Mode: "M PM , P 0 ."
+// Global variable for position
+
+// Parser for Position Mode: "M PM , P <position>."
 bool parsePositionMode(String& cmd) {
-  int pComma = cmd.indexOf("P", 0);
+  // Find the second "P" (after "M PM , P")
+  int pComma = cmd.indexOf("P", cmd.indexOf("P") + 1);  // Start after first "P"
   if (pComma < 0) return false;
-  
-  // Extract P (position)
+
+  // Extract position substring (after "P ", before ".")
   String posStr = cmd.substring(pComma + 2, cmd.length() - 1);  // Skip "P ", exclude "."
-  posStr.trim();
-  position = posStr.toInt();
+  posStr.trim();  // Remove leading/trailing whitespace
+
+  // Check for empty string
+  if (posStr.length() == 0) return false;
+
+  // Validate numeric content
+  for (char c : posStr) {
+    if (!isdigit(c)) return false;  // Only allow digits (no negative numbers)
+  }
+
+  // Convert to long to handle large numbers safely
+  long posValue = posStr.toInt();  // toInt() returns 0 for invalid numbers
+  if (posValue < 0 || posValue > 99999) return false;  // Enforce range 0-99999
+
+  // Store valid position
+  position = (int)posValue;  // Safe cast since we checked range
+  // Serial.println(position);  // Debug: print extracted string
   return true;
 }
 

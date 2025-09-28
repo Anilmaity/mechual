@@ -61,14 +61,5 @@ void readlogs() {
       }
     }
 
-    // Print parsed values
-    Serial.println("Parsed values:");
-    Serial.print("Position: "); Serial.println(position);
-    Serial.print("Battery: "); Serial.println(Battery, 1);
-    Serial.print("Emergency: "); Serial.println(emergency ? "true" : "false");
-    Serial.print("Limit Right: "); Serial.println(limitright ? "true" : "false");
-    Serial.print("Limit Left: "); Serial.println(limitleft ? "true" : "false");
-    Serial.print("TS: "); Serial.println(TS);
-    Serial.println("---");
   }
 }

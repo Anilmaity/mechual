@@ -22,11 +22,14 @@ const uint8_t BATTERY_PIN = A2;          // Battery voltage analog pin
 
 // Stepper motor configurations
 const uint16_t FULL_STEPS_PER_REV = 200; // Steps per revolution for 1.8° motor
+
 const uint16_t MICROSTEPS = 4;          // Microstepping (must match DM542 DIP switch setting, e.g., 16)
 const long STEPS_PER_REV = FULL_STEPS_PER_REV * MICROSTEPS;
 
 // Default operational settings
-const float DEFAULT_RPM = 1000.0;          // Default RPM
+const float DEFAULT_RPM = 200.0;          // Default RPM
+const float CALIBRATION_SPEED = 200.0;          // Default RPM
+
 const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
 const float DEFAULT_ACCELERATION = DEFAULT_RPM * 10.0;                    // Acceleration
 const long LARGE_DISTANCE = 100000L;   // Arbitrary large distance for limit seeking
@@ -90,7 +93,7 @@ void configureStepper() {
 
 // Initialize hardware pins and peripherals
 void initializeHardware() {
-    Serial.begin(115200);               // High baud rate for serial
+    Serial.begin(1000000);               // High baud rate for serial
     while (!Serial) {}                   // Wait for serial to initialize
     
     pinMode(LIMIT_SWITCH_RIGHT, INPUT_PULLUP);
@@ -207,6 +210,19 @@ void sendlogs() {
 
 }
 
+void sendshortlogs() {
+    long pos = getStepsFromRight();
+    float bat = getBatteryVoltage();
+    int e = emergency ? 1 : 0;
+    int lr = isRightLimitTriggered() ? 1 : 0;
+    int ll = isLeftLimitTriggered() ? 1 : 0;
+
+    Serial.print("P ");
+    Serial.print(pos);
+    Serial.println(" .");
+
+}
+
 
 // SECTION 9: Setup and Loop
 void setup() {
@@ -246,8 +262,8 @@ void loop() {
       
     } else if (modeCurrent == POSITIONING) {
          safetyCheck();
+        handlePositioning(position);
 
-        handlePositioning(1000);
     } else if (modeCurrent == JOGGING) {
          safetyCheck();
 
@@ -261,7 +277,7 @@ void loop() {
     //     lastPrint = millis();
     // }
 
-    if (millis() - lastPrint >= 10000) {
+    if (millis() - lastPrint >= 1000) {
         sendlogs();
         lastPrint = millis();
     }

@@ -11,7 +11,7 @@ void handleCalibration() {
     }
 
     if (calState.phase == 1) { // Move CW to right limit
-        stepper.setSpeed(-1000);
+        stepper.setSpeed(-CALIBRATION_SPEED);
 
         if (isRightLimitTriggered()) {
             stepper.stop();
@@ -41,7 +41,7 @@ void handleCalibration() {
             return;
         }
     } else if (calState.phase == 2) { // Move CCW to left limit
-        stepper.setSpeed(1000);
+        stepper.setSpeed(CALIBRATION_SPEED);
 
         if (isLeftLimitTriggered()) {
             stepper.stop();
@@ -65,7 +65,7 @@ void handleCalibration() {
             return;
         }
     } else if (calState.phase == 3) { // Move to center
-        stepper.setSpeed(-1000);
+        stepper.setSpeed(-CALIBRATION_SPEED);
 
         if (stepper.distanceToGo() == 0) {
             Serial.println("Calibration complete. At center position.");
