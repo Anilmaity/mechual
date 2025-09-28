@@ -37,7 +37,7 @@ void setup() {
 
   pinMode(RIGHT_BTN, INPUT_PULLUP); // Right button
   pinMode(LEFT_BTN, INPUT_PULLUP);  // Left button
-  lv_slider_set_range(ui_speedSet, 10, 200);
+  lv_slider_set_range(ui_speedSet, 10, 800);
 
 
 }

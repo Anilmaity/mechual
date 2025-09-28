@@ -121,36 +121,43 @@ bool parsePositionMode(String& cmd) {
   return true;
 }
 
-// Parser for AB Shuttle Mode: "M AB , A 1000 , B 2000 , T 2 , L 2 ."
-bool parseABShuttleMode(String& cmd) {
-  int aComma = cmd.indexOf("A", 0);
-  int bComma = cmd.indexOf("B", aComma);
-  int tComma = cmd.indexOf("T", bComma);
-  int lComma = cmd.indexOf("L", tComma);
-  if (aComma < 0 || bComma < 0 || tComma < 0 || lComma < 0) return false;
-  
+bool parseABShuttleMode(String &cmd) {
+  int aPos = cmd.indexOf("X");
+  int bPos = cmd.indexOf("Y", aPos);
+  int tPos = cmd.indexOf("T", bPos);
+  int lPos = cmd.indexOf("L", tPos);
+
+  if (aPos < 0 || bPos < 0 || tPos < 0 || lPos < 0) return false;
+
   // Extract A
-  String aStr = cmd.substring(aComma + 2, bComma - 2);  // Skip "A "
+  String aStr = cmd.substring(aPos + 1, bPos);  // from after 'A' to before 'B'
+  aStr.replace(",", "");
   aStr.trim();
   pointA = aStr.toInt();
-  
+
   // Extract B
-  String bStr = cmd.substring(bComma + 2, tComma - 2);  // Skip "B "
+  String bStr = cmd.substring(bPos + 1, tPos);  // from after 'B' to before 'T'
+  bStr.replace(",", "");
   bStr.trim();
+
   pointB = bStr.toInt();
-  
+
   // Extract T
-  String tStr = cmd.substring(tComma + 2, lComma - 2);  // Skip "T "
+  String tStr = cmd.substring(tPos + 1, lPos);
+  tStr.replace(",", "");
   tStr.trim();
   shuttleTime = tStr.toInt();
-  
+
   // Extract L
-  String lStr = cmd.substring(lComma + 2, cmd.length() - 1);  // Skip "L ", exclude "."
+  String lStr = cmd.substring(lPos + 1);  // till end
+  lStr.replace(".", "");
+  lStr.replace(",", "");
   lStr.trim();
   shuttleLoops = lStr.toInt();
-  
+
   return true;
 }
+
 
 // Parser for Calibration Mode: "M CA , M C ."
 bool parseCalibrationMode(String& cmd) {

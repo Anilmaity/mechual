@@ -68,13 +68,14 @@ void handleCalibration() {
         stepper.setSpeed(-CALIBRATION_SPEED);
 
         if (stepper.distanceToGo() == 0) {
-            Serial.println("Calibration complete. At center position.");
-            Serial.print("Final Right Steps (from initial): ");
-            Serial.println(calState.rightSteps);
-            Serial.print("Final Left Steps (from right): ");
-            Serial.println(calState.leftSteps);
-            Serial.print("Total Steps between Limits: ");
-            Serial.println(totalStepsBetweenLimits);
+            sendlogs();
+            // Serial.println("Calibration complete. At center position.");
+            // Serial.print("Final Right Steps (from initial): ");
+            // Serial.println(calState.rightSteps);
+            // Serial.print("Final Left Steps (from right): ");
+            // Serial.println(calState.leftSteps);
+            // Serial.print("Total Steps between Limits: ");
+            // Serial.println(totalStepsBetweenLimits);
             calState.phase = 4;
         }
     }

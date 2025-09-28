@@ -15,11 +15,11 @@
 const uint8_t EN_PIN = 4;                // Enable pin
 const uint8_t DIR_PIN = 2;               // Direction pin
 const uint8_t STEP_PIN = 3;              // Step pin
-const uint8_t LIMIT_SWITCH_RIGHT = A0;   // Right limit switch (CW direction)
-const uint8_t LIMIT_SWITCH_LEFT = A1;    // Left limit switch (CCW direction)
+const uint8_t LIMIT_SWITCH_RIGHT = A1;   // Right limit switch (CW direction)
+const uint8_t LIMIT_SWITCH_LEFT = A0;    // Left limit switch (CCW direction)
 const uint8_t BATTERY_PIN = A2;          // Battery voltage analog pin
 
-
+// 124 18.5 rpm 19.10 
 // Stepper motor configurations
 const uint16_t FULL_STEPS_PER_REV = 200; // Steps per revolution for 1.8° motor
 
@@ -31,7 +31,7 @@ const float DEFAULT_RPM = 200.0;          // Default RPM
 const float CALIBRATION_SPEED = 200.0;          // Default RPM
 
 const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
-const float DEFAULT_ACCELERATION = DEFAULT_RPM * 10.0;                    // Acceleration
+const float DEFAULT_ACCELERATION = 100;                    // Acceleration
 const long LARGE_DISTANCE = 100000L;   // Arbitrary large distance for limit seeking
 const unsigned long TIMEOUT_MS = 100000;  // Timeout in milliseconds per phase
 const float BATTERY_DIVIDER_RATIO = 5.72; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
@@ -172,9 +172,12 @@ void safetyCheck() {
     float currentSpeed = stepper.speed();
     if (currentSpeed > 0 && isLeftLimitTriggered()) {
         stopMotor();
+        sendlogs();
+
         Serial.println("Left limit hit, stopped.");
     } else if (currentSpeed < 0 && isRightLimitTriggered()) {
         stopMotor();
+        sendlogs();
         Serial.println("Right limit hit, stopped.");
     }
 }
@@ -212,10 +215,7 @@ void sendlogs() {
 
 void sendshortlogs() {
     long pos = getStepsFromRight();
-    float bat = getBatteryVoltage();
-    int e = emergency ? 1 : 0;
-    int lr = isRightLimitTriggered() ? 1 : 0;
-    int ll = isLeftLimitTriggered() ? 1 : 0;
+
 
     Serial.print("P ");
     Serial.print(pos);
@@ -228,17 +228,7 @@ void sendshortlogs() {
 void setup() {
     initializeHardware();
     configureStepper();
-    
-    // // Print initial states
-    // Serial.println("Initial Limit Switch States:");
-    // Serial.print("Right: ");
-    // Serial.println(isRightLimitTriggered() ? "Triggered" : "Not triggered");
-    // Serial.print("Left: ");
-    // Serial.println(isLeftLimitTriggered() ? "Triggered" : "Not triggered");
-    
-    // Serial.println("System ready. Send commands via serial.");
-    // Serial.print("Note: Ensure DM542 microsteps match MICROSTEPS=");
-    // Serial.println(MICROSTEPS);
+
 }
 
 void loop() {
@@ -269,6 +259,10 @@ void loop() {
 
       handleJogging(jogSpeed , jogCommand);
     }
+    else if (modeCurrent == AB_SHUTTLE) {
+         safetyCheck();
+        handleABShuttle();
+    }
 
     // Periodic status print during calibration
     static unsigned long lastPrint = 0;
@@ -277,8 +271,8 @@ void loop() {
     //     lastPrint = millis();
     // }
 
-    if (millis() - lastPrint >= 1000) {
-        sendlogs();
+    if (millis() - lastPrint >= 100) {
+        sendshortlogs();
         lastPrint = millis();
     }
 

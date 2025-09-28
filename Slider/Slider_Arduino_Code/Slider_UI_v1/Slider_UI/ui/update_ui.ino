@@ -19,7 +19,7 @@ extern lv_obj_t *ui_leftMove, *ui_rightMove , *ui_Button13;
 //AB OBJECT
 extern lv_obj_t *uic_leftMoveAB, *uic_rightMoveAB, *ui_SetA, *ui_SetB, *ui_Label29, *ui_Label32;
 extern lv_obj_t *ui_time_btn, *ui_loop, *uic_Start, *uic_Stop;
-extern lv_obj_t *ui_backA, *ui_backB_btn, *ui_save;
+extern lv_obj_t *ui_BackA, *ui_BackA, *ui_save;
 
 //CALIBRATION SCREEN OBJET
 extern lv_obj_t *uic_homebtn, *ui_calibrate, *uic_left, *uic_right;
@@ -53,8 +53,8 @@ void read_value() {
     btn_leftNow = true;
     if (btn_leftNow && btn_leftNow != btn_leftPrev) {
 
-      Serial1.println(String("M JM , S ") + speedVal + " , C L.");
-      Serial.println(String("M JM , S ") + speedVal + " , C L.");
+      Serial1.println(String("M JM , S ") + speedVal + " , C R.");
+      Serial.println(String("M JM , S ") + speedVal + " , C R.");
       btn_idlePrev = false;
     }
     // Your code here (send command, toggle relay, etc.)
@@ -62,8 +62,8 @@ void read_value() {
     btn_rightNow = true;
     if (btn_rightNow && btn_rightNow != btn_rightPrev) {
 
-      Serial.println(String("M JM , S ") + speedVal + " , C R.");
-      Serial1.println(String("M JM , S ") + speedVal + " , C R.");
+      Serial.println(String("M JM , S ") + speedVal + " , C L.");
+      Serial1.println(String("M JM , S ") + speedVal + " , C L.");
       btn_idlePrev = false;
     }
     // Your code here (send command, toggle relay, etc.)
@@ -114,22 +114,53 @@ void read_value() {
 
     // Your code here (send command, toggle relay, etc.)
   }
+
+
+  if (lv_obj_has_state(ui_BackA, LV_STATE_PRESSED)) {
+    if (millis() - AB_buttonClick > 200) {
+      Serial.println(String("M PM , P ") + PointA + ".");
+
+      AB_buttonClick = millis();
+    }
+  }
+  if (lv_obj_has_state(ui_BackB, LV_STATE_PRESSED)) {
+    if (millis() - AB_buttonClick > 200) {
+      Serial.println(String("M PM , P ") + PointB + ".");
+      AB_buttonClick = millis();
+    }
+
+
+  }
+
+
+
   if (lv_obj_has_state(uic_Start, LV_STATE_PRESSED)) {
     // Serial1.println(String("M AB , A ") + PointA + " B " + PointB + " , ");
+
+  if (millis() - AB_buttonClick > 500) {
     sendABShuttleMode(PointA, PointB, ABTime, ABLoop);
 
+      AB_buttonClick = millis();
+    }
+
+
     // Your code here (send command, toggle relay, etc.)
   }
+
   if (lv_obj_has_state(uic_Stop, LV_STATE_PRESSED)) {
 
+      if (millis() - AB_buttonClick > 500) {
+
+    Serial.println(String("M JM , S ") + speedVal + " , C I.");
+    Serial1.println(String("M JM , S ") + speedVal + " , C I.");
+
+      AB_buttonClick = millis();
+    }
+    
     // Your code here (send command, toggle relay, etc.)
   }
 
-  // lv_obj_add_event_cb(leftMoveAB_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Left Move AB");
-  // lv_obj_add_event_cb(rightMoveAB_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Right Move AB");
 
-  //lv_obj_add_event_cb(ui_SetA, button_event_cb, LV_EVENT_CLICKED, (void *)"Set A");
-  //lv_obj_add_event_cb(ui_SetB, button_event_cb, LV_EVENT_CLICKED, (void *)"Set B");
 
   // lv_obj_add_event_cb(time_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Time");
   // lv_obj_add_event_cb(loop_btn, button_event_cb, LV_EVENT_CLICKED, (void *)"Loop");
@@ -153,8 +184,8 @@ void read_value() {
   if (lv_obj_has_state(uic_homebtn, LV_STATE_PRESSED)) {
 
     if (millis() - CA_buttonClick > 200) {
-      Serial.println("M CA , M H.");
-      Serial1.println("M CA , M H.");
+      Serial1.println(String("M PM , P ") + int(TS/2) + ".");
+      Serial.println(String("M PM , P ") + int(TS/2) + ".");
       CA_buttonClick = millis();
     }
 
@@ -163,8 +194,8 @@ void read_value() {
   if (lv_obj_has_state(uic_right, LV_STATE_PRESSED)) {
 
     if (millis() - CA_buttonClick > 200) {
-      Serial.println("M CA , M R.");
-      Serial1.println("M CA , M R.");
+      Serial1.println(String("M PM , P 0."));
+      Serial.println(String("M PM , P 0."));
       CA_buttonClick = millis();
     }
 
@@ -172,8 +203,8 @@ void read_value() {
   }
   if (lv_obj_has_state(uic_left, LV_STATE_PRESSED)) {
     if (millis() - CA_buttonClick > 200) {
-      Serial.println("M CA , M L.");
-      Serial1.println("M CA , M L.");
+      Serial1.println(String("M PM , P ") + TS + ".");
+      Serial.println(String("M PM , P ") + TS + ".");
       CA_buttonClick = millis();
     }
 
@@ -181,13 +212,6 @@ void read_value() {
   }
 
 
-  // // Create Manual mode sliders
-
-  if (lv_obj_has_state(uic_left, LV_STATE_PRESSED)) {
-    Serial1.println(String("M PM , P ") + posVal + ".");
-    Serial.println(String("M JM , S ") + posVal + ".");
-    // Your code here (send command, toggle relay, etc.)
-  }
 
 
   // // Create Manual mode sliders
