@@ -41,25 +41,6 @@ extern lv_obj_t * ui_Image1;
 // CUSTOM VARIABLES
 extern lv_obj_t * uic_Image1;
 
-// SCREEN: ui_Home
-void ui_Home_screen_init(void);
-extern lv_obj_t * ui_Home;
-extern lv_obj_t * ui_Header;
-extern lv_obj_t * ui_Container2;
-void ui_event_Manual(lv_event_t * e);
-extern lv_obj_t * ui_Manual;
-extern lv_obj_t * ui_Label2;
-extern lv_obj_t * ui_Container6;
-void ui_event_Manual3(lv_event_t * e);
-extern lv_obj_t * ui_Manual3;
-extern lv_obj_t * ui_Label3;
-extern lv_obj_t * ui_Container8;
-void ui_event_Manual4(lv_event_t * e);
-extern lv_obj_t * ui_Manual4;
-extern lv_obj_t * ui_Label4;
-// CUSTOM VARIABLES
-extern lv_obj_t * uic_Header_battery;
-
 // SCREEN: ui_ManualMode
 void ui_ManualMode_screen_init(void);
 extern lv_obj_t * ui_ManualMode;
@@ -76,8 +57,8 @@ extern lv_obj_t * ui_Image5;
 extern lv_obj_t * ui_Container3;
 void ui_event_speedSet(lv_event_t * e);
 extern lv_obj_t * ui_speedSet;
-extern lv_obj_t * ui_Panel2;
-extern lv_obj_t * ui_Label6;
+extern lv_obj_t * ui_Plus;
+extern lv_obj_t * ui_Minus;
 extern lv_obj_t * ui_Slider;
 extern lv_obj_t * ui_Image6;
 extern lv_obj_t * ui_Container10;
@@ -119,29 +100,30 @@ extern lv_obj_t * uic_positionJM;
 extern lv_obj_t * uic_positionSlider;
 extern lv_obj_t * uic_SliderPositionPM;
 
+// SCREEN: ui_Home
+void ui_Home_screen_init(void);
+extern lv_obj_t * ui_Home;
+extern lv_obj_t * ui_Header;
+extern lv_obj_t * ui_Container2;
+void ui_event_Manual(lv_event_t * e);
+extern lv_obj_t * ui_Manual;
+extern lv_obj_t * ui_Label2;
+extern lv_obj_t * ui_Container6;
+void ui_event_Manual3(lv_event_t * e);
+extern lv_obj_t * ui_Manual3;
+extern lv_obj_t * ui_Label3;
+extern lv_obj_t * ui_Container8;
+void ui_event_Manual4(lv_event_t * e);
+extern lv_obj_t * ui_Manual4;
+extern lv_obj_t * ui_Label4;
+// CUSTOM VARIABLES
+extern lv_obj_t * uic_Header_battery;
+
 // SCREEN: ui_ABMode
 void ui_ABMode_screen_init(void);
 void ui_event_ABMode(lv_event_t * e);
 extern lv_obj_t * ui_ABMode;
 extern lv_obj_t * ui_Header2;
-extern lv_obj_t * ui_Move2;
-extern lv_obj_t * ui_leftMoveAB;
-extern lv_obj_t * ui_Image17;
-extern lv_obj_t * ui_Panel6;
-extern lv_obj_t * ui_Label17;
-extern lv_obj_t * ui_rightMoveAB;
-extern lv_obj_t * ui_Image14;
-extern lv_obj_t * ui_Slider6;
-extern lv_obj_t * ui_Image13;
-extern lv_obj_t * ui_Container9;
-extern lv_obj_t * ui_Image15;
-extern lv_obj_t * ui_SliderPositionAB;
-void ui_event_positionAB(lv_event_t * e);
-extern lv_obj_t * ui_positionAB;
-extern lv_obj_t * ui_Image10;
-extern lv_obj_t * ui_SliderPosition1;
-extern lv_obj_t * ui_Image16;
-extern lv_obj_t * ui_SliderPosition4;
 extern lv_obj_t * ui_Footer3;
 extern lv_obj_t * ui_Panel11;
 extern lv_obj_t * ui_Container14;
@@ -151,52 +133,63 @@ extern lv_obj_t * ui_Label23;
 extern lv_obj_t * ui_Image27;
 extern lv_obj_t * ui_power3;
 extern lv_obj_t * ui_Image28;
-extern lv_obj_t * ui_Save;
-extern lv_obj_t * ui_Label28;
+extern lv_obj_t * ui_ABSetting;
+extern lv_obj_t * ui_ABPoint;
+extern lv_obj_t * ui_Slider6;
+extern lv_obj_t * ui_Image13;
+extern lv_obj_t * ui_Container9;
+extern lv_obj_t * ui_Image15;
+extern lv_obj_t * ui_SliderPositionAB;
+void ui_event_positionAB(lv_event_t * e);
+extern lv_obj_t * ui_positionAB;
 extern lv_obj_t * ui_Panel9;
 extern lv_obj_t * ui_Start;
 extern lv_obj_t * ui_Label21;
 extern lv_obj_t * ui_Stop;
 extern lv_obj_t * ui_Label27;
-extern lv_obj_t * ui_Loop;
-extern lv_obj_t * ui_Label22;
-extern lv_obj_t * ui_TimeValue;
-extern lv_obj_t * ui_Label30;
 extern lv_obj_t * ui_SetA;
 extern lv_obj_t * ui_Label25;
 extern lv_obj_t * ui_SetAValue;
 extern lv_obj_t * ui_Label29;
 extern lv_obj_t * ui_SetBValue;
 extern lv_obj_t * ui_Label32;
-extern lv_obj_t * ui_Time;
-extern lv_obj_t * ui_Label26;
 extern lv_obj_t * ui_SetB;
 extern lv_obj_t * ui_Label31;
 extern lv_obj_t * ui_BackA;
 extern lv_obj_t * ui_Label9;
 extern lv_obj_t * ui_BackB;
 extern lv_obj_t * ui_Label20;
-extern lv_obj_t * ui_loopValue;
-extern lv_obj_t * ui_lopValue;
+extern lv_obj_t * ui_PathSetting;
+extern lv_obj_t * ui_Loops;
+extern lv_obj_t * ui_Panel6;
+extern lv_obj_t * ui_SpeedValue3;
+extern lv_obj_t * ui_Plus2;
+extern lv_obj_t * ui_Minus2;
+extern lv_obj_t * ui_Label6;
+extern lv_obj_t * ui_ABSpeed;
+extern lv_obj_t * ui_Panel2;
+extern lv_obj_t * ui_SpeedValue1;
+extern lv_obj_t * ui_Plus1;
+extern lv_obj_t * ui_Minus1;
+extern lv_obj_t * ui_Label11;
+extern lv_obj_t * ui_BASpeed;
+extern lv_obj_t * ui_Panel4;
+extern lv_obj_t * ui_SpeedValue2;
+extern lv_obj_t * ui_Plus3;
+extern lv_obj_t * ui_Minus3;
+extern lv_obj_t * ui_Label5;
 // CUSTOM VARIABLES
 extern lv_obj_t * uic_Header2_battery;
-extern lv_obj_t * uic_leftMoveAB;
-extern lv_obj_t * uic_rightMoveAB;
 extern lv_obj_t * uic_SliderPositionAB;
 extern lv_obj_t * uic_positionAB;
-extern lv_obj_t * uic_Save;
 extern lv_obj_t * uic_Start;
 extern lv_obj_t * uic_Stop;
-extern lv_obj_t * uic_Loop;
-extern lv_obj_t * uic_TimeValue;
 extern lv_obj_t * uic_SetA;
 extern lv_obj_t * uic_SetAValue;
 extern lv_obj_t * uic_SetBValue;
-extern lv_obj_t * uic_Time;
 extern lv_obj_t * uic_SetB;
 extern lv_obj_t * uic_BackA;
 extern lv_obj_t * uic_BackB;
-extern lv_obj_t * uic_loopValue;
 
 // SCREEN: ui_Calibration
 void ui_Calibration_screen_init(void);
@@ -249,16 +242,18 @@ extern lv_obj_t * ui____initial_actions0;
 LV_IMG_DECLARE(ui_img_rk_logo_png);    // assets/RK_Logo.png
 LV_IMG_DECLARE(ui_img_rk_logo_40_40_png);    // assets/RK_Logo_40_40.png
 LV_IMG_DECLARE(ui_img_battery_png);    // assets/battery.png
-LV_IMG_DECLARE(ui_img_hand_16725997_png);    // assets/hand_16725997.png
-LV_IMG_DECLARE(ui_img_adapt_10984466_png);    // assets/adapt_10984466.png
-LV_IMG_DECLARE(ui_img_time_14147652_png);    // assets/time_14147652.png
 LV_IMG_DECLARE(ui_img_back_png);    // assets/back.png
 LV_IMG_DECLARE(ui_img_back2_png);    // assets/back2.png
-LV_IMG_DECLARE(ui_img_group_4_png);    // assets/Group 4.png
+LV_IMG_DECLARE(ui_img_1157729664);    // assets/ic_baseline-plus.png
+LV_IMG_DECLARE(ui_img_1381505174);    // assets/ic_baseline-minus.png
+LV_IMG_DECLARE(ui_img_rectangle_114_png);    // assets/Rectangle 114.png
 LV_IMG_DECLARE(ui_img_infomer_png);    // assets/Infomer.png
 LV_IMG_DECLARE(ui_img_box_png);    // assets/box.png
 LV_IMG_DECLARE(ui_img_16417679);    // assets/icon-park-solid_back.png
 LV_IMG_DECLARE(ui_img_rectangle_163_png);    // assets/Rectangle 163.png
+LV_IMG_DECLARE(ui_img_hand_16725997_png);    // assets/hand_16725997.png
+LV_IMG_DECLARE(ui_img_adapt_10984466_png);    // assets/adapt_10984466.png
+LV_IMG_DECLARE(ui_img_time_14147652_png);    // assets/time_14147652.png
 
 // UI INIT
 void ui_init(void);
