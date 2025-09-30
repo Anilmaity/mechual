@@ -20,9 +20,9 @@ SET(SOURCES ui_comp_header.c
     ui_img_infomer_png.c
     ui_img_box_png.c
     ui_img_16417679.c
-    ui_img_rectangle_163_png.c
     ui_img_hand_16725997_png.c
     ui_img_adapt_10984466_png.c
-    ui_img_time_14147652_png.c)
+    ui_img_time_14147652_png.c
+    ui_img_rectangle_163_png.c)
 
 add_library(ui ${SOURCES})

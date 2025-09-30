@@ -2797,10 +2797,38 @@
                     "InheritedType": 1
                   },
                   {
+                    "nid": 230,
+                    "compnid": 230,
+                    "strtype": "OBJECT/Scrollable",
+                    "strval": "True",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 240,
+                    "compnid": 240,
+                    "strtype": "OBJECT/Scroll_elastic",
+                    "strval": "True",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 250,
+                    "compnid": 250,
+                    "strtype": "OBJECT/Scroll_momentum",
+                    "strval": "True",
+                    "InheritedType": 2
+                  },
+                  {
                     "nid": 260,
                     "compnid": 260,
                     "strtype": "OBJECT/Scroll_on_focus",
                     "strval": "False",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 270,
+                    "compnid": 270,
+                    "strtype": "OBJECT/Scroll_chain",
+                    "strval": "True",
                     "InheritedType": 2
                   },
                   {
@@ -2809,6 +2837,27 @@
                     "strtype": "OBJECT/Scroll_with_arrow",
                     "strval": "False",
                     "InheritedType": 2
+                  },
+                  {
+                    "nid": 290,
+                    "compnid": 290,
+                    "strtype": "OBJECT/Scroll_one",
+                    "strval": "False",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 300,
+                    "compnid": 300,
+                    "strtype": "OBJECT/Scrollbar_mode",
+                    "strval": "AUTO",
+                    "InheritedType": 3
+                  },
+                  {
+                    "nid": 310,
+                    "compnid": 310,
+                    "strtype": "OBJECT/Scroll_direction",
+                    "strval": "ALL",
+                    "InheritedType": 3
                   },
                   {
                     "nid": 314,
@@ -5045,8 +5094,7 @@
                         "InheritedType": 11
                       }
                     ],
-                    "saved_objtypeKey": "CONTAINER",
-                    "tree_closed": true
+                    "saved_objtypeKey": "CONTAINER"
                   },
                   {
                     "guid": "GUID59662494-582305S534250",
@@ -5132,6 +5180,18 @@
                             "flags": 1048576,
                             "strtype": "OBJECT/Scrolling",
                             "InheritedType": 1
+                          },
+                          {
+                            "nid": 300,
+                            "strtype": "OBJECT/Scrollbar_mode",
+                            "strval": "AUTO",
+                            "InheritedType": 3
+                          },
+                          {
+                            "nid": 310,
+                            "strtype": "OBJECT/Scroll_direction",
+                            "strval": "ALL",
+                            "InheritedType": 3
                           },
                           {
                             "nid": 314,
@@ -5523,6 +5583,77 @@
                             "strtype": "BUTTON/Style_main",
                             "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
                             "InheritedType": 11
+                          },
+                          {
+                            "disabled": false,
+                            "nid": 1000877,
+                            "strtype": "_event/EventHandler",
+                            "strval": "PRESSED",
+                            "childs": [
+                              {
+                                "nid": 1000878,
+                                "strtype": "_event/name",
+                                "strval": "speedup",
+                                "InheritedType": 10
+                              },
+                              {
+                                "nid": 1000879,
+                                "strtype": "_event/condition_C",
+                                "strval": "",
+                                "InheritedType": 10
+                              },
+                              {
+                                "nid": 1000880,
+                                "strtype": "_event/condition_P",
+                                "strval": "",
+                                "InheritedType": 10
+                              },
+                              {
+                                "nid": 1000881,
+                                "strtype": "_event/action",
+                                "strval": "INCREMENT SLIDER",
+                                "childs": [
+                                  {
+                                    "nid": 1000882,
+                                    "strtype": "INCREMENT SLIDER/Name",
+                                    "strval": "INCREMENT SLIDER",
+                                    "InheritedType": 10
+                                  },
+                                  {
+                                    "nid": 1000883,
+                                    "strtype": "INCREMENT SLIDER/Call",
+                                    "strval": "IncrementSlider( <{Target}>, <{Value}>, lv.ANIM.<{Animate}> )",
+                                    "InheritedType": 10
+                                  },
+                                  {
+                                    "nid": 1000884,
+                                    "strtype": "INCREMENT SLIDER/CallC",
+                                    "strval": "_ui_slider_increment( <{Target}>, <{Value}>, LV_ANIM_<{Animate}>);",
+                                    "InheritedType": 10
+                                  },
+                                  {
+                                    "nid": 1000885,
+                                    "strtype": "INCREMENT SLIDER/Target",
+                                    "strval": "GUID79890076-582307S194434250",
+                                    "InheritedType": 9
+                                  },
+                                  {
+                                    "nid": 1000886,
+                                    "strtype": "INCREMENT SLIDER/Value",
+                                    "integer": 1,
+                                    "InheritedType": 6
+                                  },
+                                  {
+                                    "nid": 1000887,
+                                    "strtype": "INCREMENT SLIDER/Animate",
+                                    "strval": "ON",
+                                    "InheritedType": 3
+                                  }
+                                ],
+                                "InheritedType": 10
+                              }
+                            ],
+                            "InheritedType": 4
                           }
                         ],
                         "saved_objtypeKey": "BUTTON"
@@ -5692,6 +5823,77 @@
                             "strtype": "BUTTON/Style_main",
                             "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
                             "InheritedType": 11
+                          },
+                          {
+                            "disabled": false,
+                            "nid": 1000888,
+                            "strtype": "_event/EventHandler",
+                            "strval": "PRESSED",
+                            "childs": [
+                              {
+                                "nid": 1000889,
+                                "strtype": "_event/name",
+                                "strval": "speeddown",
+                                "InheritedType": 10
+                              },
+                              {
+                                "nid": 1000890,
+                                "strtype": "_event/condition_C",
+                                "strval": "",
+                                "InheritedType": 10
+                              },
+                              {
+                                "nid": 1000891,
+                                "strtype": "_event/condition_P",
+                                "strval": "",
+                                "InheritedType": 10
+                              },
+                              {
+                                "nid": 1000892,
+                                "strtype": "_event/action",
+                                "strval": "INCREMENT SLIDER",
+                                "childs": [
+                                  {
+                                    "nid": 1000893,
+                                    "strtype": "INCREMENT SLIDER/Name",
+                                    "strval": "INCREMENT SLIDER",
+                                    "InheritedType": 10
+                                  },
+                                  {
+                                    "nid": 1000894,
+                                    "strtype": "INCREMENT SLIDER/Call",
+                                    "strval": "IncrementSlider( <{Target}>, <{Value}>, lv.ANIM.<{Animate}> )",
+                                    "InheritedType": 10
+                                  },
+                                  {
+                                    "nid": 1000895,
+                                    "strtype": "INCREMENT SLIDER/CallC",
+                                    "strval": "_ui_slider_increment( <{Target}>, <{Value}>, LV_ANIM_<{Animate}>);",
+                                    "InheritedType": 10
+                                  },
+                                  {
+                                    "nid": 1000896,
+                                    "strtype": "INCREMENT SLIDER/Target",
+                                    "strval": "GUID79890076-582307S194434250",
+                                    "InheritedType": 9
+                                  },
+                                  {
+                                    "nid": 1000897,
+                                    "strtype": "INCREMENT SLIDER/Value",
+                                    "integer": -1,
+                                    "InheritedType": 6
+                                  },
+                                  {
+                                    "nid": 1000898,
+                                    "strtype": "INCREMENT SLIDER/Animate",
+                                    "strval": "ON",
+                                    "InheritedType": 3
+                                  }
+                                ],
+                                "InheritedType": 10
+                              }
+                            ],
+                            "InheritedType": 4
                           }
                         ],
                         "saved_objtypeKey": "BUTTON"
@@ -6432,6 +6634,18 @@
                                 "flags": 1048576,
                                 "strtype": "OBJECT/Scrolling",
                                 "InheritedType": 1
+                              },
+                              {
+                                "nid": 300,
+                                "strtype": "OBJECT/Scrollbar_mode",
+                                "strval": "AUTO",
+                                "InheritedType": 3
+                              },
+                              {
+                                "nid": 310,
+                                "strtype": "OBJECT/Scroll_direction",
+                                "strval": "ALL",
+                                "InheritedType": 3
                               },
                               {
                                 "nid": 314,
@@ -7261,6 +7475,18 @@
                         "flags": 1048576,
                         "strtype": "OBJECT/Scrolling",
                         "InheritedType": 1
+                      },
+                      {
+                        "nid": 300,
+                        "strtype": "OBJECT/Scrollbar_mode",
+                        "strval": "AUTO",
+                        "InheritedType": 3
+                      },
+                      {
+                        "nid": 310,
+                        "strtype": "OBJECT/Scroll_direction",
+                        "strval": "ALL",
+                        "InheritedType": 3
                       },
                       {
                         "nid": 314,
@@ -8168,7 +8394,8 @@
                         "InheritedType": 11
                       }
                     ],
-                    "saved_objtypeKey": "PANEL"
+                    "saved_objtypeKey": "PANEL",
+                    "tree_closed": true
                   },
                   {
                     "guid": "GUID20571748-760267S39014259",
@@ -8703,7 +8930,15 @@
                               {
                                 "nid": 10,
                                 "strtype": "OBJECT/Name",
-                                "strval": "Slider4",
+                                "strval": "PositionMPM",
+                                "childs": [
+                                  {
+                                    "nid": 15,
+                                    "strtype": "_codename/Codename",
+                                    "strval": "PositionMPM",
+                                    "InheritedType": 10
+                                  }
+                                ],
                                 "InheritedType": 10
                               },
                               {
@@ -8766,6 +9001,18 @@
                                 "flags": 1048576,
                                 "strtype": "OBJECT/Scrolling",
                                 "InheritedType": 1
+                              },
+                              {
+                                "nid": 300,
+                                "strtype": "OBJECT/Scrollbar_mode",
+                                "strval": "AUTO",
+                                "InheritedType": 3
+                              },
+                              {
+                                "nid": 310,
+                                "strtype": "OBJECT/Scroll_direction",
+                                "strval": "ALL",
+                                "InheritedType": 3
                               },
                               {
                                 "nid": 314,
@@ -9509,7 +9756,8 @@
                     "InheritedType": 11
                   }
                 ],
-                "saved_objtypeKey": "TABPAGE"
+                "saved_objtypeKey": "TABPAGE",
+                "tree_closed": true
               }
             ],
             "dont_export": false,
@@ -13477,10 +13725,38 @@
                     "InheritedType": 1
                   },
                   {
+                    "nid": 230,
+                    "compnid": 230,
+                    "strtype": "OBJECT/Scrollable",
+                    "strval": "True",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 240,
+                    "compnid": 240,
+                    "strtype": "OBJECT/Scroll_elastic",
+                    "strval": "True",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 250,
+                    "compnid": 250,
+                    "strtype": "OBJECT/Scroll_momentum",
+                    "strval": "True",
+                    "InheritedType": 2
+                  },
+                  {
                     "nid": 260,
                     "compnid": 260,
                     "strtype": "OBJECT/Scroll_on_focus",
                     "strval": "False",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 270,
+                    "compnid": 270,
+                    "strtype": "OBJECT/Scroll_chain",
+                    "strval": "True",
                     "InheritedType": 2
                   },
                   {
@@ -13489,6 +13765,27 @@
                     "strtype": "OBJECT/Scroll_with_arrow",
                     "strval": "False",
                     "InheritedType": 2
+                  },
+                  {
+                    "nid": 290,
+                    "compnid": 290,
+                    "strtype": "OBJECT/Scroll_one",
+                    "strval": "False",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 300,
+                    "compnid": 300,
+                    "strtype": "OBJECT/Scrollbar_mode",
+                    "strval": "AUTO",
+                    "InheritedType": 3
+                  },
+                  {
+                    "nid": 310,
+                    "compnid": 310,
+                    "strtype": "OBJECT/Scroll_direction",
+                    "strval": "ALL",
+                    "InheritedType": 3
                   },
                   {
                     "nid": 314,
@@ -18940,10 +19237,38 @@
                     "InheritedType": 1
                   },
                   {
+                    "nid": 230,
+                    "compnid": 230,
+                    "strtype": "OBJECT/Scrollable",
+                    "strval": "True",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 240,
+                    "compnid": 240,
+                    "strtype": "OBJECT/Scroll_elastic",
+                    "strval": "True",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 250,
+                    "compnid": 250,
+                    "strtype": "OBJECT/Scroll_momentum",
+                    "strval": "True",
+                    "InheritedType": 2
+                  },
+                  {
                     "nid": 260,
                     "compnid": 260,
                     "strtype": "OBJECT/Scroll_on_focus",
                     "strval": "False",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 270,
+                    "compnid": 270,
+                    "strtype": "OBJECT/Scroll_chain",
+                    "strval": "True",
                     "InheritedType": 2
                   },
                   {
@@ -18952,6 +19277,27 @@
                     "strtype": "OBJECT/Scroll_with_arrow",
                     "strval": "False",
                     "InheritedType": 2
+                  },
+                  {
+                    "nid": 290,
+                    "compnid": 290,
+                    "strtype": "OBJECT/Scroll_one",
+                    "strval": "False",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 300,
+                    "compnid": 300,
+                    "strtype": "OBJECT/Scrollbar_mode",
+                    "strval": "AUTO",
+                    "InheritedType": 3
+                  },
+                  {
+                    "nid": 310,
+                    "compnid": 310,
+                    "strtype": "OBJECT/Scroll_direction",
+                    "strval": "ALL",
+                    "InheritedType": 3
                   },
                   {
                     "nid": 314,
@@ -22026,6 +22372,18 @@
                                 "flags": 1048576,
                                 "strtype": "OBJECT/Scrolling",
                                 "InheritedType": 1
+                              },
+                              {
+                                "nid": 300,
+                                "strtype": "OBJECT/Scrollbar_mode",
+                                "strval": "AUTO",
+                                "InheritedType": 3
+                              },
+                              {
+                                "nid": 310,
+                                "strtype": "OBJECT/Scroll_direction",
+                                "strval": "ALL",
+                                "InheritedType": 3
                               },
                               {
                                 "nid": 314,
@@ -25809,7 +26167,8 @@
                     "InheritedType": 11
                   }
                 ],
-                "saved_objtypeKey": "TABPAGE"
+                "saved_objtypeKey": "TABPAGE",
+                "tree_closed": true
               },
               {
                 "guid": "GUID51939358-480955S11714273",
@@ -27116,7 +27475,8 @@
                             "InheritedType": 11
                           }
                         ],
-                        "saved_objtypeKey": "PANEL"
+                        "saved_objtypeKey": "PANEL",
+                        "tree_closed": true
                       },
                       {
                         "guid": "GUID98562612-481012S9924273",
@@ -27283,6 +27643,77 @@
                             "strtype": "BUTTON/Style_main",
                             "strval": "lv.PART.MAIN, Rectangle, Pad, Text, Transform",
                             "InheritedType": 11
+                          },
+                          {
+                            "disabled": false,
+                            "nid": 1000899,
+                            "strtype": "_event/EventHandler",
+                            "strval": "CLICKED",
+                            "childs": [
+                              {
+                                "nid": 1000900,
+                                "strtype": "_event/name",
+                                "strval": "speedupab",
+                                "InheritedType": 10
+                              },
+                              {
+                                "nid": 1000901,
+                                "strtype": "_event/condition_C",
+                                "strval": "",
+                                "InheritedType": 10
+                              },
+                              {
+                                "nid": 1000902,
+                                "strtype": "_event/condition_P",
+                                "strval": "",
+                                "InheritedType": 10
+                              },
+                              {
+                                "nid": 1000903,
+                                "strtype": "_event/action",
+                                "strval": "INCREMENT SLIDER",
+                                "childs": [
+                                  {
+                                    "nid": 1000904,
+                                    "strtype": "INCREMENT SLIDER/Name",
+                                    "strval": "INCREMENT SLIDER",
+                                    "InheritedType": 10
+                                  },
+                                  {
+                                    "nid": 1000905,
+                                    "strtype": "INCREMENT SLIDER/Call",
+                                    "strval": "IncrementSlider( <{Target}>, <{Value}>, lv.ANIM.<{Animate}> )",
+                                    "InheritedType": 10
+                                  },
+                                  {
+                                    "nid": 1000906,
+                                    "strtype": "INCREMENT SLIDER/CallC",
+                                    "strval": "_ui_slider_increment( <{Target}>, <{Value}>, LV_ANIM_<{Animate}>);",
+                                    "InheritedType": 10
+                                  },
+                                  {
+                                    "nid": 1000907,
+                                    "strtype": "INCREMENT SLIDER/Target",
+                                    "strval": "-",
+                                    "InheritedType": 9
+                                  },
+                                  {
+                                    "nid": 1000908,
+                                    "strtype": "INCREMENT SLIDER/Value",
+                                    "integer": 1,
+                                    "InheritedType": 6
+                                  },
+                                  {
+                                    "nid": 1000909,
+                                    "strtype": "INCREMENT SLIDER/Animate",
+                                    "strval": "ON",
+                                    "InheritedType": 3
+                                  }
+                                ],
+                                "InheritedType": 10
+                              }
+                            ],
+                            "InheritedType": 4
                           }
                         ],
                         "saved_objtypeKey": "BUTTON"
@@ -27758,8 +28189,7 @@
                         "InheritedType": 11
                       }
                     ],
-                    "saved_objtypeKey": "CONTAINER",
-                    "tree_closed": true
+                    "saved_objtypeKey": "CONTAINER"
                   },
                   {
                     "guid": "GUID45961931-481021S3684273",
@@ -28982,8 +29412,7 @@
                     "InheritedType": 11
                   }
                 ],
-                "saved_objtypeKey": "TABPAGE",
-                "tree_closed": true
+                "saved_objtypeKey": "TABPAGE"
               }
             ],
             "dont_export": false,
@@ -29094,6 +29523,7 @@
               },
               {
                 "nid": 1010,
+                "flags": 1048576,
                 "strtype": "TABVIEW/Tabview",
                 "InheritedType": 1
               },
@@ -31566,10 +31996,38 @@
                     "InheritedType": 1
                   },
                   {
+                    "nid": 230,
+                    "compnid": 230,
+                    "strtype": "OBJECT/Scrollable",
+                    "strval": "True",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 240,
+                    "compnid": 240,
+                    "strtype": "OBJECT/Scroll_elastic",
+                    "strval": "True",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 250,
+                    "compnid": 250,
+                    "strtype": "OBJECT/Scroll_momentum",
+                    "strval": "True",
+                    "InheritedType": 2
+                  },
+                  {
                     "nid": 260,
                     "compnid": 260,
                     "strtype": "OBJECT/Scroll_on_focus",
                     "strval": "False",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 270,
+                    "compnid": 270,
+                    "strtype": "OBJECT/Scroll_chain",
+                    "strval": "True",
                     "InheritedType": 2
                   },
                   {
@@ -31578,6 +32036,27 @@
                     "strtype": "OBJECT/Scroll_with_arrow",
                     "strval": "False",
                     "InheritedType": 2
+                  },
+                  {
+                    "nid": 290,
+                    "compnid": 290,
+                    "strtype": "OBJECT/Scroll_one",
+                    "strval": "False",
+                    "InheritedType": 2
+                  },
+                  {
+                    "nid": 300,
+                    "compnid": 300,
+                    "strtype": "OBJECT/Scrollbar_mode",
+                    "strval": "AUTO",
+                    "InheritedType": 3
+                  },
+                  {
+                    "nid": 310,
+                    "compnid": 310,
+                    "strtype": "OBJECT/Scroll_direction",
+                    "strval": "ALL",
+                    "InheritedType": 3
                   },
                   {
                     "nid": 314,
@@ -36576,6 +37055,18 @@
                         "InheritedType": 1
                       },
                       {
+                        "nid": 300,
+                        "strtype": "OBJECT/Scrollbar_mode",
+                        "strval": "AUTO",
+                        "InheritedType": 3
+                      },
+                      {
+                        "nid": 310,
+                        "strtype": "OBJECT/Scroll_direction",
+                        "strval": "ALL",
+                        "InheritedType": 3
+                      },
+                      {
                         "nid": 314,
                         "strtype": "OBJECT/Scroll_snap_x",
                         "strval": "NONE",
@@ -37288,7 +37779,7 @@
     "description": "",
     "board": "GIGA R1 WiFi with GIGA Display Shield - Arduino-IDE",
     "board_version": "v2.0.0",
-    "editor_version": "1.5.1",
+    "editor_version": "1.5.3",
     "image": "",
     "export_temp_image": false,
     "force_export_images": false,
@@ -37302,7 +37793,7 @@
     "uiExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI_v1/Slider_UI/./libraries/ui/src",
     "projectExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI_v1/Slider_UI",
     "custom_variable_prefix": "uic",
-    "backup_cnt": 39,
+    "backup_cnt": 41,
     "autosave_cnt": 0,
     "group_color_cnt": 0,
     "lvgl_version": "9.1.0",
@@ -37319,7 +37810,8 @@
     "drive_fatfs_path": "",
     "naming": "Name",
     "naming_force_lowercase": false,
-    "nidcnt": 1000877,
+    "naming_add_subcomponent": false,
+    "nidcnt": 1000910,
     "BitDepth": 16,
     "Name": "Slider_UI"
   }
