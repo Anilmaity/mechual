@@ -95,31 +95,48 @@ bool parseJogMode(String& cmd) {
 
 // Parser for Position Mode: "M PM , P <position>."
 bool parsePositionMode(String& cmd) {
-  // Find the second "P" (after "M PM , P")
-  int pComma = cmd.indexOf("P", cmd.indexOf("P") + 1);  // Start after first "P"
-  if (pComma < 0) return false;
+  // Check for "M PM , P" prefix
+  if (!cmd.startsWith("M PM , P")) return false;
 
-  // Extract position substring (after "P ", before ".")
-  String posStr = cmd.substring(pComma + 2, cmd.length() - 1);  // Skip "P ", exclude "."
-  posStr.trim();  // Remove leading/trailing whitespace
+  // Find delimiters
+  int pPos = cmd.indexOf("P", 6); // Start after "M PM ,"
+  int sPos = cmd.indexOf("S", pPos);
+  if (pPos < 0 || sPos < 0) return false;
 
-  // Check for empty string
-  if (posStr.length() == 0) return false;
+  // Extract position substring (after "P ", before ", S")
+  int commaPos = cmd.indexOf(",", pPos);
+  if (commaPos < 0 || commaPos > sPos) return false;
+  String posStr = cmd.substring(pPos + 2, commaPos);
+  posStr.trim(); // Remove whitespace
 
-  // Validate numeric content
+  // Extract speed substring (after "S ", before ".")
+  String speedStr = cmd.substring(sPos + 2, cmd.length() - 1);
+  speedStr.trim(); // Remove whitespace
+
+  // Check for empty strings
+  if (posStr.length() == 0 || speedStr.length() == 0) return false;
+
+  // Validate position (digits only, range 0-99999)
   for (char c : posStr) {
-    if (!isdigit(c)) return false;  // Only allow digits (no negative numbers)
+    if (!isdigit(c)) return false;
   }
+  long posValue = posStr.toInt();
+  if (posValue < 0 || posValue > 99999) return false;
 
-  // Convert to long to handle large numbers safely
-  long posValue = posStr.toInt();  // toInt() returns 0 for invalid numbers
-  if (posValue < 0 || posValue > 99999) return false;  // Enforce range 0-99999
+  // Validate speed (digits only, range 0-1000)
+  for (char c : speedStr) {
+    if (!isdigit(c)) return false;
+  }
+  long speedValue = speedStr.toInt();
+  if (speedValue < 0 || speedValue > 1000) return false;
 
-  // Store valid position
-  position = (int)posValue;  // Safe cast since we checked range
-  // Serial.println(position);  // Debug: print extracted string
+  // Store valid values
+  position = (int)posValue; // Safe cast due to range check
+  jogSpeed = (int)speedValue;  // Store speed in global variable
   return true;
 }
+
+
 
 bool parseABShuttleMode(String &cmd) {
   // Check for "M AB , " prefix
@@ -208,6 +225,8 @@ void printParsedValues() {
   } else if (currentMode == "PM") {
     Serial.print("Position: ");
     Serial.println(position);
+    Serial.print("Speed: ");
+    Serial.println(jogSpeed);
   } else if (currentMode == "AB") {
     Serial.print("Point A: ");
     Serial.println(pointA);

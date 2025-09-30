@@ -18,6 +18,7 @@ const uint8_t STEP_PIN = 3;              // Step pin
 const uint8_t LIMIT_SWITCH_RIGHT = A1;   // Right limit switch (CW direction)
 const uint8_t LIMIT_SWITCH_LEFT = A0;    // Left limit switch (CCW direction)
 const uint8_t BATTERY_PIN = A2;          // Battery voltage analog pin
+bool calibrated = false;
 
 // 124 18.5 rpm 19.10 
 // Stepper motor configurations
@@ -28,14 +29,14 @@ const long STEPS_PER_REV = FULL_STEPS_PER_REV * MICROSTEPS;
 
 // Default operational settings
 const float DEFAULT_RPM = 200.0;          // Default RPM
-const float CALIBRATION_SPEED = 200.0;          // Default RPM
+const float CALIBRATION_SPEED = 400.0;          // Default RPM
 const float CurrentSpeed = 200;
 
 const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
-const float DEFAULT_ACCELERATION = 100;                    // Acceleration
+const float DEFAULT_ACCELERATION = 200;                    // Acceleration
 const long LARGE_DISTANCE = 100000L;   // Arbitrary large distance for limit seeking
 const unsigned long TIMEOUT_MS = 100000;  // Timeout in milliseconds per phase
-const float BATTERY_DIVIDER_RATIO = 5.72; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
+const float BATTERY_DIVIDER_RATIO = 0.00489*4.82; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
 
 
 // Emergency state
@@ -188,8 +189,7 @@ void safetyCheck() {
 // Get battery voltage
 float getBatteryVoltage() {
     float adc = analogRead(BATTERY_PIN);
-    float volt = adc * (5.0 / 1023.0);
-    return volt * BATTERY_DIVIDER_RATIO;  // Adjust ratio for actual voltage
+    return adc * BATTERY_DIVIDER_RATIO;  // Adjust ratio for actual voltage
 }
 
 void sendlogs() {
@@ -235,6 +235,7 @@ void setup() {
 
 void loop() {
     readlogs();
+    static unsigned long lastPrint = 0;
 
     if (modeCurrent == CALIBRATING) {
 
@@ -264,9 +265,16 @@ void loop() {
         safetyCheck();
         handleABShuttle(pointA, pointB, speed1, speed2, shuttleLoops) ;
     }
+    else if(modeCurrent == IDLE){
+    if (millis() - lastPrint >= 1000) {
+        //sendshortlogs();
+        sendlogs();
+        lastPrint = millis();
+    }
+
+    }
 
     // Periodic status print during calibration
-    static unsigned long lastPrint = 0;
     // if (modeCurrent == CALIBRATING && millis() - lastPrint >= 1000) {
     //     printStatus();
     //     lastPrint = millis();
@@ -274,6 +282,8 @@ void loop() {
 
     if (millis() - lastPrint >= 100) {
         sendshortlogs();
+        //sendlogs();
+
         lastPrint = millis();
     }
 

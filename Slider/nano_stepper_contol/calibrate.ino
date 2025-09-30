@@ -69,6 +69,7 @@ void handleCalibration() {
 
         if (stepper.distanceToGo() == 0) {
             sendlogs();
+            calibrated = true;
             // Serial.println("Calibration complete. At center position.");
             // Serial.print("Final Right Steps (from initial): ");
             // Serial.println(calState.rightSteps);

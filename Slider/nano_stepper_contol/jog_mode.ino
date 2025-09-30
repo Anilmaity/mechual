@@ -1,6 +1,6 @@
 // Global or static variables
 float currentSpeed = 0.0;           // current applied speed (steps/sec)
-const float accelRate = 0.40;       // steps/sec^2 (acceleration rate)
+const float accelRate = 1;       // steps/sec^2 (acceleration rate)
 
 // Handle jogging mode with custom accel/decel
 void handleJogging(float rpm, char direction) {
@@ -18,12 +18,15 @@ void handleJogging(float rpm, char direction) {
         // float stepsPerSec = (rpm * STEPS_PER_REV) / 60.0;
         float stepsPerSec = rpm;  // (you already use raw steps/sec)
 
-        if (direction == 'L' && !isLeftLimitTriggered()) {
+
+
+        if (direction == 'L' && !isLeftLimitTriggered() ) {
             targetSpeed = stepsPerSec;
         }
-        else if (direction == 'R' && !isRightLimitTriggered()) {
+        else if (direction == 'R' && !isRightLimitTriggered() ) {
             targetSpeed = -stepsPerSec;
         }
+
         else {
             targetSpeed = 0.0;  // hit limit → stop
         }
