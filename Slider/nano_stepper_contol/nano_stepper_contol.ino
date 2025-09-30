@@ -29,6 +29,7 @@ const long STEPS_PER_REV = FULL_STEPS_PER_REV * MICROSTEPS;
 // Default operational settings
 const float DEFAULT_RPM = 200.0;          // Default RPM
 const float CALIBRATION_SPEED = 200.0;          // Default RPM
+const float CurrentSpeed = 200;
 
 const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
 const float DEFAULT_ACCELERATION = 100;                    // Acceleration
