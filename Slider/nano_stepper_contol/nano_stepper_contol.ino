@@ -53,12 +53,13 @@ Mode modeCurrent = IDLE;
 
 // Global variables for parsed data
 String currentMode = "";  // "JM", "PM", "AB", "CA"
-int jogSpeed = 0;
+int jogSpeed = 200;
 char jogCommand = ' ';  // 'R', 'L', 'I'
 int position = 0;
 int pointA = 0;
 int pointB = 0;
-int shuttleTime = 0;
+int speed1 = 0;
+int speed2 = 0;
 int shuttleLoops = 0;
 char calCommand = ' ';  // 'C', 'R', 'L'
 
@@ -252,17 +253,16 @@ void loop() {
       }
       
     } else if (modeCurrent == POSITIONING) {
-         safetyCheck();
+        //safetyCheck();
         handlePositioning(position);
 
     } else if (modeCurrent == JOGGING) {
-         safetyCheck();
-
-      handleJogging(jogSpeed , jogCommand);
+        //safetyCheck();
+        handleJogging(jogSpeed , jogCommand);
     }
     else if (modeCurrent == AB_SHUTTLE) {
-         safetyCheck();
-        handleABShuttle();
+        safetyCheck();
+        handleABShuttle(pointA, pointB, speed1, speed2, shuttleLoops) ;
     }
 
     // Periodic status print during calibration

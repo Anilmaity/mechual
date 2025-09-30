@@ -122,41 +122,59 @@ bool parsePositionMode(String& cmd) {
 }
 
 bool parseABShuttleMode(String &cmd) {
-  int aPos = cmd.indexOf("X");
-  int bPos = cmd.indexOf("Y", aPos);
-  int tPos = cmd.indexOf("T", bPos);
-  int lPos = cmd.indexOf("L", tPos);
+  // Check for "M AB , " prefix
+  if (!cmd.startsWith("M AB , ")) return false;
 
-  if (aPos < 0 || bPos < 0 || tPos < 0 || lPos < 0) return false;
+  // Remove prefix and trailing period
+  String cleanedCmd = cmd.substring(7); // Skip "M AB , "
+  if (cleanedCmd.endsWith(".")) {
+    cleanedCmd = cleanedCmd.substring(0, cleanedCmd.length() - 1); // Remove "."
+  }
 
-  // Extract A
-  String aStr = cmd.substring(aPos + 1, bPos);  // from after 'A' to before 'B'
-  aStr.replace(",", "");
-  aStr.trim();
-  pointA = aStr.toInt();
+  // Find delimiters
+  int xPos = cleanedCmd.indexOf("X");
+  int yPos = cleanedCmd.indexOf("Y", xPos);
+  int s1Pos = cleanedCmd.indexOf("S1", yPos);
+  int s2Pos = cleanedCmd.indexOf("S2", s1Pos);
+  int lPos = cleanedCmd.indexOf("L", s2Pos);
 
-  // Extract B
-  String bStr = cmd.substring(bPos + 1, tPos);  // from after 'B' to before 'T'
-  bStr.replace(",", "");
-  bStr.trim();
+  // Validate delimiter positions
+  if (xPos < 0 || yPos < 0 || s1Pos < 0 || s2Pos < 0 || lPos < 0) return false;
 
-  pointB = bStr.toInt();
+  // Extract X (pointA)
+  String xStr = cleanedCmd.substring(xPos + 1, yPos);
+  xStr.replace(",", "");
+  xStr.trim();
+  pointA = xStr.toInt();
 
-  // Extract T
-  String tStr = cmd.substring(tPos + 1, lPos);
-  tStr.replace(",", "");
-  tStr.trim();
-  shuttleTime = tStr.toInt();
+  // Extract Y (pointB)
+  String yStr = cleanedCmd.substring(yPos + 1, s1Pos);
+  yStr.replace(",", "");
+  yStr.trim();
+  pointB = yStr.toInt();
 
-  // Extract L
-  String lStr = cmd.substring(lPos + 1);  // till end
-  lStr.replace(".", "");
+  // Extract S1 (speed1)
+  String s1Str = cleanedCmd.substring(s1Pos + 2, s2Pos);
+  s1Str.replace(",", "");
+  s1Str.trim();
+  speed1 = s1Str.toInt();
+
+  // Extract S2 (speed2)
+  String s2Str = cleanedCmd.substring(s2Pos + 2, lPos);
+  s2Str.replace(",", "");
+  s2Str.trim();
+  speed2 = s2Str.toInt();
+
+  // Extract L (shuttleLoops)
+  String lStr = cleanedCmd.substring(lPos + 1);
   lStr.replace(",", "");
   lStr.trim();
   shuttleLoops = lStr.toInt();
 
   return true;
 }
+
+
 
 
 // Parser for Calibration Mode: "M CA , M C ."
@@ -195,8 +213,6 @@ void printParsedValues() {
     Serial.println(pointA);
     Serial.print("Point B: ");
     Serial.println(pointB);
-    Serial.print("Shuttle Time (s): ");
-    Serial.println(shuttleTime);
     Serial.print("Shuttle Loops: ");
     Serial.println(shuttleLoops);
   } else if (currentMode == "CA") {

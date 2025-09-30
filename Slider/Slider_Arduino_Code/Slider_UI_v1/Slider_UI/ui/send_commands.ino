@@ -22,13 +22,15 @@ void sendPositionMode(int pos) {
 }
 
 // Function to send AB Shuttle Mode command: "M AB , A 1000 , B 2000 , T 2 , L 2 ."
-void sendABShuttleMode(int a, int b, int t, int l) {
+void sendABShuttleMode(int a, int b, int s1, int s2, int l) {
   Serial1.print("M AB , X ");
   Serial1.print(a);
   Serial1.print(" , Y ");
   Serial1.print(b);
-  Serial1.print(" , T ");
-  Serial1.print(t);
+  Serial1.print(" , S1 ");
+  Serial1.print(s1);
+  Serial1.print(" , S2 ");
+  Serial1.print(s2);
   Serial1.print(" , L ");
   Serial1.print(l);
   Serial1.println(" .");
@@ -37,8 +39,10 @@ void sendABShuttleMode(int a, int b, int t, int l) {
   Serial.print(a);
   Serial.print(" , Y ");
   Serial.print(b);
-  Serial.print(" , T ");
-  Serial.print(t);
+  Serial.print(" , S1 ");
+  Serial.print(s1);
+  Serial.print(" , S2 ");
+  Serial.print(s2);
   Serial.print(" , L ");
   Serial.print(l);
   Serial.println(" .");
