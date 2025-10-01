@@ -5,11 +5,11 @@ void handleABShuttle(int A, int B, int speedAtoB, int speedBtoA, int loops) {
   
 
     //Ensure A < B for consistency
-    if (A > B) {
-        int temp = A;
-        A = B;
-        B = temp;
-    }
+    // if (A > B) {
+    //     int temp = A;
+    //     A = B;
+    //     B = temp;
+    // }
 
     // Set target position (A or B, adjusted by rightLimitPos)
     long target = goingToB ? (rightLimitPos + B) : (rightLimitPos + A);
@@ -35,7 +35,7 @@ void handleABShuttle(int A, int B, int speedAtoB, int speedBtoA, int loops) {
             goingToB = !goingToB;
 
             // Count cycle after completing A-to-B-to-A
-            if (!goingToB) {
+            if (goingToB) {
                 loopsDone++;
                 Serial.print("Completed loop ");
                 Serial.print(loopsDone);
