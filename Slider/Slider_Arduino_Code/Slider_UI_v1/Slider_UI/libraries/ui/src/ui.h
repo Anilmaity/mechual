@@ -58,7 +58,6 @@ LV_IMG_DECLARE(ui_img_16417679);    // assets/icon-park-solid_back.png
 LV_IMG_DECLARE(ui_img_hand_16725997_png);    // assets/hand_16725997.png
 LV_IMG_DECLARE(ui_img_adapt_10984466_png);    // assets/adapt_10984466.png
 LV_IMG_DECLARE(ui_img_time_14147652_png);    // assets/time_14147652.png
-LV_IMG_DECLARE(ui_img_rectangle_163_png);    // assets/Rectangle 163.png
 
 // UI INIT
 void ui_init(void);

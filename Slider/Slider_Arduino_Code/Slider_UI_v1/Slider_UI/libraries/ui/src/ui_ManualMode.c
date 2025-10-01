@@ -305,8 +305,8 @@ void ui_ManualMode_screen_init(void)
     lv_obj_remove_style_all(ui_Slider);
     lv_obj_set_width(ui_Slider, 462);
     lv_obj_set_height(ui_Slider, 157);
-    lv_obj_set_x(ui_Slider, -2);
-    lv_obj_set_y(ui_Slider, -132);
+    lv_obj_set_x(ui_Slider, 0);
+    lv_obj_set_y(ui_Slider, -150);
     lv_obj_set_align(ui_Slider, LV_ALIGN_CENTER);
     lv_obj_remove_flag(ui_Slider, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
@@ -456,8 +456,8 @@ void ui_ManualMode_screen_init(void)
     lv_obj_remove_style_all(ui_positionPM);
     lv_obj_set_width(ui_positionPM, 462);
     lv_obj_set_height(ui_positionPM, 157);
-    lv_obj_set_x(ui_positionPM, 3);
-    lv_obj_set_y(ui_positionPM, -153);
+    lv_obj_set_x(ui_positionPM, 0);
+    lv_obj_set_y(ui_positionPM, -150);
     lv_obj_set_align(ui_positionPM, LV_ALIGN_CENTER);
     lv_obj_remove_flag(ui_positionPM, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
