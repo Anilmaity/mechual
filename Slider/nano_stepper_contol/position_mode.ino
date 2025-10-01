@@ -6,53 +6,29 @@ void handlePositioning(long stepsFromRightLimit) {
     long target = rightLimitPos + stepsFromRightLimit;
     float targetSpeed = 0.0;
 
+    long pos = getStepsFromRight();
+
     // Check limit switches to determine if movement is safe
-    if ((stepsFromRightLimit < 0 && isLeftLimitTriggered()) || 
-        (stepsFromRightLimit > 0 && isRightLimitTriggered())) {
+    if ((stepsFromRightLimit  - pos <  0 && isRightLimitTriggered()) || 
+        (stepsFromRightLimit  - pos > 0 && isLeftLimitTriggered())) {
         targetSpeed = 0.0; // Stop if limit is triggered
         currentSpeed = 0.0;
         stepper.setSpeed(0.0);
         currentMode = IDLE;
-        Serial.println("Limit switch triggered. Stopping.");
+       // Serial.println("Limit switch triggered. Stopping.");
         return;
     }
 
-    // Calculate remaining distance
-    long distanceToGo = abs(stepper.distanceToGo());
-    
-    // Determine target speed with deceleration
-    if (distanceToGo > decelDistance) {
-        targetSpeed = jogSpeed; // Accelerate to full speed
-    } else {
-        // Linear deceleration based on remaining distance
-        targetSpeed = jogSpeed * (float)distanceToGo / decelDistance;
-        if (targetSpeed > jogSpeed) targetSpeed = jogSpeed; // Cap at jogSpeed
-    }
-
-    // Apply acceleration/deceleration ramp
-    if (currentSpeed < targetSpeed) {
-        currentSpeed += accelRate * 0.005; // Adjust for 5ms loop
-        if (currentSpeed > targetSpeed) currentSpeed = targetSpeed;
-    } else if (currentSpeed > targetSpeed) {
-        currentSpeed -= accelRate * 0.005; // Adjust for 5ms loop
-        if (currentSpeed < targetSpeed) currentSpeed = targetSpeed;
-    }
+   
 
     // Drive stepper to target position
-    stepper.setSpeed(stepsFromRightLimit < 0 ? -currentSpeed : currentSpeed);
+    //stepper.setSpeed(stepsFromRightLimit < 0 ? -currentSpeed : currentSpeed);
+    stepper.setMaxSpeed(jogSpeed);
     stepper.moveTo(target);
-    stepper.runSpeedToPosition();
+    stepper.run();
 
     
-    // Check if target reached
-    if (distanceToGo == 0) {
-        currentSpeed = 0.0; // Reset speed
-        stepper.setMaxSpeed(DEFAULT_STEPS_PER_SEC);
-        currentMode = IDLE;
-        // Serial.println("Position reached.");
-        // Serial.print("Current steps from right limit: ");
-        // Serial.println(stepsFromRightLimit);
-    }
+  
 }
 
 // void handlePositioning(long stepsFromRightLimit) {

@@ -204,6 +204,8 @@ bool parseCalibrationMode(String& cmd) {
   cmdStr.trim();
   if (cmdStr.length() == 1) {
     calCommand = cmdStr[0];  // 'C', 'R', 'L'
+    if (calCommand == 'C');
+      initiateRecalibration();
     return true;
   }
   return false;

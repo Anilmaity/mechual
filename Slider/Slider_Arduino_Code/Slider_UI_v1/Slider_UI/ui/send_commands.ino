@@ -15,7 +15,7 @@ void sendJogMode(int speed, char c) {  // c = 'R', 'L', or 'I'
 }
 
 // Function to send Position Mode command: "M PM , P 0 ."
-void sendPositionMode(int pos , int speed) {
+void sendPositionMode(int pos, int speed) {
   Serial1.print("M PM , P ");
   Serial1.print(pos);
   Serial1.print(" , S ");
@@ -48,7 +48,6 @@ void sendABShuttleMode(int a, int b, int s1, int s2, int l) {
   Serial.print(" , L ");
   Serial.print(l);
   Serial.println(" .");
-
 }
 
 // Function to send Calibration Mode command: "M CA , M C ."
@@ -56,7 +55,4 @@ void sendCalibrationMode(char c) {  // c = 'C', 'R', or 'L'
   Serial1.print("M CA , M ");
   Serial1.print(c);
   Serial1.println(" .");
-
 }
-
-

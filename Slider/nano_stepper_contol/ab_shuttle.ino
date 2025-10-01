@@ -2,8 +2,9 @@ void handleABShuttle(int A, int B, int speedAtoB, int speedBtoA, int loops) {
     static int loopsDone = 0;           // Tracks completed A-to-B-to-A cycles
     static bool goingToB = false;       // False: move to A; True: move to B
     static bool firstRun = true;        // Ensures first move is to A
+  
 
-    // Ensure A < B for consistency
+    //Ensure A < B for consistency
     if (A > B) {
         int temp = A;
         A = B;
