@@ -13,6 +13,7 @@ extern "C" {
 // SCREEN: ui_Splash
 extern void ui_Splash_screen_init(void);
 extern void ui_Splash_screen_destroy(void);
+extern void ui_event_Splash(lv_event_t * e);
 extern lv_obj_t * ui_Splash;
 extern lv_obj_t * ui_Image1;
 extern lv_obj_t * ui_Label9;

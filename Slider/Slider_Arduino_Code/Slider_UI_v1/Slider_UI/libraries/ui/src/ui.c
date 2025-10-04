@@ -9,7 +9,6 @@
 ///////////////////// VARIABLES ////////////////////
 
 // EVENTS
-void ui_event____initial_actions0(lv_event_t * e);
 lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
@@ -22,14 +21,6 @@ lv_obj_t * ui____initial_actions0;
 ///////////////////// ANIMATIONS ////////////////////
 
 ///////////////////// FUNCTIONS ////////////////////
-void ui_event____initial_actions0(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-
-    if(event_code == LV_EVENT_SCREEN_LOAD_START) {
-        _ui_screen_change(&ui_Blank, LV_SCR_LOAD_ANIM_FADE_ON, 500, 200, &ui_Blank_screen_init);
-    }
-}
 
 ///////////////////// SCREENS ////////////////////
 
@@ -48,9 +39,6 @@ void ui_init(void)
     ui_ABMode_screen_init();
     ui_Calibration_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
-    lv_obj_add_event_cb(ui____initial_actions0, ui_event____initial_actions0, LV_EVENT_ALL, NULL);
-
-    lv_disp_load_scr(ui____initial_actions0);
     lv_disp_load_scr(ui_Blank);
 }
 

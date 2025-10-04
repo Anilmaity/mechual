@@ -38534,6 +38534,7 @@
                   {
                     "nid": 1000749,
                     "strtype": "CHANGE SCREEN/Delay",
+                    "integer": 1000,
                     "InheritedType": 6
                   }
                 ],
@@ -38587,7 +38588,7 @@
     "uiExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI_v1/Slider_UI/./libraries/ui/src",
     "projectExportFolderPath": "C:/Projects/PycharmProjects/personal/mechual/Slider/Slider_Arduino_Code/Slider_UI_v1/Slider_UI",
     "custom_variable_prefix": "uic",
-    "backup_cnt": 47,
+    "backup_cnt": 50,
     "autosave_cnt": 0,
     "group_color_cnt": 0,
     "lvgl_version": "9.1.0",
@@ -38605,7 +38606,7 @@
     "naming": "Name",
     "naming_force_lowercase": false,
     "naming_add_subcomponent": false,
-    "nidcnt": 1001005,
+    "nidcnt": 1001017,
     "BitDepth": 16,
     "Name": "Slider_UI"
   }

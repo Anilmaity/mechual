@@ -11,6 +11,15 @@ lv_obj_t * ui_Image1 = NULL;
 lv_obj_t * ui_Label9 = NULL;
 lv_obj_t * ui_Spinner2 = NULL;
 // event funtions
+void ui_event_Splash(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_active()) == LV_DIR_BOTTOM) {
+        lv_indev_wait_release(lv_indev_active());
+        _ui_screen_change(&ui_Home, LV_SCR_LOAD_ANIM_FADE_ON, 500, 1000, &ui_Home_screen_init);
+    }
+}
 
 // build funtions
 
@@ -47,6 +56,7 @@ void ui_Splash_screen_init(void)
     lv_obj_set_align(ui_Spinner2, LV_ALIGN_CENTER);
     lv_obj_remove_flag(ui_Spinner2, LV_OBJ_FLAG_CLICKABLE);      /// Flags
 
+    lv_obj_add_event_cb(ui_Splash, ui_event_Splash, LV_EVENT_ALL, NULL);
     uic_Image1 = ui_Image1;
 
 }
