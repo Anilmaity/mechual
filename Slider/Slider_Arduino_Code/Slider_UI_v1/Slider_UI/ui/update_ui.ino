@@ -23,7 +23,6 @@ extern lv_obj_t *ui_BackA, *ui_BackA, *ui_save, *ui_SwitchCS, *ui_Panel4;
 
 //CALIBRATION SCREEN OBJET
 extern lv_obj_t *uic_homebtn, *ui_calibrate, *uic_left, *uic_right;
-extern lv_obj_t *ui_rightlimit, *ui_leftlimit;
 
 // LVGL slider objects for manual mode
 extern lv_obj_t *speedSet_slider, *positionSlider;
@@ -366,18 +365,7 @@ void setSlider() {
     lv_label_set_text(ui_SliderPositionAB, String(int(position / DIVIDER_STEP_MM)).c_str());
   }
 
-  if (limitright) {
-    lv_obj_set_style_bg_color(ui_rightlimit, lv_color_hex(0x00FF00), LV_PART_MAIN | LV_STATE_DEFAULT);
 
-  } else {
-    lv_obj_set_style_bg_color(ui_rightlimit, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-  }
-  if (limitleft) {
-    lv_obj_set_style_bg_color(ui_leftlimit, lv_color_hex(0x00FF00), LV_PART_MAIN | LV_STATE_DEFAULT);
-
-  } else {
-    lv_obj_set_style_bg_color(ui_leftlimit, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-  }
 
   //6BB7B1
 }
