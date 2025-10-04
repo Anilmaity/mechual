@@ -6,40 +6,74 @@ void handleJogging(float rpm, char direction) {
 
     long pos = getStepsFromRight();
 
-    if ((pos < 80 || totalStepsBetweenLimits - pos < 80 ) && calibrated){
-      rpm = CALIBRATION_SPEED;
-    }
+    // if ((pos < 80 || totalStepsBetweenLimits - pos < 80 ) && calibrated){
+    //   rpm = CALIBRATION_SPEED;
+    // }
 
+        
+        if (getRotationDirection() == 1 && direction == 'R' ) // right
+        {
+        stepper.setMaxSpeed(stepper.speed());
+        stepper.stop();
+        stepper.run(); 
+        }
+        else if (direction == 'R' && !isRightLimitTriggered()  ) {
 
-        if (direction == 'R' && !isRightLimitTriggered() ) {
+        stepper.moveTo(rightLimitPos+1);
+        stepper.setAcceleration(DEFAULT_ACCELERATION);
 
-        stepper.moveTo(-LARGE_DISTANCE);
-        stepper.setAcceleration(rpm);
-
-        stepper.setMaxSpeed(-rpm);
+        stepper.setMaxSpeed(rpm);
         stepper.run();        
         }
 
 
 
-        else if (direction == 'L' && !isLeftLimitTriggered() ) {
 
-        stepper.moveTo(LARGE_DISTANCE);
-        stepper.setAcceleration(rpm);
+         if (getRotationDirection() == -1  && direction == 'L' ) // right
+            {
+                stepper.setMaxSpeed(stepper.speed());
+                stepper.stop();
+                stepper.run(); 
+            }
 
+
+        else if (direction == 'L' && !isLeftLimitTriggered() ) 
+        {
+
+        stepper.moveTo(leftLimitPos);
+        stepper.setAcceleration(DEFAULT_ACCELERATION);
         stepper.setMaxSpeed(rpm);
         stepper.run();  
 
         }
-        else{
-        stepper.setMaxSpeed(int(rpm/1.5));
-        stepper.stop();
+
+        else if  (direction == 'I'){
+
+            stepper.setMaxSpeed(stepper.speed());
+            stepper.stop();
+            stepper.run(); 
+        }
+      
+
         stepper.run();  
 
-        }
+
     
 }
 
+
+int getRotationDirection() {
+  long currentPos = stepper.currentPosition();
+  long targetPos = stepper.targetPosition();
+
+  if (targetPos > currentPos) {
+    return 1; // Clockwise
+  } else if (targetPos < currentPos) {
+    return -1; // Counterclockwise
+  } else {
+    return 0; // Stopped or no movement
+  }
+}
 
 
 // // Handle jogging mode with speed in RPM and direction (R, L, I)

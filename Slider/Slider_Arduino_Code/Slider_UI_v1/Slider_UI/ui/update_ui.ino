@@ -1,5 +1,5 @@
 // Global variable for battery level
-int battery_level = 0;
+int battery_level = 50;
 
 // LVGL objects (assuming they are defined in a UI setup file)
 extern lv_obj_t *uic_Header_battery;
@@ -19,7 +19,7 @@ extern lv_obj_t *ui_leftMove, *ui_rightMove, *ui_Button13;
 //AB OBJECT
 extern lv_obj_t *uic_SetA, *uic_SetB, *uic_SetAValue1, *uic_SetBValue1, *uic_speedSetAB, *uic_speedSetBA, *ui_SpeedValue3, *uic_Plusloop, *uic_Minusloop, *uic_PlusBA, *uic_MinusBA;
 extern lv_obj_t *uic_SpeedValueBA, *uic_Start, *uic_Stop;
-extern lv_obj_t *ui_BackA, *ui_BackA, *ui_save, *ui_SwitchCS, *ui_Panel4;
+extern lv_obj_t *ui_BackA, *ui_BackA, *ui_save, *ui_SwitchCS, *ui_Panel4, *uic_PlusSetA, *uic_PlusSetB, *uic_MinusSetA, *uic_MinusSetB;
 
 //CALIBRATION SCREEN OBJET
 extern lv_obj_t *uic_homebtn, *ui_calibrate, *uic_left, *uic_right;
@@ -67,7 +67,7 @@ void read_manualmode() {
       btn_idlePrev = false;
     }
     // Your code here (send command, toggle relay, etc.)
-  } else if (!btn_rightNow && !btn_leftNow && !btn_idlePrev) {
+  } else if ((!btn_rightNow || !btn_leftNow) && !btn_idlePrev) {
     Serial.println(String("M JM , S ") + speedVal + " , C I.");
     Serial1.println(String("M JM , S ") + speedVal + " , C I.");
     btn_idlePrev = true;
@@ -80,7 +80,7 @@ void read_manualmode() {
 
   if (lv_obj_has_state(ui_Button13, LV_STATE_PRESSED)) {
     if (millis() - PM_buttonClick > 400) {
-      sendPositionMode(posVal,speedVal);
+      sendPositionMode(posVal, speedVal);
       // Your code here (send command, toggle relay, etc.)
       PM_buttonClick = millis();
     }
@@ -91,7 +91,8 @@ void read_manualmode() {
   // // Create Manual mode sliders
 
   speedVal = lv_slider_get_value(ui_speedSet) * DIVIDER_STEP_MM;
-  posVal = int(lv_slider_get_value(ui_positionSlider) * DIVIDER_STEP_MM);
+  posVal = (int)round(lv_slider_get_value(ui_positionSlider) * (float)DIVIDER_STEP_MM);
+
 }
 
 
@@ -128,7 +129,7 @@ void read_ABMode() {
 
   if (lv_obj_has_state(ui_BackA, LV_STATE_PRESSED)) {
     if (millis() - AB_buttonClick > 200) {
-      sendPositionMode(PointA,speedVal);
+      sendPositionMode(PointA, speedVal);
 
       AB_buttonClick = millis();
     }
@@ -136,7 +137,7 @@ void read_ABMode() {
 
   if (lv_obj_has_state(ui_BackB, LV_STATE_PRESSED)) {
     if (millis() - AB_buttonClick > 200) {
-      sendPositionMode(PointB,speedVal);
+      sendPositionMode(PointB, speedVal);
 
       AB_buttonClick = millis();
     }
@@ -196,7 +197,7 @@ void read_ABMode() {
       if (int(BtoASpeed / DIVIDER_STEP_MM) - 1 >= 1) {
 
         BtoASpeed = BtoASpeed - 1;
-      char buffer[16];
+        char buffer[16];
 
         lv_slider_set_value(uic_speedSetBA, int(BtoASpeed / DIVIDER_STEP_MM), LV_ANIM_ON);
         snprintf(buffer, sizeof(buffer), "%d mm/s", (int)(BtoASpeed / DIVIDER_STEP_MM));
@@ -224,6 +225,8 @@ void read_ABMode() {
 
     // Your code here (send command, toggle relay, etc.)
   }
+
+
   if (lv_obj_has_state(uic_Minusloop, LV_STATE_PRESSED)) {
     if (millis() - AB_buttonClick > 200) {
       if (ABLoop - 1 >= 1) {
@@ -235,6 +238,88 @@ void read_ABMode() {
 
     // Your code here (send command, toggle relay, etc.)
   }
+
+
+
+
+  // LOOPS
+  if (lv_obj_has_state(uic_PlusSetA, LV_STATE_PRESSED)) {
+
+    if ((((PointA / DIVIDER_STEP_MM) - 1) * DIVIDER_STEP_MM) < TS) {
+
+
+      if (millis() - AB_buttonClick > 200) {
+        PointA = ((PointA / DIVIDER_STEP_MM) + 1) * DIVIDER_STEP_MM;
+        char buffer[16];
+        snprintf(buffer, sizeof(buffer), "%d mm", (int)(PointA / DIVIDER_STEP_MM));
+        lv_label_set_text(uic_SetAValue1, buffer);
+
+
+        AB_buttonClick = millis();
+      }
+    }
+
+    // Your code here (send command, toggle relay, etc.)
+  }
+
+
+  if (lv_obj_has_state(uic_MinusSetA, LV_STATE_PRESSED)) {
+    if (millis() - AB_buttonClick > 200) {
+
+      if ((((PointA / DIVIDER_STEP_MM) - 1) * DIVIDER_STEP_MM) > 0) {
+
+
+        PointA = ((PointA / DIVIDER_STEP_MM) - 1) * DIVIDER_STEP_MM;
+        char buffer[16];
+        snprintf(buffer, sizeof(buffer), "%d mm", (int)(PointA / DIVIDER_STEP_MM));
+        lv_label_set_text(uic_SetAValue1, buffer);
+      }
+      AB_buttonClick = millis();
+    }
+
+    // Your code here (send command, toggle relay, etc.)
+  }
+
+
+  // LOOPS
+  if (lv_obj_has_state(uic_PlusSetB, LV_STATE_PRESSED)) {
+
+    if (millis() - AB_buttonClick > 200) {
+
+
+      if ((((PointB / DIVIDER_STEP_MM) + 1) * DIVIDER_STEP_MM) < TS) {
+
+        PointB = ((PointB / DIVIDER_STEP_MM) + 1) * DIVIDER_STEP_MM;
+        char buffer[16];
+        snprintf(buffer, sizeof(buffer), "%d mm", (int)(PointB / DIVIDER_STEP_MM));
+        lv_label_set_text(uic_SetBValue1, buffer);
+
+        AB_buttonClick = millis();
+      }
+    }
+
+    // Your code here (send command, toggle relay, etc.)
+  }
+
+
+  if (lv_obj_has_state(uic_MinusSetB, LV_STATE_PRESSED)) {
+    if (millis() - AB_buttonClick > 200) {
+
+
+      if ((((PointB / DIVIDER_STEP_MM) - 1) * DIVIDER_STEP_MM) > 0) {
+
+        PointB = ((PointB / DIVIDER_STEP_MM) - 1) * DIVIDER_STEP_MM;
+        char buffer[16];
+        snprintf(buffer, sizeof(buffer), "%d mm", (int)(PointB / DIVIDER_STEP_MM));
+        lv_label_set_text(uic_SetBValue1, buffer);
+      }
+
+      AB_buttonClick = millis();
+    }
+
+    // Your code here (send command, toggle relay, etc.)
+  }
+
 
 
   // // Create Manual mode sliders
@@ -258,8 +343,8 @@ void read_calibrate() {
   if (lv_obj_has_state(uic_homebtn, LV_STATE_PRESSED)) {
 
     if (millis() - CA_buttonClick > 200) {
-        sendPositionMode(int(TS / 2),speedVal);
-        CA_buttonClick = millis();
+      sendPositionMode(int(TS / 2), speedVal);
+      CA_buttonClick = millis();
     }
 
     // Your code here (send command, toggle relay, etc.)
@@ -267,7 +352,7 @@ void read_calibrate() {
   if (lv_obj_has_state(uic_left, LV_STATE_PRESSED)) {
 
     if (millis() - CA_buttonClick > 200) {
-        sendPositionMode(0,speedVal);
+      sendPositionMode(0, speedVal);
       CA_buttonClick = millis();
     }
 
@@ -276,7 +361,7 @@ void read_calibrate() {
   if (lv_obj_has_state(uic_right, LV_STATE_PRESSED)) {
     if (millis() - CA_buttonClick > 200) {
 
-        sendPositionMode(TS,speedVal);
+      sendPositionMode(TS, speedVal);
 
       CA_buttonClick = millis();
     }
@@ -323,13 +408,15 @@ void read_calibrate() {
 
 
 void updatebattery() {
-  battery_level = Battery;                                    // Returns 0–1023
-  int scaled_battery = map(battery_level, 18.5, 21, 0, 100);  // Map to 0–100
+  battery_level =  (0.3*battery_level) +  0.7*(Battery* 0.2445);  // Returns 0–1023
 
-  lv_slider_set_value(uic_Header_battery, scaled_battery, LV_ANIM_ON);
-  lv_slider_set_value(uic_Header1_battery, scaled_battery, LV_ANIM_ON);
-  lv_slider_set_value(uic_Header2_battery, scaled_battery, LV_ANIM_ON);
-  lv_slider_set_value(uic_Header4_battery, scaled_battery, LV_ANIM_ON);
+
+  //int scaled_battery = map(battery_level, 18.5, 21, 0, 100);  // Map to 0–100
+
+  lv_slider_set_value(uic_Header_battery, battery_level, LV_ANIM_ON);
+  lv_slider_set_value(uic_Header1_battery, battery_level, LV_ANIM_ON);
+  lv_slider_set_value(uic_Header2_battery, battery_level, LV_ANIM_ON);
+  lv_slider_set_value(uic_Header4_battery, battery_level, LV_ANIM_ON);
 }
 
 void update_ui() {
@@ -359,10 +446,10 @@ void setSlider() {
     lv_slider_set_value(uic_positionAB, int(position / DIVIDER_STEP_MM), LV_ANIM_ON);
 
 
-    lv_label_set_text(ui_SliderPositionJM, String(int(position / DIVIDER_STEP_MM)).c_str());
-    lv_label_set_text(ui_SliderPositionPM, String(int(position / DIVIDER_STEP_MM)).c_str());
-    lv_label_set_text(ui_SliderPositionCA, String(int(position / DIVIDER_STEP_MM)).c_str());
-    lv_label_set_text(ui_SliderPositionAB, String(int(position / DIVIDER_STEP_MM)).c_str());
+    lv_label_set_text(ui_SliderPositionJM, String((int)round((float)position / DIVIDER_STEP_MM)).c_str());
+    lv_label_set_text(ui_SliderPositionPM, String((int)round((float)position / DIVIDER_STEP_MM)).c_str());
+    lv_label_set_text(ui_SliderPositionCA, String((int)round((float)position / DIVIDER_STEP_MM)).c_str());
+    lv_label_set_text(ui_SliderPositionAB, String((int)round((float)position / DIVIDER_STEP_MM)).c_str());
   }
 
 

@@ -131,11 +131,16 @@ void readlogs() {
         limitleft = (val == "1");
       } else if (key == "TS") {
         TS = val.toInt();
+        calibrated = true;
       } else {
         Serial.print("Unknown key: "); Serial.println(key);
       }
     }
   }
+
+  
+
+
 }
 
 

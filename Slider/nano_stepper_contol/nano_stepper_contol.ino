@@ -33,12 +33,12 @@ const float CALIBRATION_SPEED = 200.0;          // Default RPM
 const float CurrentSpeed = 200;
 
 const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
-const float DEFAULT_ACCELERATION = 400;                    // Acceleration
+const float DEFAULT_ACCELERATION = 1200;                    // Acceleration 400 is good walue
 const long LARGE_DISTANCE = 200000L;   // Arbitrary large distance for limit seeking
-const unsigned long TIMEOUT_MS = 100000;  // Timeout in milliseconds per phase
-const float BATTERY_DIVIDER_RATIO = 0.00489*4.82; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
-
-
+const unsigned long TIMEOUT_MS = 1000000;  // Timeout in milliseconds per phase
+const float BATTERY_DIVIDER_RATIO = 0.00489*4.95; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
+float batt_percentage = 0;
+long int lastPrintlong = 0;
 // Emergency state
 bool emergency = false;
 
@@ -92,7 +92,7 @@ void configureStepper() {
     stepper.setEnablePin(EN_PIN);
     stepper.setPinsInverted(false, false, true); // Invert enable pin (LOW = enabled)
     stepper.enableOutputs();
-    stepper.setMinPulseWidth(3);  // Set minimum pulse width to 4 µs for DM542
+    stepper.setMinPulseWidth(20);  // Set minimum pulse width to 4 µs for DM542
 
     pinMode(3, OUTPUT);
 
@@ -104,7 +104,7 @@ void configureStepper() {
 
 // Initialize hardware pins and peripherals
 void initializeHardware() {
-    Serial.begin(1000000);               // High baud rate for serial
+    Serial.begin(2000000);               // High baud rate for serial
     while (!Serial) {}                   // Wait for serial to initialize
     
     pinMode(LIMIT_SWITCH_RIGHT, INPUT_PULLUP);
@@ -199,12 +199,14 @@ void safetyCheck() {
 // Get battery voltage
 float getBatteryVoltage() {
     float adc = analogRead(BATTERY_PIN);
-    return adc * BATTERY_DIVIDER_RATIO;  // Adjust ratio for actual voltage
+    return (adc);  // Adjust ratio for actual voltage
 }
 
 void sendlogs() {
     long pos = getStepsFromRight();
-    float bat = getBatteryVoltage();
+    float bat = getBatteryVoltage() ;
+
+
     int e = emergency ? 1 : 0;
     int lr = isRightLimitTriggered() ? 1 : 0;
     int ll = isLeftLimitTriggered() ? 1 : 0;
@@ -240,6 +242,7 @@ void sendshortlogs() {
 void setup() {
     initializeHardware();
     configureStepper();
+        sendlogs();
 
 }
 
@@ -272,17 +275,18 @@ void loop() {
         handleJogging(jogSpeed , jogCommand);
     }
     else if (modeCurrent == AB_SHUTTLE) {
-        safetyCheck();
+        //safetyCheck();
         handleABShuttle(pointA, pointB, speed1, speed2, shuttleLoops) ;
     }
-    else if(modeCurrent == IDLE){
-    if (millis() - lastPrint >= 1000) {
-        //sendshortlogs();
-        sendlogs();
-        lastPrint = millis();
-    }
+    // else if(modeCurrent == IDLE){
 
-    }
+    // if (millis() - lastPrint >= 1000) {
+    //     //sendshortlogs();
+    //     sendlogs();
+    //     lastPrint = millis();
+    // }
+
+    // }
 
     // Periodic status print during calibration
     // if (modeCurrent == CALIBRATING && millis() - lastPrint >= 1000) {
@@ -290,13 +294,20 @@ void loop() {
     //     lastPrint = millis();
     // }
 
-    if (millis() - lastPrint >= 100) {
+    if (millis() - lastPrint >= 500) {
         sendshortlogs();
+         //sendlogs();
+
         //sendlogs();
 
         lastPrint = millis();
     }
 
+    if (millis() - lastPrintlong >= 10000 && calibrated) {
+        //sendshortlogs();
+        sendlogs();
+        lastPrintlong = millis();
+    }
 
 }
 
