@@ -2,13 +2,14 @@ void handleABShuttle(int A, int B, int speedAtoB, int speedBtoA, int loops) {
     static int loopsDone = 0;           // Tracks completed A-to-B-to-A cycles
     static bool goingToB = false;       // False: move to A; True: move to B
     static bool firstRun = true;        // Ensures first move is to A
+  
 
-    // Ensure A < B for consistency
-    if (A > B) {
-        int temp = A;
-        A = B;
-        B = temp;
-    }
+    //Ensure A < B for consistency
+    // if (A > B) {
+    //     int temp = A;
+    //     A = B;
+    //     B = temp;
+    // }
 
     // Set target position (A or B, adjusted by rightLimitPos)
     long target = goingToB ? (rightLimitPos + B) : (rightLimitPos + A);
@@ -34,7 +35,7 @@ void handleABShuttle(int A, int B, int speedAtoB, int speedBtoA, int loops) {
             goingToB = !goingToB;
 
             // Count cycle after completing A-to-B-to-A
-            if (!goingToB) {
+            if (goingToB) {
                 loopsDone++;
                 Serial.print("Completed loop ");
                 Serial.print(loopsDone);

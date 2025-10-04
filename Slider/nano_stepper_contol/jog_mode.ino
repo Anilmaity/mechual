@@ -1,52 +1,43 @@
-// Global or static variables
-float currentSpeed = 0.0;           // current applied speed (steps/sec)
-const float accelRate = 1;       // steps/sec^2 (acceleration rate)
 
 // Handle jogging mode with custom accel/decel
 void handleJogging(float rpm, char direction) {
     static unsigned long lastUpdate = 0;
     unsigned long now = millis();
 
-    float targetSpeed = 0.0;
+    long pos = getStepsFromRight();
 
-    if (direction == 'I') {
-        targetSpeed = 0.0;   // stop
-        currentMode = IDLE;
+    if ((pos < 80 || totalStepsBetweenLimits - pos < 80 ) && calibrated){
+      rpm = CALIBRATION_SPEED;
     }
-    else {
-        // Convert RPM → steps/sec
-        // float stepsPerSec = (rpm * STEPS_PER_REV) / 60.0;
-        float stepsPerSec = rpm;  // (you already use raw steps/sec)
 
 
+        if (direction == 'R' && !isRightLimitTriggered() ) {
 
-        if (direction == 'L' && !isLeftLimitTriggered() ) {
-            targetSpeed = stepsPerSec;
-        }
-        else if (direction == 'R' && !isRightLimitTriggered() ) {
-            targetSpeed = -stepsPerSec;
+        stepper.moveTo(-LARGE_DISTANCE);
+        stepper.setAcceleration(rpm);
+
+        stepper.setMaxSpeed(-rpm);
+        stepper.run();        
         }
 
-        else {
-            targetSpeed = 0.0;  // hit limit → stop
+
+
+        else if (direction == 'L' && !isLeftLimitTriggered() ) {
+
+        stepper.moveTo(LARGE_DISTANCE);
+        stepper.setAcceleration(rpm);
+
+        stepper.setMaxSpeed(rpm);
+        stepper.run();  
+
         }
-    }
+        else{
+        stepper.setMaxSpeed(int(rpm/1.5));
+        stepper.stop();
+        stepper.run();  
 
-    // Apply acceleration ramp
-    if (currentSpeed < targetSpeed) {
-        currentSpeed += accelRate;
-        if (currentSpeed > targetSpeed) currentSpeed = targetSpeed;
-    }
-    else if (currentSpeed > targetSpeed) {
-        currentSpeed -= accelRate;
-        if (currentSpeed < targetSpeed) currentSpeed = targetSpeed;
-    }
-
-    // Drive stepper
-    if (currentSpeed != 0.0) {
-        stepper.setSpeed(currentSpeed);
-        stepper.runSpeed();
-    }
+        }
+    
 }
 
 

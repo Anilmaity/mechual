@@ -29,12 +29,12 @@ const long STEPS_PER_REV = FULL_STEPS_PER_REV * MICROSTEPS;
 
 // Default operational settings
 const float DEFAULT_RPM = 200.0;          // Default RPM
-const float CALIBRATION_SPEED = 400.0;          // Default RPM
+const float CALIBRATION_SPEED = 200.0;          // Default RPM
 const float CurrentSpeed = 200;
 
 const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
-const float DEFAULT_ACCELERATION = 200;                    // Acceleration
-const long LARGE_DISTANCE = 100000L;   // Arbitrary large distance for limit seeking
+const float DEFAULT_ACCELERATION = 400;                    // Acceleration
+const long LARGE_DISTANCE = 200000L;   // Arbitrary large distance for limit seeking
 const unsigned long TIMEOUT_MS = 100000;  // Timeout in milliseconds per phase
 const float BATTERY_DIVIDER_RATIO = 0.00489*4.82; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
 
@@ -92,6 +92,14 @@ void configureStepper() {
     stepper.setEnablePin(EN_PIN);
     stepper.setPinsInverted(false, false, true); // Invert enable pin (LOW = enabled)
     stepper.enableOutputs();
+    stepper.setMinPulseWidth(3);  // Set minimum pulse width to 4 µs for DM542
+
+    pinMode(3, OUTPUT);
+
+    // TCCR2A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM21) | _BV(WGM20);
+    // TCCR2B = _BV(CS22);
+    // OCR2A = 180;
+    // OCR2B = 50;
 }
 
 // Initialize hardware pins and peripherals
@@ -183,6 +191,8 @@ void safetyCheck() {
         sendlogs();
         Serial.println("Right limit hit, stopped.");
     }
+  
+
 }
 
 
