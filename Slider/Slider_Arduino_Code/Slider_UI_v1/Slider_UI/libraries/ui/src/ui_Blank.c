@@ -22,6 +22,9 @@ void ui_Blank_screen_init(void)
 {
     ui_Blank = lv_obj_create(NULL);
     lv_obj_remove_flag(ui_Blank, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_radius(ui_Blank, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(ui_Blank, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_Blank, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_add_event_cb(ui_Blank, ui_event_Blank, LV_EVENT_ALL, NULL);
 

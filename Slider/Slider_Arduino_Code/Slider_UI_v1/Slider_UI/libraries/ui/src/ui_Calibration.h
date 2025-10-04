@@ -34,8 +34,6 @@ extern lv_obj_t * ui_right;
 extern lv_obj_t * ui_Label15;
 extern lv_obj_t * ui_Slider5;
 extern lv_obj_t * ui_Image12;
-extern lv_obj_t * ui_rightlimit;
-extern lv_obj_t * ui_leftlimit;
 extern lv_obj_t * ui_Container7;
 extern lv_obj_t * ui_Image8;
 extern lv_obj_t * ui_SliderPositionCA;
@@ -47,8 +45,6 @@ extern lv_obj_t * uic_calibrate;
 extern lv_obj_t * uic_left;
 extern lv_obj_t * uic_homebtn;
 extern lv_obj_t * uic_right;
-extern lv_obj_t * uic_rightlimit;
-extern lv_obj_t * uic_leftlimit;
 extern lv_obj_t * uic_SliderPositionCA;
 extern lv_obj_t * uic_positionCM;
 

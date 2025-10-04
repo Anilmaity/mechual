@@ -41,6 +41,7 @@ extern "C" {
 
 // EVENTS
 
+void ui_event____initial_actions0(lv_event_t * e);
 extern lv_obj_t * ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS

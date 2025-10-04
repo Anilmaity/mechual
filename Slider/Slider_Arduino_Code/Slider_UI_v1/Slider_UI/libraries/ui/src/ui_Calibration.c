@@ -7,8 +7,6 @@
 
 lv_obj_t * uic_positionCM;
 lv_obj_t * uic_SliderPositionCA;
-lv_obj_t * uic_leftlimit;
-lv_obj_t * uic_rightlimit;
 lv_obj_t * uic_right;
 lv_obj_t * uic_homebtn;
 lv_obj_t * uic_left;
@@ -33,8 +31,6 @@ lv_obj_t * ui_right = NULL;
 lv_obj_t * ui_Label15 = NULL;
 lv_obj_t * ui_Slider5 = NULL;
 lv_obj_t * ui_Image12 = NULL;
-lv_obj_t * ui_rightlimit = NULL;
-lv_obj_t * ui_leftlimit = NULL;
 lv_obj_t * ui_Container7 = NULL;
 lv_obj_t * ui_Image8 = NULL;
 lv_obj_t * ui_SliderPositionCA = NULL;
@@ -277,28 +273,6 @@ void ui_Calibration_screen_init(void)
     lv_obj_add_flag(ui_Image12, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
     lv_obj_remove_flag(ui_Image12, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_rightlimit = lv_obj_create(ui_Slider5);
-    lv_obj_set_width(ui_rightlimit, 24);
-    lv_obj_set_height(ui_rightlimit, 22);
-    lv_obj_set_x(ui_rightlimit, 175);
-    lv_obj_set_y(ui_rightlimit, 6);
-    lv_obj_set_align(ui_rightlimit, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_rightlimit, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_radius(ui_rightlimit, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_rightlimit, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_rightlimit, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_leftlimit = lv_obj_create(ui_Slider5);
-    lv_obj_set_width(ui_leftlimit, 24);
-    lv_obj_set_height(ui_leftlimit, 22);
-    lv_obj_set_x(ui_leftlimit, -187);
-    lv_obj_set_y(ui_leftlimit, 7);
-    lv_obj_set_align(ui_leftlimit, LV_ALIGN_CENTER);
-    lv_obj_remove_flag(ui_leftlimit, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_radius(ui_leftlimit, 15, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(ui_leftlimit, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_leftlimit, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
     ui_Container7 = lv_obj_create(ui_Slider5);
     lv_obj_remove_style_all(ui_Container7);
     lv_obj_set_width(ui_Container7, 452);
@@ -362,8 +336,6 @@ void ui_Calibration_screen_init(void)
     uic_left = ui_left;
     uic_homebtn = ui_homebtn;
     uic_right = ui_right;
-    uic_rightlimit = ui_rightlimit;
-    uic_leftlimit = ui_leftlimit;
     uic_SliderPositionCA = ui_SliderPositionCA;
     uic_positionCM = ui_positionCM;
 
@@ -398,10 +370,6 @@ void ui_Calibration_screen_destroy(void)
     ui_Label15 = NULL;
     ui_Slider5 = NULL;
     ui_Image12 = NULL;
-    uic_rightlimit = NULL;
-    ui_rightlimit = NULL;
-    uic_leftlimit = NULL;
-    ui_leftlimit = NULL;
     ui_Container7 = NULL;
     ui_Image8 = NULL;
     uic_SliderPositionCA = NULL;
