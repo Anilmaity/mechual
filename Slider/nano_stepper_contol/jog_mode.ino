@@ -10,14 +10,8 @@ void handleJogging(float rpm, char direction) {
     //   rpm = CALIBRATION_SPEED;
     // }
 
-        
-        if (getRotationDirection() == 1 && direction == 'R' ) // right
-        {
-        stepper.setMaxSpeed(stepper.speed());
-        stepper.stop();
-        stepper.run(); 
-        }
-        else if (direction == 'R' && !isRightLimitTriggered()  ) {
+      
+        if (direction == 'R' && !isRightLimitTriggered()  ) {
 
         stepper.moveTo(rightLimitPos+1);
         stepper.setAcceleration(DEFAULT_ACCELERATION);
@@ -29,15 +23,8 @@ void handleJogging(float rpm, char direction) {
 
 
 
-         if (getRotationDirection() == -1  && direction == 'L' ) // right
-            {
-                stepper.setMaxSpeed(stepper.speed());
-                stepper.stop();
-                stepper.run(); 
-            }
 
-
-        else if (direction == 'L' && !isLeftLimitTriggered() ) 
+       if (direction == 'L' && !isLeftLimitTriggered() ) 
         {
 
         stepper.moveTo(leftLimitPos);

@@ -33,7 +33,7 @@ const float CALIBRATION_SPEED = 200.0;          // Default RPM
 const float CurrentSpeed = 200;
 
 const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
-const float DEFAULT_ACCELERATION = 1200;                    // Acceleration 400 is good walue
+const float DEFAULT_ACCELERATION = 800;                    // Acceleration 400 is good walue
 const long LARGE_DISTANCE = 200000L;   // Arbitrary large distance for limit seeking
 const unsigned long TIMEOUT_MS = 1000000;  // Timeout in milliseconds per phase
 const float BATTERY_DIVIDER_RATIO = 0.00489*4.95; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
