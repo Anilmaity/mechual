@@ -55,6 +55,7 @@ bool parseCommand(String& cmd) {
     return parsePositionMode(cmd);
   } else if (currentMode == "AB") {
     modeCurrent = AB_SHUTTLE;
+    resetAB();
     start_position = getStepsFromRight();
     return parseABShuttleMode(cmd);
   } else if (currentMode == "CA") {
