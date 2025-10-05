@@ -17,7 +17,7 @@ void handleABShuttle(int A, int B, int speedAtoB, int speedBtoA, int loops) {
 
     }
     else {
-        target = A;
+        target = (rightLimitPos + A);
         movement_speed = speedBtoA;
     }
 
