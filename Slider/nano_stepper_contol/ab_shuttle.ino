@@ -2,17 +2,17 @@ long int start_position = 0;
 int loopsDone  = 0;
 bool goingToB = false;
 bool reachedA = false;
-long int target = 0
+long int target = 0;
 int movement_speed = 0;
 
 void handleABShuttle(int A, int B, int speedAtoB, int speedBtoA, int loops) {
 
     if (reachedA == false){
-        target = A;
+        target = (rightLimitPos + A);
         movement_speed = speedBtoA;
     }
     else if (goingToB == true){
-        target = B;
+        target = (rightLimitPos + B);
         movement_speed = speedAtoB;
 
     }
@@ -59,7 +59,7 @@ void resetAB(){
     loopsDone  = 0;
     goingToB = false;
     reachedA = false;
-    target = 0
+    target = 0;
     movement_speed = 0;
 
 
