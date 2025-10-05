@@ -47,8 +47,10 @@ void handleABShuttle(int A, int B, int speedAtoB, int speedBtoA, int loops) {
 
         // After first move to A, switch to B
         if (firstRun && !goingToB) {
-            firstRun = false;
-            goingToB = true;
+        if (stepper.currentPosition() == (rightLimitPos + A)) {
+                    firstRun = false;
+                    goingToB = true;
+                }
         } else {
             // Switch direction
             goingToB = !goingToB;
