@@ -176,38 +176,41 @@ void read_ABMode() {
 
 
 
-  if (lv_obj_has_state(uic_PlusBA, LV_STATE_PRESSED)) {
+  // if (lv_obj_has_state(uic_PlusBA, LV_STATE_PRESSED)) {
 
-    if (millis() - AB_buttonClick > 200) {
-      BtoASpeed = BtoASpeed + 1;
-      char buffer[16];
-      lv_slider_set_value(uic_speedSetBA, int(BtoASpeed / DIVIDER_STEP_MM), LV_ANIM_ON);
-      snprintf(buffer, sizeof(buffer), "%d mm/s", (int)(BtoASpeed / DIVIDER_STEP_MM));
-      lv_label_set_text(uic_SpeedValueBA, buffer);
+  //   if (millis() - AB_buttonClick > 200) {
+  //     int mm_speed = int(BtoASpeed / DIVIDER_STEP_MM) + 1
+  //     BtoASpeed = int(mm_speed * DIVIDER_STEP_MM) ;
+  //     char buffer[16];
+  //     lv_slider_set_value(uic_speedSetBA, int(BtoASpeed / DIVIDER_STEP_MM), LV_ANIM_ON);
+  //     snprintf(buffer, sizeof(buffer), "%d mm/s", (int)(BtoASpeed / DIVIDER_STEP_MM));
+  //     lv_label_set_text(uic_SpeedValueBA, buffer);
 
-      //lv_label_set_text(uic_SpeedValueBA, (String(BtoASpeed) + " mm/s").c_str());
+  //     //lv_label_set_text(uic_SpeedValueBA, (String(BtoASpeed) + " mm/s").c_str());
 
-      AB_buttonClick = millis();
-    }
+  //     AB_buttonClick = millis();
+  //   }
 
-    // Your code here (send command, toggle relay, etc.)
-  }
-  if (lv_obj_has_state(uic_MinusBA, LV_STATE_PRESSED)) {
-    if (millis() - AB_buttonClick > 200) {
-      if (int(BtoASpeed / DIVIDER_STEP_MM) - 1 >= 1) {
+  //   // Your code here (send command, toggle relay, etc.)
+  // }
+  // if (lv_obj_has_state(uic_MinusBA, LV_STATE_PRESSED)) {
+  //   if (millis() - AB_buttonClick > 200) {
+  //     if (int(BtoASpeed / DIVIDER_STEP_MM) - 1 >= 1) {
 
-        BtoASpeed = BtoASpeed - 1;
-        char buffer[16];
+  //       int mm_speed = int(BtoASpeed / DIVIDER_STEP_MM) - 1
+  //       BtoASpeed = int(mm_speed * DIVIDER_STEP_MM) ;
 
-        lv_slider_set_value(uic_speedSetBA, int(BtoASpeed / DIVIDER_STEP_MM), LV_ANIM_ON);
-        snprintf(buffer, sizeof(buffer), "%d mm/s", (int)(BtoASpeed / DIVIDER_STEP_MM));
-        lv_label_set_text(uic_SpeedValueBA, buffer);
-      }
-      AB_buttonClick = millis();
-    }
+  //       char buffer[16];
 
-    // Your code here (send command, toggle relay, etc.)
-  }
+  //       lv_slider_set_value(uic_speedSetBA, int(BtoASpeed / DIVIDER_STEP_MM), LV_ANIM_ON);
+  //       snprintf(buffer, sizeof(buffer), "%d mm/s", (int)(BtoASpeed / DIVIDER_STEP_MM));
+  //       lv_label_set_text(uic_SpeedValueBA, buffer);
+  //     }
+  //     AB_buttonClick = millis();
+  //   }
+
+  //   // Your code here (send command, toggle relay, etc.)
+  // }
 
 
 
