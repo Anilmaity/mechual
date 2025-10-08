@@ -38,6 +38,7 @@ int ABLoop = 2;
 bool btn_rightPrev = true;
 bool btn_leftPrev = true;
 bool btn_idlePrev = false;  // track if idle was already printed
+
 long int CA_buttonClick = 0;
 long int AB_buttonClick = 0;
 long int PM_buttonClick = 0;
@@ -79,7 +80,7 @@ void read_manualmode() {
   // Create Position mode screen
 
   if (lv_obj_has_state(ui_Button13, LV_STATE_PRESSED)) {
-    if (millis() - PM_buttonClick > 400) {
+    if (millis() - PM_buttonClick > 200) {
       sendPositionMode(posVal, speedVal);
       // Your code here (send command, toggle relay, etc.)
       PM_buttonClick = millis();
@@ -90,7 +91,7 @@ void read_manualmode() {
 
   // // Create Manual mode sliders
 
-  speedVal = lv_slider_get_value(ui_speedSet) * DIVIDER_STEP_MM;
+  speedVal = (int)round(lv_slider_get_value(ui_speedSet) * (float)DIVIDER_STEP_MM);
   posVal = (int)round(lv_slider_get_value(ui_positionSlider) * (float)DIVIDER_STEP_MM);
 
 }

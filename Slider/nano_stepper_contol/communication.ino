@@ -11,29 +11,32 @@ bool parseJogMode(String& cmd);
 bool parsePositionMode(String& cmd);
 bool parseABShuttleMode(String& cmd);
 bool parseCalibrationMode(String& cmd);
-void printParsedValues();  // For debug
 
 
 void readlogs() {
   if (Serial.available() > 0) {
     // Read full command until newline
     String received = Serial.readStringUntil('\n');
-    Serial.println(received);
+   // Serial.println(received);
 
     received.trim();
     
     // Parse if it matches expected format (starts with "M", ends with ".")
     if (received.startsWith("M") && received.endsWith(".")) {
       if (parseCommand(received)) {
-        printParsedValues();  // Output to debug for verification
+        //printParsedValues();  // Output to debug for verification
         // TODO: Add your logic here, e.g., act on variables (move motors, etc.)
-      } else {
-        Serial.println("Error: Failed to parse command");
-      }
-    } else {
-      Serial.println("Error: Invalid command format");
-    }
+      } 
+      
+    //   else {
+    //     Serial.println("Error: Failed to parse command");
+    //   }
+    // } else {
+    //   Serial.println("Error: Invalid command format");
+    // }
+
   }
+}
 }
 
 // Main parser: Determines mode and calls specific parser
@@ -62,8 +65,8 @@ bool parseCommand(String& cmd) {
     modeCurrent = CALIBRATING;
     return parseCalibrationMode(cmd);
   } else {
-    Serial.print("Error: Unknown mode - ");
-    Serial.println(currentMode);
+    //Serial.print("Error: Unknown mode - ");
+    //Serial.println(currentMode);
     return false;
   }
 }
@@ -123,14 +126,14 @@ bool parsePositionMode(String& cmd) {
     if (!isdigit(c)) return false;
   }
   long posValue = posStr.toInt();
-  if (posValue < 0 || posValue > 99999) return false;
+  if (posValue < 0 || posValue > 999999) return false;
 
   // Validate speed (digits only, range 0-1000)
   for (char c : speedStr) {
     if (!isdigit(c)) return false;
   }
   long speedValue = speedStr.toInt();
-  if (speedValue < 0 || speedValue > 1000) return false;
+  if (speedValue < 0 || speedValue > 100000) return false;
 
   // Store valid values
   position = (int)posValue; // Safe cast due to range check
@@ -212,37 +215,3 @@ bool parseCalibrationMode(String& cmd) {
   }
   return false;
 }
-
-// Debug function to print current variables
-void printParsedValues() {
-  Serial.print("Mode: ");
-  Serial.println(currentMode);
-  
-  if (currentMode == "JM") {
-    Serial.print("Jog Speed: ");
-    Serial.println(jogSpeed);
-    Serial.print("Jog Command: ");
-    Serial.println(jogCommand);
-
-    // handleJogging(jogSpeed , jogCommand);
-
-  } else if (currentMode == "PM") {
-    Serial.print("Position: ");
-    Serial.println(position);
-    Serial.print("Speed: ");
-    Serial.println(jogSpeed);
-  } else if (currentMode == "AB") {
-    Serial.print("Point A: ");
-    Serial.println(pointA);
-    Serial.print("Point B: ");
-    Serial.println(pointB);
-    Serial.print("Shuttle Loops: ");
-    Serial.println(shuttleLoops);
-  } else if (currentMode == "CA") {
-    Serial.print("Calibration Command: ");
-    Serial.println(calCommand);
-  }
-  Serial.println("---");
-}
-
-

@@ -6,8 +6,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_menu_private.h"
-#include "../../core/lv_obj_class_private.h"
+#include "lv_menu.h"
 
 #if LV_USE_MENU
 
@@ -16,7 +15,7 @@
  *********************/
 #define MY_CLASS (&lv_menu_class)
 
-#include "../../core/lv_obj_private.h"
+#include "../../core/lv_obj.h"
 #include "../../layouts/lv_layout.h"
 #include "../../stdlib/lv_string.h"
 #include "../label/lv_label.h"
@@ -44,7 +43,7 @@ const lv_obj_class_t lv_menu_class = {
     .width_def = (LV_DPI_DEF * 3) / 2,
     .height_def = LV_DPI_DEF * 2,
     .instance_size = sizeof(lv_menu_t),
-    .name = "lv_menu",
+    .name = "menu",
 };
 const lv_obj_class_t lv_menu_page_class = {
     .constructor_cb = lv_menu_page_constructor,
@@ -53,7 +52,7 @@ const lv_obj_class_t lv_menu_page_class = {
     .width_def = LV_PCT(100),
     .height_def = LV_SIZE_CONTENT,
     .instance_size = sizeof(lv_menu_page_t),
-    .name = "lv_menu_page",
+    .name = "menu-page",
 };
 
 const lv_obj_class_t lv_menu_cont_class = {
@@ -61,7 +60,7 @@ const lv_obj_class_t lv_menu_cont_class = {
     .base_class = &lv_obj_class,
     .width_def = LV_PCT(100),
     .height_def = LV_SIZE_CONTENT,
-    .name = "lv_menu_cont",
+    .name = "menu-cont",
 };
 
 const lv_obj_class_t lv_menu_section_class = {
@@ -69,14 +68,14 @@ const lv_obj_class_t lv_menu_section_class = {
     .base_class = &lv_obj_class,
     .width_def = LV_PCT(100),
     .height_def = LV_SIZE_CONTENT,
-    .name = "lv_menu_section",
+    .name = "menu-section",
 };
 
 const lv_obj_class_t lv_menu_separator_class = {
     .base_class = &lv_obj_class,
     .width_def = LV_SIZE_CONTENT,
     .height_def = LV_SIZE_CONTENT,
-    .name = "lv_menu_separator",
+    .name = "menu-separator",
 };
 
 const lv_obj_class_t lv_menu_sidebar_cont_class = {
@@ -113,6 +112,7 @@ static void lv_menu_value_changed_event_cb(lv_event_t * e);
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
+bool lv_menu_item_back_button_is_root(lv_obj_t * menu, lv_obj_t * obj);
 void lv_menu_clear_history(lv_obj_t * obj);
 
 lv_obj_t * lv_menu_create(lv_obj_t * parent)
@@ -123,12 +123,10 @@ lv_obj_t * lv_menu_create(lv_obj_t * parent)
     return obj;
 }
 
-lv_obj_t * lv_menu_page_create(lv_obj_t * menu, char const * const title)
+lv_obj_t * lv_menu_page_create(lv_obj_t * parent, char const * const title)
 {
-    LV_ASSERT_OBJ(menu, MY_CLASS);
-
     LV_LOG_INFO("begin");
-    lv_obj_t * obj = lv_obj_class_create_obj(&lv_menu_page_class, menu);
+    lv_obj_t * obj = lv_obj_class_create_obj(&lv_menu_page_class, parent);
     lv_obj_class_init_obj(obj);
 
     lv_menu_page_t * page = (lv_menu_page_t *)obj;
@@ -142,8 +140,6 @@ lv_obj_t * lv_menu_page_create(lv_obj_t * menu, char const * const title)
 
 lv_obj_t * lv_menu_cont_create(lv_obj_t * parent)
 {
-    LV_ASSERT_OBJ(parent, &lv_menu_page_class);
-
     LV_LOG_INFO("begin");
     lv_obj_t * obj = lv_obj_class_create_obj(&lv_menu_cont_class, parent);
     lv_obj_class_init_obj(obj);
@@ -152,8 +148,6 @@ lv_obj_t * lv_menu_cont_create(lv_obj_t * parent)
 
 lv_obj_t * lv_menu_section_create(lv_obj_t * parent)
 {
-    LV_ASSERT_OBJ(parent, &lv_menu_page_class);
-
     LV_LOG_INFO("begin");
     lv_obj_t * obj = lv_obj_class_create_obj(&lv_menu_section_class, parent);
     lv_obj_class_init_obj(obj);
@@ -162,8 +156,6 @@ lv_obj_t * lv_menu_section_create(lv_obj_t * parent)
 
 lv_obj_t * lv_menu_separator_create(lv_obj_t * parent)
 {
-    LV_ASSERT_OBJ(parent, &lv_menu_page_class);
-
     LV_LOG_INFO("begin");
     lv_obj_t * obj = lv_obj_class_create_obj(&lv_menu_separator_class, parent);
     lv_obj_class_init_obj(obj);
@@ -178,14 +170,14 @@ void lv_menu_refr(lv_obj_t * obj)
     lv_ll_t * history_ll = &(menu->history_ll);
 
     /* The current menu */
-    lv_menu_history_t * act_hist = lv_ll_get_head(history_ll);
+    lv_menu_history_t * act_hist = _lv_ll_get_head(history_ll);
 
     lv_obj_t * page = NULL;
 
     if(act_hist != NULL) {
         page = act_hist->page;
         /* Delete the current item from the history */
-        lv_ll_remove(history_ll, act_hist);
+        _lv_ll_remove(history_ll, act_hist);
         lv_free(act_hist);
         menu->cur_depth--;
     }
@@ -212,7 +204,7 @@ void lv_menu_set_page(lv_obj_t * obj, lv_obj_t * page)
     if(page != NULL) {
         /* Add a new node */
         lv_ll_t * history_ll = &(menu->history_ll);
-        lv_menu_history_t * new_node = lv_ll_ins_head(history_ll);
+        lv_menu_history_t * new_node = _lv_ll_ins_head(history_ll);
         LV_ASSERT_MALLOC(new_node);
         new_node->page = page;
         menu->cur_depth++;
@@ -396,8 +388,6 @@ void lv_menu_set_load_page_event(lv_obj_t * menu, lv_obj_t * obj, lv_obj_t * pag
 
 void lv_menu_set_page_title(lv_obj_t * page_obj, char const * const title)
 {
-    LV_ASSERT_OBJ(page_obj, &lv_menu_page_class);
-
     LV_LOG_INFO("begin");
     lv_menu_page_t * page = (lv_menu_page_t *)page_obj;
 
@@ -423,8 +413,6 @@ void lv_menu_set_page_title(lv_obj_t * page_obj, char const * const title)
 
 void lv_menu_set_page_title_static(lv_obj_t * page_obj, char const * const title)
 {
-    LV_ASSERT_OBJ(page_obj, &lv_menu_page_class);
-
     LV_LOG_INFO("begin");
     lv_menu_page_t * page = (lv_menu_page_t *)page_obj;
 
@@ -518,7 +506,7 @@ void lv_menu_clear_history(lv_obj_t * obj)
     lv_menu_t * menu = (lv_menu_t *)obj;
     lv_ll_t * history_ll = &(menu->history_ll);
 
-    lv_ll_clear(history_ll);
+    _lv_ll_clear(history_ll);
 
     menu->cur_depth = 0;
 }
@@ -543,7 +531,7 @@ static void lv_menu_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj)
     menu->prev_depth = 0;
     menu->sidebar_generated = false;
 
-    lv_ll_init(&(menu->history_ll), sizeof(lv_menu_history_t));
+    _lv_ll_init(&(menu->history_ll), sizeof(lv_menu_history_t));
 
     menu->storage = lv_obj_create(obj);
     lv_obj_add_flag(menu->storage, LV_OBJ_FLAG_HIDDEN);
@@ -602,7 +590,7 @@ static void lv_menu_destructor(const lv_obj_class_t * class_p, lv_obj_t * obj)
     lv_menu_t * menu = (lv_menu_t *)obj;
     lv_ll_t * history_ll = &(menu->history_ll);
 
-    lv_ll_clear(history_ll);
+    _lv_ll_clear(history_ll);
 
     LV_TRACE_OBJ_CREATE("finished");
 }
@@ -782,20 +770,20 @@ static void lv_menu_back_event_cb(lv_event_t * e)
         lv_ll_t * history_ll = &(menu->history_ll);
 
         /* The current menu */
-        lv_menu_history_t * act_hist = lv_ll_get_head(history_ll);
+        lv_menu_history_t * act_hist = _lv_ll_get_head(history_ll);
 
         /* The previous menu */
-        lv_menu_history_t * prev_hist = lv_ll_get_next(history_ll, act_hist);
+        lv_menu_history_t * prev_hist = _lv_ll_get_next(history_ll, act_hist);
 
         if(prev_hist != NULL) {
             /* Previous menu exists */
             /* Delete the current item from the history */
-            lv_ll_remove(history_ll, act_hist);
+            _lv_ll_remove(history_ll, act_hist);
             lv_free(act_hist);
             menu->cur_depth--;
             /* Create the previous menu.
             *  Remove it from the history because `lv_menu_set_page` will add it again */
-            lv_ll_remove(history_ll, prev_hist);
+            _lv_ll_remove(history_ll, prev_hist);
             menu->cur_depth--;
             lv_menu_set_page(&(menu->obj), prev_hist->page);
 

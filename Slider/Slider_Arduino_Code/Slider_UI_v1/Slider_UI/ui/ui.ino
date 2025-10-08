@@ -2,25 +2,19 @@
 #include "Arduino_GigaDisplayTouch.h"
 #include "lvgl.h"
 #include <ui.h>
-#include <Arduino_GigaDisplay.h>
 #include <math.h> // Include math.h for round()
-//Create backlight object
-GigaDisplayBacklight backlight;
-
-#include "Arduino_GigaDisplay_GFX.h"
 
 
 
 Arduino_H7_Video Display(480, 800, GigaDisplayShield);  //( 800, 480, GigaDisplayShield );
 Arduino_GigaDisplayTouch TouchDetector;
 
-GigaDisplay_GFX display;
 
 
 #define RIGHT_BTN A0
 #define LEFT_BTN A1
-#define STEPPER_SPEED 1000   // 1200. // max 4800
-#define DIVIDER_STEP_MM 6.67 // 400 /(3*20)
+#define STEPPER_SPEED 5000   // 1200. // max 4800
+#define DIVIDER_STEP_MM 33.33 // 400 /(3*20)
 
 
 
@@ -49,6 +43,14 @@ void calibrate(){
 
   delay(1000);
   Serial1.println("M CA , M C.");
+  delay(100);
+  Serial1.println("M CA , M C.");
+  delay(100);
+  Serial1.println("M CA , M C.");
+  delay(100);
+
+  Serial.println("M CA , M C.");
+  Serial.println("Calibration started");
 
 
   while(!calibrated)
@@ -60,18 +62,19 @@ void calibrate(){
   update_ui();
   readlogs();
   }
+  Serial.println("Calibration done");
 
   lv_scr_load(ui_Home); // Replace ui_Screen1 with the desired screen name from ui.h
 
 }
 
 void setup() {
-  Serial.begin(2000000);
-  Serial1.begin(2000000);
-  backlight.set(0);
+  Serial.begin(921600);
+  Serial1.begin(921600);
+
+
 // Initialize display
   Display.begin();
-  display.fillScreen(0);
 // Initialize LVGL early
   lv_init();
 
@@ -82,7 +85,6 @@ void setup() {
 
     ui_init();
   lv_scr_load(ui_Blank); // Replace ui_Screen1 with the desired screen name from ui.h
-  backlight.set(100);
 
 
 
@@ -91,7 +93,7 @@ void setup() {
   lv_slider_set_range(ui_speedSet, 10, (int)round((float)STEPPER_SPEED / DIVIDER_STEP_MM));
   lv_slider_set_range(uic_speedSetAB, 10, (int)round((float)STEPPER_SPEED / DIVIDER_STEP_MM));
   lv_slider_set_range(uic_speedSetBA, 10, (int)round((float)STEPPER_SPEED / DIVIDER_STEP_MM));
-  
+
   lv_slider_set_range(uic_Header_battery, 225, 250); // 
   lv_slider_set_range(uic_Header1_battery, 225, 250);
   lv_slider_set_range(uic_Header2_battery, 225, 250);

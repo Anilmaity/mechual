@@ -75,6 +75,7 @@ void readlogs() {
 
     // Expect it to start with "P"
     if (!received.startsWith("P")) {
+      Serial.println(received);
       Serial.println("Error: does not start with P");
       return;
     }

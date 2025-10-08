@@ -3,22 +3,13 @@
  * Do not edit, your changes will be lost.
  */
 
-#ifndef TVG_CONFIG_H
-#define TVG_CONFIG_H
+#pragma once
 
-#include "../../lv_conf_internal.h"
+#define THORVG_CAPI_BINDING_SUPPORT 1
+
+#define THORVG_SVG_LOADER_SUPPORT 1
 
 #define THORVG_SW_RASTER_SUPPORT 1
 
-#define THORVG_SVG_LOADER_SUPPORT LV_USE_LOTTIE
+#define THORVG_VERSION_STRING "0.11.99"
 
-#define THORVG_LOTTIE_LOADER_SUPPORT LV_USE_LOTTIE
-
-#define THORVG_VERSION_STRING "0.15.3"
-
-#if LV_DRAW_SW_DRAW_UNIT_CNT > 1
-#define THORVG_THREAD_SUPPORT
-#endif
-
-
-#endif /*TVG_CONFIG_H*/

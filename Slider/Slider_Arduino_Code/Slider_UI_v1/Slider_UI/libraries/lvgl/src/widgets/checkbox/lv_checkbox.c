@@ -6,9 +6,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_checkbox_private.h"
-#include "../../core/lv_obj_private.h"
-#include "../../core/lv_obj_class_private.h"
+#include "lv_checkbox.h"
 #if LV_USE_CHECKBOX != 0
 
 #include "../../misc/lv_assert.h"
@@ -46,7 +44,7 @@ const lv_obj_class_t lv_checkbox_class = {
     .group_def = LV_OBJ_CLASS_GROUP_DEF_TRUE,
     .instance_size = sizeof(lv_checkbox_t),
     .base_class = &lv_obj_class,
-    .name = "lv_checkbox",
+    .name = "checkbox",
 };
 
 /**********************
@@ -77,7 +75,7 @@ void lv_checkbox_set_text(lv_obj_t * obj, const char * txt)
         size_t len;
 
 #if LV_USE_ARABIC_PERSIAN_CHARS
-        len = lv_text_ap_calc_bytes_count(txt) + 1;
+        len = _lv_text_ap_calc_bytes_count(txt) + 1;
 #else
         len = lv_strlen(txt) + 1;
 #endif
@@ -89,7 +87,7 @@ void lv_checkbox_set_text(lv_obj_t * obj, const char * txt)
         if(NULL == cb->txt) return;
 
 #if LV_USE_ARABIC_PERSIAN_CHARS
-        lv_text_ap_proc(txt, cb->txt);
+        _lv_text_ap_proc(txt, cb->txt);
 #else
         lv_strcpy(cb->txt, txt);
 #endif
@@ -237,7 +235,6 @@ static void lv_checkbox_draw(lv_event_t * e)
 
     lv_draw_rect_dsc_t indic_dsc;
     lv_draw_rect_dsc_init(&indic_dsc);
-    indic_dsc.base.layer = layer;
     lv_obj_init_draw_rect_dsc(obj, LV_PART_INDICATOR, &indic_dsc);
     lv_area_t marker_area;
     if(is_rtl) {
@@ -265,7 +262,6 @@ static void lv_checkbox_draw(lv_event_t * e)
 
     lv_draw_label_dsc_t txt_dsc;
     lv_draw_label_dsc_init(&txt_dsc);
-    txt_dsc.base.layer = layer;
     lv_obj_init_draw_label_dsc(obj, LV_PART_MAIN, &txt_dsc);
     txt_dsc.text = cb->txt;
 
