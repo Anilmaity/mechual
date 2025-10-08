@@ -182,7 +182,7 @@ void safetyCheck() {
 // Get battery voltage
 float getBatteryVoltage() {
     float adc = analogRead(BATTERY_PIN);
-    return (adc);  // Adjust ratio for actual voltage
+    return (adc/4);  // Adjust ratio for actual voltage
 }
 
 void sendlogs() {
