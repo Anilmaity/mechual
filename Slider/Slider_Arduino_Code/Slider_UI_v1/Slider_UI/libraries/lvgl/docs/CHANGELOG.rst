@@ -3,150 +3,92 @@
 Changelog
 =========
 
-v9.0.0
-~~~~~~
-
-Migration guide
-^^^^^^^^^^^^^^^
-
-As v9 is a major version it contains API breaking changes too. Most of the conceptual changes in v9 were internal, however the API was affected some widgets reword and refactoring as well.
+`v9.2.0 <https://github.com/lvgl/lvgl/compare/v9.2.1...v9.2.0>`__ 24 October 2024
+---------------------------------------------------------------------------------
 
 
-IMPORTANT
----------
+New Features
+~~~~~~~~~~~~
 
-If you are updating a v8 project to v9, special care must be taken as some parts
+- **feat(gif): backport add loop count control and GIF load result** `6922 <https://github.com/lvgl/lvgl/pull/6922>`__
+- **feat(animimg): backport add getter function for underlying animation** `6923 <https://github.com/lvgl/lvgl/pull/6923>`__
+- **feat(pxp) Add option to use PXP only for rotation without creating PXP draw unit.** `892d97c <https://github.com/lvgl/lvgl/commit/892d97ccc107045fef25389bf0660cbed7f2ebe7>`__
 
--  will not result in compiler error, but LVGL might not work due to related issues
--  will result in hard to understand compiler errors
+Performance
+~~~~~~~~~~~
 
-So pay extra attention to these:
+- **perf(draw): skip area independence tests with one draw unit** `6825 <https://github.com/lvgl/lvgl/pull/6825>`__
+- **perf(vg_lite): reduce matrix and radius calculations** `6800 <https://github.com/lvgl/lvgl/pull/6800>`__
 
-- :cpp:func:`lv_display_set_buffers(display, buf1, buf2, buf_size_byte, mode)` is more or less the equivalent of ``lv_disp_draw_buf_init(&draw_buf_dsc, buf1, buf2, buf_size_px)`` from v8, however in **v9 the buffer size is set in bytes**.
-- In v9 ``lv_color_t`` is always RGB888 regardless of ``LV_COLOR_DEPTH``.
-- ``lv_conf.h`` has been changed a lot, so don't forget to update it from ``lv_conf_template.h``
-- Be sure ``<stdint.h>`` is **not** included in ``lv_conf.h``. In v9 we have some assembly parts for even better performance and a random include there would mess up the assembly part.
-- The online image converter in not updated yet. Until that use `LVGLImage.py <https://github.com/lvgl/lvgl/blob/master/scripts/LVGLImage.py>`__ .
-- Run time dithering is rendering due its complexity and lack of GPU support. Smaller dithered and tiled images can be used as background images as a replacement.
-- STM32's DMA2D (Chrom-ART) support is removed for now. It will be added again when an official partnership starts with ST too.
-- SJPG was removed as the original TJPGD support decoding tile-by-tile. (typically a tile is 8x8 pixels)
-- ``LV_COLOR_DEPTH 8`` is not supported yet. In v8 it meant RGB332, in v9 it will be used for L8.
+Fixes
+~~~~~
 
-Main new features
------------------
+- **fix(kconfig): add LV_ATTRIBUTE_MEM_ALIGN, LV_ATTRIBUTE_LARGE_CONST and LV_SYSMON_GET_IDLE configs** `7131 <https://github.com/lvgl/lvgl/pull/7131>`__
+- **fix(display): remove lv_display_set_buffers_with_stride function** `7087 <https://github.com/lvgl/lvgl/pull/7087>`__
+- **fix(pxp): sync rotation direction with SW render** `7063 <https://github.com/lvgl/lvgl/pull/7063>`__
+- **fix(vg_lite): fix image transform clipping area error** `6810 <https://github.com/lvgl/lvgl/pull/6810>`__
+- **fix(vg_lite): select blend mode based on premultiplication** `6766 <https://github.com/lvgl/lvgl/pull/6766>`__
+- **fix(layout): calculate content width using x alignment** `6948 <https://github.com/lvgl/lvgl/pull/6948>`__
+- **fix(calendar): fix lv_calendar_gregorian_to_chinese compile error** `6894 <https://github.com/lvgl/lvgl/pull/6894>`__
+- **fix(indev): fix hovering disabled obj resets indev** `6855 <https://github.com/lvgl/lvgl/pull/6855>`__
+- **fix(gif): added bounds check in gif decoder** `6863 <https://github.com/lvgl/lvgl/pull/6863>`__
+- **fix(freertos): sync signal from isr fixed** `6793 <https://github.com/lvgl/lvgl/pull/6793>`__
+- **fix(draw): fix sw compile error when disable LV_DRAW_SW_COMPLEX** `6895 <https://github.com/lvgl/lvgl/pull/6895>`__
+- **fix(libinput): private headers** `6869 <https://github.com/lvgl/lvgl/pull/6869>`__
+- **fix(color): add missing ARGB8565 alpha check** `6891 <https://github.com/lvgl/lvgl/pull/6891>`__
+- **fix(display): remove the unused sw_rotate field** `6866 <https://github.com/lvgl/lvgl/pull/6866>`__
+- **fix(bar): fix bit overflow** `6841 <https://github.com/lvgl/lvgl/pull/6841>`__
+- **fix(indev): don't wait until release when a new object is found** `6831 <https://github.com/lvgl/lvgl/pull/6831>`__
+- **fix(glfw/opengles): fix buf_size calculation error** `6830 <https://github.com/lvgl/lvgl/pull/6830>`__
+- **fix(roller): fix stringop overflow** `6826 <https://github.com/lvgl/lvgl/pull/6826>`__
+- **fix(perf): perf monitor FPS** `6798 <https://github.com/lvgl/lvgl/pull/6798>`__
+- **fix(micropython): missing bidi private header feature guard** `6801 <https://github.com/lvgl/lvgl/pull/6801>`__
+- **fix(draw): fix artifact when rotating ARGB8888 images** `6794 <https://github.com/lvgl/lvgl/pull/6794>`__
+- **fix(sdl): check against NULL before using the driver data of a display** `6799 <https://github.com/lvgl/lvgl/pull/6799>`__
+- **fix(assets): add missing strides** `6790 <https://github.com/lvgl/lvgl/pull/6790>`__
+- **fix(arc): ignore hits that are outside drawn background arc** `6753 <https://github.com/lvgl/lvgl/pull/6753>`__
+- **fix(vg_lite): fixed clip_radius image cropping error** `6780 <https://github.com/lvgl/lvgl/pull/6780>`__
+- **fix(vg_lite/vector): convert gradient matrix to global matrix** `6577 <https://github.com/lvgl/lvgl/pull/6577>`__
+- **fix(spangroup): fix height calculation error** `6775 <https://github.com/lvgl/lvgl/pull/6775>`__
+- **fix(buttonmatrix): use const arrays** `6765 <https://github.com/lvgl/lvgl/pull/6765>`__
+- **fix(ime): fix ime crash when input_char is too long** `6767 <https://github.com/lvgl/lvgl/pull/6767>`__
+- **fix(draw): cast color_format in LV_DRAW_BUF_INIT_STATIC** `6729 <https://github.com/lvgl/lvgl/pull/6729>`__
+- **fix(sdl): nested comment is not allowed** `6748 <https://github.com/lvgl/lvgl/pull/6748>`__
+- **fix(ime_pinyin): fix letter count wrong when using some dictionary** `6752 <https://github.com/lvgl/lvgl/pull/6752>`__
+- **fix(anim): use correct variable `repeat_cnt`** `6757 <https://github.com/lvgl/lvgl/pull/6757>`__
+- **fix(image): backport lv_image_set_inner_align() behaviour with LV_IMAGE_ALIGN_… (#6864)** `6946 <https://github.com/lvgl/lvgl/pull/6946>`__
+- **fix(fs): backport add lv_fs_dir_t to lv_fs.h (#6925)** `6943 <https://github.com/lvgl/lvgl/pull/6943>`__
+- **fix(textarea): fix placeholder text cannot be centered** `6879 <https://github.com/lvgl/lvgl/pull/6879>`__
+- **fix(Kconfig): Fix non existant LV_STDLIB_BUILTIN (#6851)** `84346f3 <https://github.com/lvgl/lvgl/commit/84346f3ef208ca30d22e61de30e3d9a329142960>`__
+- **fix(dropdown): automatically center dropdown content (#6881)** `e961669 <https://github.com/lvgl/lvgl/commit/e961669dd8ae7dc5355e4209cb717eb1674cf453>`__
+- **fix(vglite) set cache invalidation callback for all handlers** `64beb5f <https://github.com/lvgl/lvgl/commit/64beb5f811e9ad119b28ad976b2e252a41f4b5ae>`__
+- **fix(vglite): Set buffer stride as required by hardware** `c369054 <https://github.com/lvgl/lvgl/commit/c3690544d5b384fa6d2f8d26838a6e1cd976feac>`__
+- **fix(sysmon) disable all performance banners from screen with serial redirect** `51e1dfc <https://github.com/lvgl/lvgl/commit/51e1dfcb40c52eb194138c7a4afadc828eb8c4bb>`__
+- **fix(vglite) draw when multiple draw units are available** `a109608 <https://github.com/lvgl/lvgl/commit/a1096088062a37f6f5726790b8d947cf9bb7600c>`__
+- **fix(vglite) triangle gradient areas fix** `5b837eb <https://github.com/lvgl/lvgl/commit/5b837eb7276c42a620235f544178b69d3f8501d1>`__
+- **fix(pxp): Initialize all required handlers** `0f9f322 <https://github.com/lvgl/lvgl/commit/0f9f322733bb9b5709c5da4fd6bba58862461b8a>`__
+- **fix(vglite) Small cleanup.** `c3ec922 <https://github.com/lvgl/lvgl/commit/c3ec922708aeaaf0c90abadc9f533b6edab54995>`__
+- **fix(pxp) Small cleanup.** `29c9770 <https://github.com/lvgl/lvgl/commit/29c977042e317c741e874338af26041deb97925a>`__
+- **fix(pxp) Fixed include header.** `7275e1f <https://github.com/lvgl/lvgl/commit/7275e1fff632d5271a6a16a869a595a8799476fa>`__
+- **fix(style): remove transitions when a local style property is set (#6941)** `3d33421 <https://github.com/lvgl/lvgl/commit/3d3342104f390e8b0f0447db5c13dc0619070c2f>`__
+- **fix(conf) Remove empty line to make comment more condens.** `8658411 <https://github.com/lvgl/lvgl/commit/8658411a2f5670468d105849d63a5705885ff1dc>`__
+- **fix(pxp) invalidate cache for the whole frame buffer** `6dd7b3a <https://github.com/lvgl/lvgl/commit/6dd7b3a97862b1f6fa49f23d8afb76becd8088a8>`__
+- **fix(vglite) invalidate cache for the whole frame buffer** `a634dea <https://github.com/lvgl/lvgl/commit/a634deade4709185c260afe1c038aed0291c3310>`__
+- **fix(fs): add lv_fs_dir_t to lv_fs.h (#6925)** `c826f31 <https://github.com/lvgl/lvgl/commit/c826f31f0014c0d45311cda25effb36d1f801841>`__
 
-- Run time display color format adjustment with RGB888 support
-- Built-in support ``pthread``, ``FreeRTOS`` and other (RT)OSes which are used during rendering
-- Built-in support LVGL's, C library, and other ``stdlib``s
-- Better parallel rendering architecture. See the details :ref:`here <porting_draw>`
-- Built in display and touch driver: SDL, Linux Frame buffer,  NuttX LCD and touch drivers, ST7789 and ILI9341 driver are available and more will come soon
-- :ref:`observer` allows to bind data to UI elements and create a uniform and easy to maintain API
-- GitHub CodeSpace integration makes possible to run LVGL in an Online VSCode editor with 3 click. See more `here <https://blog.lvgl.io/2023-04-13/monthly-newsletter>`__
-- Add vector graphics support via ThorVG. It can be used to draw vector graphics to a `Canvas <https://github.com/lvgl/lvgl/blob/master/examples/widgets/canvas/lv_example_canvas_8.c>`__
-- :ref:`lv_image` supports aligning, stretching or tiling the image source if the widget is larger or smaller.
+Docs
+~~~~
 
-General API changes
--------------------
-
-
-Although `lv_api_map.h <https://github.com/lvgl/lvgl/blob/master/src/lv_api_map.h>`__ address most of the refactoring we encourage you to use the latest API directly.
-
--  ``lv_disp_...`` is renamed to ``lv_display_...``
--  ``btn_...`` is renamed to ``button_...``
--  ``btnmatrix_...`` is renamed to ``buttonmatrix_...``
--  ``img_...`` is renamed to ``image_...``
--  ``zoom`` is renamed to ``scale``
--  ``angle`` is renamed to ``rotation``
--  ``scr`` is renamed to ``screen``
--  ``act`` is renamed to ``active``
--  ``del`` is renamed to ``delete``
--  ``col`` is renamed to ``column``
--  ``lv_obj_clear_flag`` is renamed to ``lv_obj_remove_flag``
--  ``lv_obj_clear_state`` is renamed to ``lv_obj_remove_state``
--  ``lv_coord_t`` was removed and replaced by ``int32_t``
-
-New color format management
----------------------------
-
--  ``LV_IMG_CF_...`` was replaced by ``LV_COLOR_FORMAT_...``
--  ``LV_COLOR_DEPTH 24`` is supported for RGB888 rendering
--  ``lv_color_t`` always means RGB888
-
-Display API
------------
-
--  ``lv_disp_drv_t`` and ``lv_disp_draw_buf_t`` was removed
--  To create a display and set it up:
-
-.. code:: c
-
-   lv_display_t * disp = lv_display_create(hor_res, ver_res)
-   lv_display_set_flush_cb(disp, flush_cb);
-   lv_display_set_buffers(disp, buf1, buf2, buf_size_in_bytes, mode);
-
--  Note that now **buf size is in bytes and not pixels**
--  ``mode`` can be:
-
-   -  ``LV_DISPLAY_RENDER_MODE_PARTIAL`` This way the buffers can be
-      smaller then the display to save RAM. At least 1/10 screen sized
-      buffer(s) are recommended.
-   -  ``LV_DISPLAY_RENDER_MODE_DIRECT`` The buffer(s) has to be screen
-      sized and LVGL will render into the correct location of the
-      buffer. This way the buffer always contain the whole image. With 2
-      buffers the buffers’ content are kept in sync automatically. (Old
-      v7 behavior)
-   -  ``LV_DISPLAY_RENDER_MODE_FULL`` Just always redraw the whole
-      screen. With 2 buffers is a standard double buffering.
-
--  Similarly to the widgets, now you can attach events to the display
-   too, using ``lv_display_add_event()``
--  ``monitor_cb`` is removed and ``LV_EVENT_RENDER_READY`` event is
-   fired instead
--  Instead of having display background color and image,
-   ``lv_layer_bottom()`` is added where any color can be set or any
-   widget can be created.
--  The target color format can be adjusted in the display in runtime by calling
-   ``lv_display_set_color_format(disp, LV_COLOR_FORMAT_...)``
--  ``LV_COLOR_16_SWAP`` is removed and ``lv_draw_sw_rgb565_swap()`` can be called manually
-   in the ``flush_cb`` if needed to swap the in-place.
--  ``disp_drv.scr_transp`` was removed and
-   ``lv_display_set_color_format(disp, LV_COLOR_FORMAT_NATIVE_ALPHA)``
-   can be used instead
--  ``set_px_cb`` is removed. You can can convert the rendered image in the ``flush_cb``.
--  For more details check out the docs
-   `here /porting/display>`__ and
-   `here /overview/display>`__.
-
-Indev API
----------
-
--  Similarly to the display ``lv_indev_drv_t`` was removed and an input
-   device can be created like this:
--  Similarly to the widgets, now you can attach events to the indevs
-   too, using ``lv_indev_add_event()``
--  The ``feedback_cb`` was removed, instead ``LV_EVENT_PRESSED/CLICKED/etc``
-   events are sent to the input device
-
-.. code:: c
-
-   lv_indev_t * indev = lv_indev_create();
-   lv_indev_set_type(indev, LV_INDEV_TYPE_...);
-   lv_indev_set_read_cb(indev, read_cb);
+- **docs(CHANGELOG): fix formatting** `72dfc1d <https://github.com/lvgl/lvgl/commit/72dfc1d75198a126dd495483d9cbc5b27c6c882b>`__
+- **docs(PXP): update PXP for rotation only feature** `da74d69 <https://github.com/lvgl/lvgl/commit/da74d6983b832637c9553d67f0133b63f260eafb>`__
 
 Others
 ~~~~~~
 
--  ``lv_msg`` is removed and replaced by
-   `lv_observer <https://docs.lvgl.io/master/others/observer.html>`__
--  ``lv_chart`` ticks support was removed,
-   `lv_scale <https://docs.lvgl.io/master/widgets/scale.html>`__ can be
-   used instead
-- ``lv_msgbox`` is update to be more flexible. It uses normal button instead of button matrix
-- ``lv_tabview`` was updated to user real button instead of a button matrix
+- **chore(vg_lite): remove unnecessary buffer checks** `6921 <https://github.com/lvgl/lvgl/pull/6921>`__
+- **chore: fix compile warnings** `6975 <https://github.com/lvgl/lvgl/pull/6975>`__
+- **chore(Kconfig): add version info to Kconfig file to check mismatch** `6900 <https://github.com/lvgl/lvgl/pull/6900>`__
 
-
-v8.3
-~~~~
-
-For Other v8.3.x releases visit the `Changelog in the release/v8.3 branch <https://github.com/lvgl/lvgl/blob/release/v8.3/docs/CHANGELOG.md>`__ .
-
+- **chore(cmsis-pack): create cmsis-pack for v9.2.1 patch (#7092)** `efd965c <https://github.com/lvgl/lvgl/commit/efd965c4c109f4370afa968f9feb11113fb6845c>`__
+- **chore: update the version number to v9.2.1** `7c3b20d <https://github.com/lvgl/lvgl/commit/7c3b20d9f2e72b7812e9f453b513d87208505abe>`__
+- **chore: cleanup after adding fixes from master** `0b4a188 <https://github.com/lvgl/lvgl/commit/0b4a188c0b0fd1c6076a1d91d8bd89dcaf4a4def>`__
