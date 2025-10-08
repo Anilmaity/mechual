@@ -11,7 +11,7 @@ void handleJogging(float rpm, char direction) {
   // }
 
 
-  if (direction == 'R' && !isLeftLimitTriggered()) {
+  if (direction == 'R' && !isRightLimitTriggered()) {
 
     if (stepper.distanceToGo() == 0) {
       stepper.moveTo(rightLimitPos + 1);
@@ -24,7 +24,7 @@ void handleJogging(float rpm, char direction) {
 
 
 
-  if (direction == 'L' && !isRightLimitTriggered()) {
+  if (direction == 'L' && !isLeftLimitTriggered()) {
 
     if (stepper.distanceToGo() == 0) {
       stepper.moveTo(leftLimitPos);
