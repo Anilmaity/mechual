@@ -13,11 +13,11 @@ void handleJogging(float rpm, char direction) {
 
   if (direction == 'R' && !isRightLimitTriggered()) {
 
-    if (stepper.distanceToGo() == 0) {
+
       stepper.moveTo(rightLimitPos + 1);
       stepper.setAcceleration(DEFAULT_ACCELERATION);
       stepper.setMaxSpeed(rpm);
-    }
+
   }
 
 
@@ -26,19 +26,19 @@ void handleJogging(float rpm, char direction) {
 
   if (direction == 'L' && !isLeftLimitTriggered()) {
 
-    if (stepper.distanceToGo() == 0) {
+
       stepper.moveTo(leftLimitPos);
       stepper.setAcceleration(DEFAULT_ACCELERATION);
       stepper.setMaxSpeed(rpm);
-    }
+
   }
 
   else if (direction == 'I') {
 
-      stepper.setAcceleration(DEFAULT_ACCELERATION);
-
     stepper.setMaxSpeed(stepper.speed());
     stepper.stop(); // Initiate stop with deceleration
+      stepper.run();
+
 
   }
 
