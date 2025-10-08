@@ -13,7 +13,7 @@ Arduino_GigaDisplayTouch TouchDetector;
 
 #define RIGHT_BTN A0
 #define LEFT_BTN A1
-#define STEPPER_SPEED 5000   // 1200. // max 4800
+#define STEPPER_SPEED 4166   // 1200. // max 4800
 #define DIVIDER_STEP_MM 33.33 // 400 /(3*20)
 
 
