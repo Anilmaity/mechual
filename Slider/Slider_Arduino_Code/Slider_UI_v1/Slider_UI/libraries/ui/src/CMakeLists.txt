@@ -1,6 +1,5 @@
 SET(SOURCES ui_comp_header.c
     ui_comp.c
-    ui_Blank.c
     ui_Splash.c
     ui_ManualMode.c
     ui_Home.c
