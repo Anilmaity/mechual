@@ -9,7 +9,7 @@ const uint8_t DIR_PIN = 19;               // Direction pin
 const uint8_t STEP_PIN = 18;              // Step pin
 const uint8_t LIMIT_SWITCH_RIGHT = 4;   // Right limit switch (CW direction)
 const uint8_t LIMIT_SWITCH_LEFT = 2;    // Left limit switch (CCW direction)
-const uint8_t BATTERY_PIN = 23;          // Battery voltage analog pin
+const uint8_t BATTERY_PIN = 15;          // Battery voltage analog pin
 bool calibrated = false;
 
 // 124 18.5 rpm 19.10 
