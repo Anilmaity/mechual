@@ -1,51 +1,49 @@
 
 // Handle jogging mode with custom accel/decel
 void handleJogging(float rpm, char direction) {
-    static unsigned long lastUpdate = 0;
-    unsigned long now = millis();
+  static unsigned long lastUpdate = 0;
+  unsigned long now = millis();
 
-    long pos = getStepsFromRight();
+  long pos = getStepsFromRight();
 
-    // if ((pos < 80 || totalStepsBetweenLimits - pos < 80 ) && calibrated){
-    //   rpm = CALIBRATION_SPEED;
-    // }
-
-      
-        if (direction == 'R' && !isRightLimitTriggered()  ) {
-
-        stepper.moveTo(rightLimitPos+1);
-        stepper.setAcceleration(DEFAULT_ACCELERATION);
-
-        stepper.setMaxSpeed(rpm);
-        stepper.run();        
-        }
+  // if ((pos < 80 || totalStepsBetweenLimits - pos < 80 ) && calibrated){
+  //   rpm = CALIBRATION_SPEED;
+  // }
 
 
+  if (direction == 'R' && !isRightLimitTriggered()) {
+
+
+      stepper.moveTo(rightLimitPos + 1);
+      stepper.setAcceleration(DEFAULT_ACCELERATION);
+      stepper.setMaxSpeed(rpm);
+
+  }
 
 
 
-       if (direction == 'L' && !isLeftLimitTriggered() ) 
-        {
-
-        stepper.moveTo(leftLimitPos);
-        stepper.setAcceleration(DEFAULT_ACCELERATION);
-        stepper.setMaxSpeed(rpm);
-        stepper.run();  
-
-        }
-
-        else if  (direction == 'I'){
-
-            stepper.setMaxSpeed(stepper.speed());
-            stepper.stop();
-            stepper.run(); 
-        }
-      
-
-        stepper.run();  
 
 
-    
+  if (direction == 'L' && !isLeftLimitTriggered()) {
+
+
+      stepper.moveTo(leftLimitPos);
+      stepper.setAcceleration(DEFAULT_ACCELERATION);
+      stepper.setMaxSpeed(rpm);
+
+  }
+
+  else if (direction == 'I') {
+
+    stepper.setMaxSpeed(stepper.speed());
+    stepper.stop(); // Initiate stop with deceleration
+      stepper.run();
+
+
+  }
+
+
+  stepper.run();
 }
 
 
@@ -54,11 +52,11 @@ int getRotationDirection() {
   long targetPos = stepper.targetPosition();
 
   if (targetPos > currentPos) {
-    return 1; // Clockwise
+    return 1;  // Clockwise
   } else if (targetPos < currentPos) {
-    return -1; // Counterclockwise
+    return -1;  // Counterclockwise
   } else {
-    return 0; // Stopped or no movement
+    return 0;  // Stopped or no movement
   }
 }
 
@@ -86,10 +84,3 @@ int getRotationDirection() {
 //     }
 //
 // }
-
-
-
-
-
-
-

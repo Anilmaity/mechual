@@ -14,7 +14,7 @@ void handlePositioning(long stepsFromRightLimit) {
         targetSpeed = 0.0; // Stop if limit is triggered
         currentSpeed = 0.0;
         stepper.setSpeed(0.0);
-        currentMode = IDLE;
+        //currentMode = IDLE;
        // Serial.println("Limit switch triggered. Stopping.");
         return;
     }

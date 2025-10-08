@@ -1,39 +1,31 @@
-// StepperMotorControl.ino
-// Modular and readable Arduino code for controlling a stepper motor with DM542 driver.
-// Features: Calibration, Position Control, Jog Mode, Serial Communication.
-// Converted from TMC5160 to DM542 (step/dir driver). No SPI or current control via software.
-// Microsteps must be set on DM542 DIP switches. Adjust MICROSTEPS in code to match.
-// Added: Global counter to track stepper position step count relative to limits (steps from right limit).
-// Modified: Position commands (POS and REL) now reference steps from right limit.
-// Modified: handleJogging() now takes speed in RPM and direction (R, L, I for right, left, idle).
-// Created handlePositioning() and handleJogging() for modularity.
+#include <soc/rtc_wdt.h>
 
-// SECTION 1: Includes and Definitions
+
 #include <AccelStepper.h>
 
 // Pin definitions
-const uint8_t EN_PIN = 4;                // Enable pin
-const uint8_t DIR_PIN = 2;               // Direction pin
-const uint8_t STEP_PIN = 3;              // Step pin
-const uint8_t LIMIT_SWITCH_RIGHT = A1;   // Right limit switch (CW direction)
-const uint8_t LIMIT_SWITCH_LEFT = A0;    // Left limit switch (CCW direction)
-const uint8_t BATTERY_PIN = A2;          // Battery voltage analog pin
+const uint8_t EN_PIN = 21;                // Enable pin
+const uint8_t DIR_PIN = 19;               // Direction pin
+const uint8_t STEP_PIN = 18;              // Step pin
+const uint8_t LIMIT_SWITCH_RIGHT = 4;   // Right limit switch (CW direction)
+const uint8_t LIMIT_SWITCH_LEFT = 2;    // Left limit switch (CCW direction)
+const uint8_t BATTERY_PIN = 15;          // Battery voltage analog pin
 bool calibrated = false;
 
 // 124 18.5 rpm 19.10 
 // Stepper motor configurations
-const uint16_t FULL_STEPS_PER_REV = 200; // Steps per revolution for 1.8° motor
+const uint16_t FULL_STEPS_PER_REV = 1000; // Steps per revolution for 1.8° motor
 
 const uint16_t MICROSTEPS = 4;          // Microstepping (must match DM542 DIP switch setting, e.g., 16)
 const long STEPS_PER_REV = FULL_STEPS_PER_REV * MICROSTEPS;
 
 // Default operational settings
-const float DEFAULT_RPM = 200.0;          // Default RPM
-const float CALIBRATION_SPEED = 200.0;          // Default RPM
-const float CurrentSpeed = 200;
+const float DEFAULT_RPM = 10000.0;          // Default RPM
+const float CALIBRATION_SPEED = 1000.0;          // Default RPM
+const float CurrentSpeed = 10000;
 
 const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
-const float DEFAULT_ACCELERATION = 800;                    // Acceleration 400 is good walue
+const float DEFAULT_ACCELERATION = 4000;                    // Acceleration 400 is good walue
 const long LARGE_DISTANCE = 200000L;   // Arbitrary large distance for limit seeking
 const unsigned long TIMEOUT_MS = 1000000;  // Timeout in milliseconds per phase
 const float BATTERY_DIVIDER_RATIO = 0.00489*4.95; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
@@ -92,9 +84,7 @@ void configureStepper() {
     stepper.setEnablePin(EN_PIN);
     stepper.setPinsInverted(false, false, true); // Invert enable pin (LOW = enabled)
     stepper.enableOutputs();
-    stepper.setMinPulseWidth(20);  // Set minimum pulse width to 4 µs for DM542
-
-    pinMode(3, OUTPUT);
+    stepper.setMinPulseWidth(4);  // Set minimum pulse width to 4 µs for DM542
 
     // TCCR2A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM21) | _BV(WGM20);
     // TCCR2B = _BV(CS22);
@@ -102,14 +92,7 @@ void configureStepper() {
     // OCR2B = 50;
 }
 
-// Initialize hardware pins and peripherals
-void initializeHardware() {
-    Serial.begin(2000000);               // High baud rate for serial
-    while (!Serial) {}                   // Wait for serial to initialize
-    
-    pinMode(LIMIT_SWITCH_RIGHT, INPUT_PULLUP);
-    pinMode(LIMIT_SWITCH_LEFT, INPUT_PULLUP);
-}
+
 
 // SECTION 4: Limit Switch Functions
 // Check if right limit switch is triggered
@@ -199,7 +182,7 @@ void safetyCheck() {
 // Get battery voltage
 float getBatteryVoltage() {
     float adc = analogRead(BATTERY_PIN);
-    return (adc);  // Adjust ratio for actual voltage
+    return (adc/4);  // Adjust ratio for actual voltage
 }
 
 void sendlogs() {
@@ -240,14 +223,24 @@ void sendshortlogs() {
 
 // SECTION 9: Setup and Loop
 void setup() {
-    initializeHardware();
+
+      Serial.begin(921600);
+      while (!Serial);
+
+
     configureStepper();
-        sendlogs();
+        
+    pinMode(LIMIT_SWITCH_RIGHT, INPUT_PULLUP);
+    pinMode(LIMIT_SWITCH_LEFT, INPUT_PULLUP);
+
+  rtc_wdt_protect_off(); // Disable write protection for RTC WDT registers
+  rtc_wdt_disable();     // Disable the RTC WDT
 
 }
 
 void loop() {
-    readlogs();
+  
+  readlogs();
     static unsigned long lastPrint = 0;
 
     if (modeCurrent == CALIBRATING) {
@@ -278,25 +271,11 @@ void loop() {
         //safetyCheck();
         handleABShuttle(pointA, pointB, speed1, speed2, shuttleLoops) ;
     }
-    // else if(modeCurrent == IDLE){
 
-    // if (millis() - lastPrint >= 1000) {
-    //     //sendshortlogs();
-    //     sendlogs();
-    //     lastPrint = millis();
-    // }
-
-    // }
-
-    // Periodic status print during calibration
-    // if (modeCurrent == CALIBRATING && millis() - lastPrint >= 1000) {
-    //     printStatus();
-    //     lastPrint = millis();
-    // }
 
     if (millis() - lastPrint >= 500) {
         sendshortlogs();
-         //sendlogs();
+        //sendlogs();
 
         //sendlogs();
 
@@ -308,7 +287,7 @@ void loop() {
         sendlogs();
         lastPrintlong = millis();
     }
-
+    
 }
 
 
