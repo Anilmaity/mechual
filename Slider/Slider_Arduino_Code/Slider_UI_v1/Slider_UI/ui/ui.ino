@@ -107,10 +107,10 @@ void setup() {
   lv_slider_set_range(uic_speedSetAB, 10, (int)round((float)STEPPER_SPEED / DIVIDER_STEP_MM));
   lv_slider_set_range(uic_speedSetBA, 10, (int)round((float)STEPPER_SPEED / DIVIDER_STEP_MM));
 
-  lv_slider_set_range(uic_Header_battery, 210, 232); // 950 - 850
-  lv_slider_set_range(uic_Header1_battery, 210, 232);
-  lv_slider_set_range(uic_Header2_battery, 210, 232);
-  lv_slider_set_range(uic_Header4_battery, 210, 232);
+  lv_slider_set_range(uic_Header_battery, 129, 142); // 950 - 850. 525 - 583
+  lv_slider_set_range(uic_Header1_battery, 129, 142);
+  lv_slider_set_range(uic_Header2_battery, 129, 142);
+  lv_slider_set_range(uic_Header4_battery, 129, 142);
 
 
   char buffer[16];

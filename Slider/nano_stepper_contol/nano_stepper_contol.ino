@@ -12,6 +12,8 @@ const uint8_t LIMIT_SWITCH_LEFT = 2;    // Left limit switch (CCW direction)
 const uint8_t BATTERY_PIN = 15;          // Battery voltage analog pin
 bool calibrated = false;
 
+int battery_value = 0;
+
 // 124 18.5 rpm 19.10 
 // Stepper motor configurations
 const uint16_t FULL_STEPS_PER_REV = 1000; // Steps per revolution for 1.8° motor
@@ -164,15 +166,15 @@ void safetyCheck() {
     if (modeCurrent == IDLE) return;
     
     float currentSpeed = stepper.speed();
-    if (currentSpeed > 0 && isLeftLimitTriggered()) {
+    if (getRotationDirection > 0 && isLeftLimitTriggered()) {
         stopMotor();
-        sendlogs();
+        //sendlogs();
 
-        Serial.println("Left limit hit, stopped.");
-    } else if (currentSpeed < 0 && isRightLimitTriggered()) {
+        //Serial.println("Left limit hit, stopped.");
+    } else if (getRotationDirection < 0 && isRightLimitTriggered()) {
         stopMotor();
-        sendlogs();
-        Serial.println("Right limit hit, stopped.");
+        //sendlogs();
+       // Serial.println("Right limit hit, stopped.");
     }
   
 
@@ -182,12 +184,11 @@ void safetyCheck() {
 // Get battery voltage
 float getBatteryVoltage() {
     float adc = analogRead(BATTERY_PIN);
-    return (adc/4);  // Adjust ratio for actual voltage
+    return (adc/4) - 80;  // Adjust ratio for actual voltage
 }
 
 void sendlogs() {
     long pos = getStepsFromRight();
-    float bat = getBatteryVoltage() ;
 
 
     int e = emergency ? 1 : 0;
@@ -197,7 +198,7 @@ void sendlogs() {
     Serial.print("P ");
     Serial.print(pos);
     Serial.print(" , B ");
-    Serial.print(bat, 1);
+    Serial.print(battery_value, 1);
     Serial.print(" , E ");
     Serial.print(e);
     Serial.print(" , LR ");
@@ -264,18 +265,19 @@ void loop() {
         handlePositioning(position);
 
     } else if (modeCurrent == JOGGING) {
-        //safetyCheck();
+        safetyCheck();
         handleJogging(jogSpeed , jogCommand);
     }
     else if (modeCurrent == AB_SHUTTLE) {
-        //safetyCheck();
+        safetyCheck();
         handleABShuttle(pointA, pointB, speed1, speed2, shuttleLoops) ;
     }
 
 
-    if (millis() - lastPrint >= 500) {
+    if (millis() - lastPrint >= 400) {
         sendshortlogs();
         //sendlogs();
+        battery_value  = 0.3*battery_value + 0.8*getBatteryVoltage();
 
         //sendlogs();
 
