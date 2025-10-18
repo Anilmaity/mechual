@@ -164,14 +164,14 @@ void stopMotor() {
 // Check limits and stop if triggered
 void safetyCheck() {
     if (modeCurrent == IDLE) return;
-    
-    float currentSpeed = stepper.speed();
-    if (getRotationDirection > 0 && isLeftLimitTriggered()) {
+
+
+    if (getRotationDirection() < 200 && isLeftLimitTriggered()) {
         stopMotor();
         //sendlogs();
 
         //Serial.println("Left limit hit, stopped.");
-    } else if (getRotationDirection < 0 && isRightLimitTriggered()) {
+    } else if (getRotationDirection() > -200 && isRightLimitTriggered()) {
         stopMotor();
         //sendlogs();
        // Serial.println("Right limit hit, stopped.");
@@ -214,10 +214,10 @@ void sendlogs() {
 void sendshortlogs() {
     long pos = getStepsFromRight();
 
-
-    Serial.print("P ");
-    Serial.print(pos);
-    Serial.println(" .");
+    Serial.println("P " + String(pos) + " .");
+    // Serial.print("P ");
+    // Serial.print(pos);
+    // Serial.println(" .");
 
 }
 
@@ -261,11 +261,11 @@ void loop() {
       }
       
     } else if (modeCurrent == POSITIONING) {
-        //safetyCheck();
+        safetyCheck();
         handlePositioning(position);
 
     } else if (modeCurrent == JOGGING) {
-        safetyCheck();
+        //safetyCheck();
         handleJogging(jogSpeed , jogCommand);
     }
     else if (modeCurrent == AB_SHUTTLE) {
@@ -274,7 +274,7 @@ void loop() {
     }
 
 
-    if (millis() - lastPrint >= 400) {
+    if (millis() - lastPrint >= 10000) {
         sendshortlogs();
         //sendlogs();
         battery_value  = 0.3*battery_value + 0.8*getBatteryVoltage();
@@ -284,7 +284,7 @@ void loop() {
         lastPrint = millis();
     }
 
-    if (millis() - lastPrintlong >= 10000 && calibrated) {
+    if (millis() - lastPrintlong >= 60000 && calibrated) {
         //sendshortlogs();
         sendlogs();
         lastPrintlong = millis();

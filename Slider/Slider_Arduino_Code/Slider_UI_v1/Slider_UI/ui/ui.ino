@@ -24,7 +24,7 @@ Arduino_GigaDisplayTouch TouchDetector;
 #define RIGHT_BTN A0
 #define LEFT_BTN A1
 #define STEPPER_SPEED 4166   // 1200. // max 4800
-#define DIVIDER_STEP_MM 33.33 // 400 /(3*20)
+#define DIVIDER_STEP_MM 27.77 // 400 /(3*20)
 
 
 
@@ -53,10 +53,7 @@ void calibrate(){
 
   delay(1000);
   Serial1.println("M CA , M C.");
-  delay(100);
-  Serial1.println("M CA , M C.");
-  delay(100);
-  Serial1.println("M CA , M C.");
+ 
   delay(100);
 
   Serial.println("M CA , M C.");
@@ -103,9 +100,9 @@ void setup() {
 
   pinMode(RIGHT_BTN, INPUT_PULLUP);  // Right button
   pinMode(LEFT_BTN, INPUT_PULLUP);   // Left button
-  lv_slider_set_range(ui_speedSet, 10, (int)round((float)STEPPER_SPEED / DIVIDER_STEP_MM));
-  lv_slider_set_range(uic_speedSetAB, 10, (int)round((float)STEPPER_SPEED / DIVIDER_STEP_MM));
-  lv_slider_set_range(uic_speedSetBA, 10, (int)round((float)STEPPER_SPEED / DIVIDER_STEP_MM));
+  lv_slider_set_range(ui_speedSet, 1, (int)round((float)STEPPER_SPEED / DIVIDER_STEP_MM));
+  lv_slider_set_range(uic_speedSetAB, 1, (int)round((float)STEPPER_SPEED / DIVIDER_STEP_MM));
+  lv_slider_set_range(uic_speedSetBA, 1, (int)round((float)STEPPER_SPEED / DIVIDER_STEP_MM));
 
   lv_slider_set_range(uic_Header_battery, 129, 142); // 950 - 850. 525 - 583
   lv_slider_set_range(uic_Header1_battery, 129, 142);

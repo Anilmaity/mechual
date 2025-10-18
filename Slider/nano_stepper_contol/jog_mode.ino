@@ -33,14 +33,16 @@ void handleJogging(float rpm, char direction) {
 
   }
 
-  else if (direction == 'I') {
+  else if (direction == 'I' || (direction == 'L' && isLeftLimitTriggered()) || direction == 'R' && isRightLimitTriggered() ) {
 
     stepper.setMaxSpeed(stepper.speed());
     stepper.stop(); // Initiate stop with deceleration
-      stepper.run();
+    stepper.run();
 
 
   }
+
+
 
 
   stepper.run();
@@ -52,9 +54,9 @@ int getRotationDirection() {
   long targetPos = stepper.targetPosition();
 
   if (targetPos > currentPos) {
-    return 1;  // Clockwise
+    return targetPos - currentPos ;  // Clockwise
   } else if (targetPos < currentPos) {
-    return -1;  // Counterclockwise
+    return (targetPos - currentPos);  // Counterclockwise
   } else {
     return 0;  // Stopped or no movement
   }
