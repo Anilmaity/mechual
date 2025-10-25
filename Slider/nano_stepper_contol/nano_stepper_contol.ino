@@ -12,7 +12,7 @@ const uint8_t LIMIT_SWITCH_LEFT = 2;    // Left limit switch (CCW direction)
 const uint8_t BATTERY_PIN = 15;          // Battery voltage analog pin
 bool calibrated = false;
 
-int battery_value = 0;
+int battery_value = 80;
 
 bool limit_trigger = true;
 
@@ -29,7 +29,7 @@ const float CALIBRATION_SPEED = 1000.0;          // Default RPM
 const float CurrentSpeed = 10000;
 
 const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
-const float DEFAULT_ACCELERATION = 4000;                    // Acceleration 400 is good walue
+const float DEFAULT_ACCELERATION = 3200;                    // Acceleration 400 is good walue
 const long LARGE_DISTANCE = 200000L;   // Arbitrary large distance for limit seeking
 const unsigned long TIMEOUT_MS = 1000000;  // Timeout in milliseconds per phase
 const float BATTERY_DIVIDER_RATIO = 0.00489*4.95; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
@@ -168,19 +168,10 @@ void stopMotor() {
 bool safetyCheck() {
 
 
-    if (isLeftLimitTriggered()) {
+    if (isLeftLimitTriggered() ||  isRightLimitTriggered() ) {
         stopMotor();
-
       return true;
-
-
-    } else if (isRightLimitTriggered()) {
-        stopMotor();
-
-        return true;
-
-
-    }
+    } 
   
   return false;
 
@@ -246,9 +237,8 @@ void setup() {
 }
 
 void loop() {
-    battery_value  = 0.996*battery_value + 0.004*getBatteryVoltage();
 
-  readlogs();
+    readlogs();
     static unsigned long lastPrint = 0;
 
     if (modeCurrent == CALIBRATING) {
@@ -268,34 +258,41 @@ void loop() {
       }
       
     } else if (modeCurrent == POSITIONING) {
-        limit_trigger = safetyCheck();
-        if(limit_trigger == false)
+        if(safetyCheck() == false)
         {
         handlePositioning(position);
         }
 
-    } else if (modeCurrent == JOGGING) {
-        limit_trigger = safetyCheck();
+         // handlePositioning(position);
 
-        if(limit_trigger == false)
+
+    } else if (modeCurrent == JOGGING) {
+
+        if(safetyCheck() == false)
         {
         handleJogging(jogSpeed , jogCommand);
+        handleJogging(jogSpeed , jogCommand);
+        handleJogging(jogSpeed , jogCommand);
+
         }
+
+       // handleJogging(jogSpeed , jogCommand);
 
     }
     else if (modeCurrent == AB_SHUTTLE) {
-        limit_trigger = safetyCheck();
 
-        if(limit_trigger == false)
+        if(safetyCheck() == false)
         {
         handleABShuttle(pointA, pointB, speed1, speed2, shuttleLoops) ;
         }
 
+       // handleABShuttle(pointA, pointB, speed1, speed2, shuttleLoops) ;
 
     }
 
 
     if (millis() - lastPrint >= 500) {
+        battery_value  = 0.9*battery_value + 0.1*getBatteryVoltage();
         sendshortlogs();
         //sendlogs();
         //sendlogs();
@@ -303,7 +300,7 @@ void loop() {
         lastPrint = millis();
     }
 
-    if (millis() - lastPrintlong >= 10000 && calibrated) {
+    if (millis() - lastPrintlong >= 60000 && calibrated) {
         //sendshortlogs();
         sendlogs();
         lastPrintlong = millis();
