@@ -176,7 +176,7 @@ void safetyCheck() {
   
 
 }
-
+/
 
 // Get battery voltage
 float getBatteryVoltage() {

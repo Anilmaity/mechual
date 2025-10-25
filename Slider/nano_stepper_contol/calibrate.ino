@@ -1,5 +1,9 @@
-const int SAFETY_STEPS = 200;  // Stop this many steps before physical limit
+const int SAFETY_STEPS = 100;  // Stop this many steps before physical limit
 
+// 400= 72 mm
+// 200= 36 mm
+// 100= 18 mm
+// 50= 9 mm
 
 // Handle calibration logic
 void handleCalibration() {
