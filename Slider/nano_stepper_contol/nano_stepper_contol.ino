@@ -27,7 +27,7 @@ const float CALIBRATION_SPEED = 1000.0;          // Default RPM
 const float CurrentSpeed = 10000;
 
 const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
-const float DEFAULT_ACCELERATION = 4000;                    // Acceleration 400 is good walue
+const float DEFAULT_ACCELERATION = 3600;                    // Acceleration 400 is good walue
 const long LARGE_DISTANCE = 200000L;   // Arbitrary large distance for limit seeking
 const unsigned long TIMEOUT_MS = 1000000;  // Timeout in milliseconds per phase
 const float BATTERY_DIVIDER_RATIO = 0.00489*4.95; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
@@ -166,15 +166,12 @@ void safetyCheck() {
     if (modeCurrent == IDLE) return;
 
 
-    if (getRotationDirection() < 200 && isLeftLimitTriggered()) {
+    if (isLeftLimitTriggered()) {
         stopMotor();
-        //sendlogs();
 
-        //Serial.println("Left limit hit, stopped.");
-    } else if (getRotationDirection() > -200 && isRightLimitTriggered()) {
+    } else if (isRightLimitTriggered()) {
         stopMotor();
-        //sendlogs();
-       // Serial.println("Right limit hit, stopped.");
+
     }
   
 
@@ -184,7 +181,7 @@ void safetyCheck() {
 // Get battery voltage
 float getBatteryVoltage() {
     float adc = analogRead(BATTERY_PIN);
-    return (adc/4) - 80;  // Adjust ratio for actual voltage
+    return (adc/4);  // Adjust ratio for actual voltage
 }
 
 void sendlogs() {
@@ -265,7 +262,7 @@ void loop() {
         handlePositioning(position);
 
     } else if (modeCurrent == JOGGING) {
-        //safetyCheck();
+        safetyCheck();
         handleJogging(jogSpeed , jogCommand);
     }
     else if (modeCurrent == AB_SHUTTLE) {
@@ -277,7 +274,7 @@ void loop() {
     if (millis() - lastPrint >= 10000) {
         sendshortlogs();
         //sendlogs();
-        battery_value  = 0.3*battery_value + 0.8*getBatteryVoltage();
+        battery_value  = 0.7*battery_value + 0.3*getBatteryVoltage();
 
         //sendlogs();
 
