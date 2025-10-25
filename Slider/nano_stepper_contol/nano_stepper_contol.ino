@@ -14,6 +14,8 @@ bool calibrated = false;
 
 int battery_value = 0;
 
+bool limit_trigger = true;
+
 // 124 18.5 rpm 19.10 
 // Stepper motor configurations
 const uint16_t FULL_STEPS_PER_REV = 1000; // Steps per revolution for 1.8° motor
@@ -27,7 +29,7 @@ const float CALIBRATION_SPEED = 1000.0;          // Default RPM
 const float CurrentSpeed = 10000;
 
 const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
-const float DEFAULT_ACCELERATION = 3600;                    // Acceleration 400 is good walue
+const float DEFAULT_ACCELERATION = 4000;                    // Acceleration 400 is good walue
 const long LARGE_DISTANCE = 200000L;   // Arbitrary large distance for limit seeking
 const unsigned long TIMEOUT_MS = 1000000;  // Timeout in milliseconds per phase
 const float BATTERY_DIVIDER_RATIO = 0.00489*4.95; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
@@ -152,36 +154,43 @@ void printStatus() {
 // SECTION 7: Motor Control Functions
 // Stop the motor and reset mode to IDLE
 void stopMotor() {
-    Serial.println("Stopping motor.");
-    if (modeCurrent == JOGGING) {
-        stepper.setSpeed(0);
-    } else {
-        stepper.stop();
-    }
-    modeCurrent = IDLE;
+
+    stepper.setMaxSpeed(CALIBRATION_SPEED*1.5);
+   // stepper.setAcceleration(DEFAULT_ACCELERATION);
+
+    stepper.stop();
+    stepper.run();
+
+   // modeCurrent = IDLE;
 }
 
 // Check limits and stop if triggered
-void safetyCheck() {
-    if (modeCurrent == IDLE) return;
+bool safetyCheck() {
 
 
     if (isLeftLimitTriggered()) {
         stopMotor();
 
+      return true;
+
+
     } else if (isRightLimitTriggered()) {
         stopMotor();
 
+        return true;
+
+
     }
   
+  return false;
 
 }
-/
+
 
 // Get battery voltage
 float getBatteryVoltage() {
     float adc = analogRead(BATTERY_PIN);
-    return (adc/4);  // Adjust ratio for actual voltage
+    return (adc/4) - 60;  // Adjust ratio for actual voltage
 }
 
 void sendlogs() {
@@ -237,7 +246,8 @@ void setup() {
 }
 
 void loop() {
-  
+    battery_value  = 0.996*battery_value + 0.004*getBatteryVoltage();
+
   readlogs();
     static unsigned long lastPrint = 0;
 
@@ -258,30 +268,42 @@ void loop() {
       }
       
     } else if (modeCurrent == POSITIONING) {
-        safetyCheck();
+        limit_trigger = safetyCheck();
+        if(limit_trigger == false)
+        {
         handlePositioning(position);
+        }
 
     } else if (modeCurrent == JOGGING) {
-        safetyCheck();
+        limit_trigger = safetyCheck();
+
+        if(limit_trigger == false)
+        {
         handleJogging(jogSpeed , jogCommand);
+        }
+
     }
     else if (modeCurrent == AB_SHUTTLE) {
-        safetyCheck();
+        limit_trigger = safetyCheck();
+
+        if(limit_trigger == false)
+        {
         handleABShuttle(pointA, pointB, speed1, speed2, shuttleLoops) ;
+        }
+
+
     }
 
 
-    if (millis() - lastPrint >= 10000) {
+    if (millis() - lastPrint >= 500) {
         sendshortlogs();
         //sendlogs();
-        battery_value  = 0.7*battery_value + 0.3*getBatteryVoltage();
-
         //sendlogs();
 
         lastPrint = millis();
     }
 
-    if (millis() - lastPrintlong >= 60000 && calibrated) {
+    if (millis() - lastPrintlong >= 10000 && calibrated) {
         //sendshortlogs();
         sendlogs();
         lastPrintlong = millis();
