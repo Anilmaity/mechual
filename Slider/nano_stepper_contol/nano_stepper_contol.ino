@@ -1,311 +1,188 @@
+/*********************************************************************
+ *  ESP32 Dual-Core Stepper + Serial
+ *  Core 0 → Serial parsing + logging
+ *  Core 1 → Motor control (AccelStepper)
+ *********************************************************************/
+
+#include <Arduino.h>
+#include <AccelStepper.h>
 #include <soc/rtc_wdt.h>
 
+// ---------------------------------------------------------------
+// 1. Pin definitions
+// ---------------------------------------------------------------
+const uint8_t EN_PIN              = 21;
+const uint8_t DIR_PIN             = 19;
+const uint8_t STEP_PIN            = 18;
+const uint8_t LIMIT_SWITCH_RIGHT  = 4;
+const uint8_t LIMIT_SWITCH_LEFT   = 2;
+const uint8_t BATTERY_PIN         = 15;
 
-#include <AccelStepper.h>
+// ---------------------------------------------------------------
+// 2. Motor constants
+// ---------------------------------------------------------------
+const uint16_t FULL_STEPS_PER_REV = 1000;
+const uint16_t MICROSTEPS         = 4;
+const long     STEPS_PER_REV      = FULL_STEPS_PER_REV * MICROSTEPS;
 
-// Pin definitions
-const uint8_t EN_PIN = 21;                // Enable pin
-const uint8_t DIR_PIN = 19;               // Direction pin
-const uint8_t STEP_PIN = 18;              // Step pin
-const uint8_t LIMIT_SWITCH_RIGHT = 4;   // Right limit switch (CW direction)
-const uint8_t LIMIT_SWITCH_LEFT = 2;    // Left limit switch (CCW direction)
-const uint8_t BATTERY_PIN = 15;          // Battery voltage analog pin
-bool calibrated = false;
+const float    DEFAULT_RPM        = 10000.0;
+const float    CALIBRATION_SPEED  = 1000.0;
+const float    DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0;
+const float    DEFAULT_ACCELERATION  = 3200;
+const long     LARGE_DISTANCE     = 200000L;
+const unsigned long TIMEOUT_MS    = 1000000;
 
-int battery_value = 80;
-
-bool limit_trigger = true;
-
-// 124 18.5 rpm 19.10 
-// Stepper motor configurations
-const uint16_t FULL_STEPS_PER_REV = 1000; // Steps per revolution for 1.8° motor
-
-const uint16_t MICROSTEPS = 4;          // Microstepping (must match DM542 DIP switch setting, e.g., 16)
-const long STEPS_PER_REV = FULL_STEPS_PER_REV * MICROSTEPS;
-
-// Default operational settings
-const float DEFAULT_RPM = 10000.0;          // Default RPM
-const float CALIBRATION_SPEED = 1000.0;          // Default RPM
-const float CurrentSpeed = 10000;
-
-const float DEFAULT_STEPS_PER_SEC = (DEFAULT_RPM * STEPS_PER_REV) / 60.0; // Steps per second
-const float DEFAULT_ACCELERATION = 3200;                    // Acceleration 400 is good walue
-const long LARGE_DISTANCE = 200000L;   // Arbitrary large distance for limit seeking
-const unsigned long TIMEOUT_MS = 1000000;  // Timeout in milliseconds per phase
-const float BATTERY_DIVIDER_RATIO = 0.00489*4.95; // Voltage divider ratio (adjust based on hardware, e.g., for 28.6V max)
-float batt_percentage = 0;
-long int lastPrintlong = 0;
-// Emergency state
-bool emergency = false;
-
-
-
-// SECTION 2: Global Objects and States
-// Stepper object
+// ---------------------------------------------------------------
+// 3. Global Stepper
+// ---------------------------------------------------------------
 AccelStepper stepper(AccelStepper::DRIVER, STEP_PIN, DIR_PIN);
 
-// Operational modes
-enum Mode { IDLE, CALIBRATING, POSITIONING, JOGGING ,AB_SHUTTLE };
+// ---------------------------------------------------------------
+// 4. Mode enum (ONLY ONE)
+// ---------------------------------------------------------------
+enum Mode { IDLE, CALIBRATING, POSITIONING, JOGGING, AB_SHUTTLE };
 Mode modeCurrent = IDLE;
 
-// Global variables for parsed data
-String currentMode = "";  // "JM", "PM", "AB", "CA"
-int jogSpeed = 200;
-char jogCommand = ' ';  // 'R', 'L', 'I'
-int position = 0;
-int pointA = 0;
-int pointB = 0;
-int speed1 = 0;
-int speed2 = 0;
-int shuttleLoops = 0;
-char calCommand = ' ';  // 'C', 'R', 'L'
+// ---------------------------------------------------------------
+// 5. Shared data (Core 0 writes, Core 1 reads)
+// ---------------------------------------------------------------
+struct SharedCmd {
+    String  currentMode   = "";
+    int     jogSpeed      = 200;
+    char    jogCommand    = ' ';
+    int     position      = 0;
+    int     pointA        = 0;
+    int     pointB        = 0;
+    int     speed1        = 0;
+    int     speed2        = 0;
+    int     shuttleLoops  = 0;
+    char    calCommand    = ' ';
 
+    bool    calibrated    = false;
+    bool    emergency     = false;
+    int     battery_value = 80;
+    long    start_position = 0;
+} shared;
 
+portMUX_TYPE sharedMutex = portMUX_INITIALIZER_UNLOCKED;
 
-
-// Calibration state structure
+// ---------------------------------------------------------------
+// 6. Calibration state (only used by motor core)
+// ---------------------------------------------------------------
 struct CalibrationState {
-    int phase = 1;                       // Calibration phase (1-4)
-    long startPosition = 0;              // Starting position
-    long rightSteps = 0;                 // Steps to right limit (unused for total)
-    long leftSteps = 0;                  // Steps from right to left limit (total steps)
-    long rightPosition = 0;              // Right limit position
-    long leftPosition = 0;               // Left limit position
-    long centerPosition = 0;             // Calculated center position
-    unsigned long phaseStartTime = 0;    // Start time for current phase
+    int   phase            = 1;
+    long  startPosition    = 0;
+    long  rightSteps       = 0;
+    long  leftSteps        = 0;
+    long  rightPosition    = 0;
+    long  leftPosition     = 0;
+    long  centerPosition   = 0;
+    unsigned long phaseStartTime = 0;
 } calState;
 
-// Global limit positions (adjusted after calibration) and total steps
 long rightLimitPos = 0;
-long leftLimitPos = 0;
+long leftLimitPos  = 0;
 long totalStepsBetweenLimits = 0;
 
-// SECTION 3: Hardware Initialization Functions
-// Configure the AccelStepper library
+// ---------------------------------------------------------------
+// 7. Helper functions
+// ---------------------------------------------------------------
+long getStepsFromRight() { return stepper.currentPosition() - rightLimitPos; }
+long getStepsFromLeft()  { return leftLimitPos - stepper.currentPosition(); }
+
+bool isRightLimitTriggered() { return digitalRead(LIMIT_SWITCH_RIGHT) == LOW; }
+bool isLeftLimitTriggered()  { return digitalRead(LIMIT_SWITCH_LEFT)  == LOW; }
+
 void configureStepper() {
     stepper.setMaxSpeed(DEFAULT_STEPS_PER_SEC);
     stepper.setAcceleration(DEFAULT_ACCELERATION);
     stepper.setEnablePin(EN_PIN);
-    stepper.setPinsInverted(false, false, true); // Invert enable pin (LOW = enabled)
+    stepper.setPinsInverted(false, false, true);
     stepper.enableOutputs();
-    stepper.setMinPulseWidth(4);  // Set minimum pulse width to 4 µs for DM542
-
-    // TCCR2A = _BV(COM2A1) | _BV(COM2B1) | _BV(WGM21) | _BV(WGM20);
-    // TCCR2B = _BV(CS22);
-    // OCR2A = 180;
-    // OCR2B = 50;
+    stepper.setMinPulseWidth(4);
 }
 
-
-
-// SECTION 4: Limit Switch Functions
-// Check if right limit switch is triggered
-bool isRightLimitTriggered() {
-    bool triggered = digitalRead(LIMIT_SWITCH_RIGHT) == LOW;
-    return triggered;
-}
-
-// Check if left limit switch is triggered
-bool isLeftLimitTriggered() {
-    bool triggered = digitalRead(LIMIT_SWITCH_LEFT) == LOW;
-    return triggered;
-}
-
-// SECTION 5: Status and Debugging Functions
-// Get steps from right limit (global counter)
-long getStepsFromRight() {
-    return stepper.currentPosition() - rightLimitPos;
-}
-
-// Get steps from left limit
-long getStepsFromLeft() {
-    return leftLimitPos - stepper.currentPosition();
-}
-
-// Print current status to serial
-void printStatus() {
-    Serial.print("Phase: ");
-    Serial.print(calState.phase);
-    Serial.print(", Current Position: ");
-    Serial.print(stepper.currentPosition());
-    Serial.print(", Target Position: ");
-    Serial.print(stepper.distanceToGo());
-    Serial.print(", Moving: ");
-    Serial.println(stepper.isRunning() ? "Yes" : "No");
-    
-    Serial.print("Mode: ");
-    switch (modeCurrent) {
-        case IDLE: Serial.println("IDLE"); break;
-        case CALIBRATING: Serial.println("CALIBRATING"); break;
-        case POSITIONING: Serial.println("POSITIONING"); break;
-        case JOGGING: Serial.println("JOGGING"); break;
-    }
-    
-    if (totalStepsBetweenLimits > 0) {
-        Serial.print("Steps from Right Limit: ");
-        Serial.println(getStepsFromRight());
-        Serial.print("Steps from Left Limit: ");
-        Serial.println(getStepsFromLeft());
-        Serial.print("Total Steps between Limits: ");
-        Serial.println(totalStepsBetweenLimits);
-    }
-}
-
-// SECTION 7: Motor Control Functions
-// Stop the motor and reset mode to IDLE
 void stopMotor() {
-
-    stepper.setMaxSpeed(CALIBRATION_SPEED*1.5);
-   // stepper.setAcceleration(DEFAULT_ACCELERATION);
-
+    stepper.setMaxSpeed(CALIBRATION_SPEED * 1.5);
     stepper.stop();
-    stepper.run();
-
-   // modeCurrent = IDLE;
-}
-
-// Check limits and stop if triggered
-bool safetyCheck() {
-
-
-    if (isLeftLimitTriggered() ||  isRightLimitTriggered() ) {
-        stopMotor();
-      return true;
-    } 
-  
-  return false;
-
+    stepper.run();  // execute deceleration
 }
 
 
-// Get battery voltage
-float getBatteryVoltage() {
-    float adc = analogRead(BATTERY_PIN);
-    return (adc/4) - 60;  // Adjust ratio for actual voltage
-}
-
-void sendlogs() {
-    long pos = getStepsFromRight();
-
-
-    int e = emergency ? 1 : 0;
-    int lr = isRightLimitTriggered() ? 1 : 0;
-    int ll = isLeftLimitTriggered() ? 1 : 0;
-
-    Serial.print("P ");
-    Serial.print(pos);
-    Serial.print(" , B ");
-    Serial.print(battery_value, 1);
-    Serial.print(" , E ");
-    Serial.print(e);
-    Serial.print(" , LR ");
-    Serial.print(lr);
-    Serial.print(" , LL ");
-    Serial.print(ll);
-    Serial.print(" , TS ");
-    Serial.print(totalStepsBetweenLimits);
-    Serial.println(" .");
-
-}
-
-void sendshortlogs() {
-    long pos = getStepsFromRight();
-
-    Serial.println("P " + String(pos) + " .");
-    // Serial.print("P ");
-    // Serial.print(pos);
-    // Serial.println(" .");
-
-}
-
-
-// SECTION 9: Setup and Loop
+// ------------------------------------------------------------------
+// 11. Arduino setup() – create Core-0 task
+// ------------------------------------------------------------------
 void setup() {
+    Serial.begin(921600);
+    while (!Serial) { delay(10); }
 
-      Serial.begin(921600);
-      while (!Serial);
-
-
-    configureStepper();
-        
     pinMode(LIMIT_SWITCH_RIGHT, INPUT_PULLUP);
-    pinMode(LIMIT_SWITCH_LEFT, INPUT_PULLUP);
+    pinMode(LIMIT_SWITCH_LEFT,  INPUT_PULLUP);
+    configureStepper();
 
-  rtc_wdt_protect_off(); // Disable write protection for RTC WDT registers
-  rtc_wdt_disable();     // Disable the RTC WDT
+    rtc_wdt_protect_off();
+    rtc_wdt_disable();
 
+    xTaskCreatePinnedToCore(
+        serialCommTask,
+        "SerialComm",
+        4096,
+        NULL,
+        1,
+        NULL,
+        0);  // Core 0
 }
 
+// ------------------------------------------------------------------
+// 12. Motor loop – Core 1 (default Arduino loop)
+// ------------------------------------------------------------------
 void loop() {
-
-    readlogs();
-    static unsigned long lastPrint = 0;
-
-    if (modeCurrent == CALIBRATING) {
-
-      if (String(calCommand) == "C")
-      {
-        stepper.run();
-        handleCalibration();
-        if (calState.phase == 4) {
-            stepper.setCurrentPosition(0); // Reset center to 0
-            // Adjust limit positions relative to new zero (center)
-            rightLimitPos -= calState.centerPosition;
-            leftLimitPos -= calState.centerPosition;
-            Serial.println("Calibration done, center position reset to 0.");
-            modeCurrent = IDLE;
-        }
-      }
-      
-    } else if (modeCurrent == POSITIONING) {
-        if(safetyCheck() == false)
-        {
-        handlePositioning(position);
-        }
-
-         // handlePositioning(position);
-
-
-    } else if (modeCurrent == JOGGING) {
-
-        if(safetyCheck() == false)
-        {
-        handleJogging(jogSpeed , jogCommand);
-        handleJogging(jogSpeed , jogCommand);
-        handleJogging(jogSpeed , jogCommand);
-
-        }
-
-       // handleJogging(jogSpeed , jogCommand);
-
-    }
-    else if (modeCurrent == AB_SHUTTLE) {
-
-        if(safetyCheck() == false)
-        {
-        handleABShuttle(pointA, pointB, speed1, speed2, shuttleLoops) ;
-        }
-
-       // handleABShuttle(pointA, pointB, speed1, speed2, shuttleLoops) ;
-
+    // ---- Safety ----
+    bool limit = isRightLimitTriggered() || isLeftLimitTriggered();
+    if (limit) {
+        stopMotor();
+        portENTER_CRITICAL(&sharedMutex); shared.emergency = true;  portEXIT_CRITICAL(&sharedMutex);
+    } else {
+        portENTER_CRITICAL(&sharedMutex); shared.emergency = false; portEXIT_CRITICAL(&sharedMutex);
     }
 
+    // ---- Read mode ----
+    String cmd;
+    portENTER_CRITICAL(&sharedMutex);
+    cmd = shared.currentMode;
+    portEXIT_CRITICAL(&sharedMutex);
 
-    if (millis() - lastPrint >= 500) {
-        battery_value  = 0.9*battery_value + 0.1*getBatteryVoltage();
-        sendshortlogs();
-        //sendlogs();
-        //sendlogs();
 
-        lastPrint = millis();
+
+    // ---- Execute mode ----
+    if (!limit) {
+        switch (modeCurrent) {
+            case JOGGING:
+                { int s; char d;
+                  portENTER_CRITICAL(&sharedMutex); s = shared.jogSpeed; d = shared.jogCommand; portEXIT_CRITICAL(&sharedMutex);
+                  if (d == 'R' || d == 'L' || d == 'I') handleJogging(s, d); }
+                break;
+            case POSITIONING:
+                { int t; portENTER_CRITICAL(&sharedMutex); t = shared.position; portEXIT_CRITICAL(&sharedMutex);
+                  handlePositioning(t); }
+                break;
+            case AB_SHUTTLE:
+                { int a,b,s1,s2,l;
+                  portENTER_CRITICAL(&sharedMutex);
+                  a=shared.pointA; b=shared.pointB; s1=shared.speed1; s2=shared.speed2; l=shared.shuttleLoops;
+                  portEXIT_CRITICAL(&sharedMutex);
+                  handleABShuttle(a,b,s1,s2,l); }
+                break;
+            case CALIBRATING:
+                handleCalibration();
+                break;
+            default:
+                stepper.setSpeed(0);
+                break;
+        }
     }
 
-    if (millis() - lastPrintlong >= 60000 && calibrated) {
-        //sendshortlogs();
-        sendlogs();
-        lastPrintlong = millis();
-    }
-    
+    stepper.run();
+    vTaskDelay(1);
 }
-
 

@@ -1,115 +1,129 @@
-const int SAFETY_STEPS = 100;  // Stop this many steps before physical limit
+/*=====================================================================
+   CALIBRATION – Core‑1 (motor) only
+  =====================================================================*/
+const long SAFETY_STEPS = 100;               // stop 100 steps before the physical limit
 
-// 400= 72 mm
-// 200= 36 mm
-// 100= 18 mm
-// 50= 9 mm
+void initiateRecalibration()
+{
+    // ----- reset everything that belongs to calibration -----
+    portENTER_CRITICAL(&sharedMutex);
+    shared.calState.phase            = 1;
+    shared.calState.phaseStartTime   = millis();
+    shared.calState.rightPosition    = 0;
+    shared.calState.leftPosition     = 0;
+    shared.calState.centerPosition   = 0;
+    shared.calState.rightSteps       = 0;
+    shared.calState.leftSteps        = 0;
+    shared.calibrated                = false;
+    shared.calCommand                = ' ';          // clear command flag
+    portEXIT_CRITICAL(&sharedMutex);
 
-// Handle calibration logic
-void handleCalibration() {
-    // Check for timeout
-    if (calState.phase < 4 && millis() - calState.phaseStartTime > TIMEOUT_MS) {
-        Serial.println("Error: Timeout in phase " + String(calState.phase) + ". Check motor and limit switches!");
-        calState.phase = 4;
-        stopMotor();
-        return;
+    Serial.println("Recalibration initiated.");
+}
+
+/*--------------------------------------------------------------------
+   handleCalibration() – called every loop from Core‑1
+   (the only place where stepper.run() is executed)
+  --------------------------------------------------------------------*/
+void handleCalibration()
+{
+    // ---- 1. Timeout check (shared data) ----
+    {
+        unsigned long now;
+        int phase;
+        portENTER_CRITICAL(&sharedMutex);
+        now   = millis();
+        phase = shared.calState.phase;
+        portEXIT_CRITICAL(&sharedMutex);
+
+        if (phase < 4 && (now - shared.calState.phaseStartTime > TIMEOUT_MS)) {
+            Serial.println("Error: Timeout in phase " + String(phase) +
+                           ". Check motor and limit switches!");
+            portENTER_CRITICAL(&sharedMutex);
+            shared.calState.phase = 4;          // go straight to “finished”
+            portEXIT_CRITICAL(&sharedMutex);
+            stopMotor();
+            return;
+        }
     }
 
-    if (calState.phase == 1) { // Move CW to right limit
-        stepper.moveTo(-LARGE_DISTANCE);
-        stepper.setMaxSpeed(-CALIBRATION_SPEED);
+    // ---- 2. Phase handling (all stepper calls are local) ----
+    int phase;
+    portENTER_CRITICAL(&sharedMutex);
+    phase = shared.calState.phase;
+    portEXIT_CRITICAL(&sharedMutex);
+
+    if (phase == 1) {                     // ---- PHASE 1 : move CW to right limit ----
+        stepper.moveTo(-LARGE_DISTANCE);   // large negative = CW
+        stepper.setMaxSpeed(-CALIBRATION_SPEED);   // negative speed = CW
         stepper.run();
 
         if (isRightLimitTriggered()) {
-            stepper.stop();
-            calState.rightPosition = stepper.currentPosition();
-            calState.rightSteps = -calState.rightPosition;
-            Serial.print("Right limit hit! Steps to right: ");
-            Serial.println(calState.rightSteps);
-            
-            calState.phase = 2;
-            calState.phaseStartTime = millis();
-            stepper.moveTo(LARGE_DISTANCE);
+            stepper.stop();                // immediate stop
+            long curPos = stepper.currentPosition();
 
+            portENTER_CRITICAL(&sharedMutex);
+            shared.calState.rightPosition = curPos;
+            shared.calState.rightSteps    = -curPos;               // steps from origin
+            shared.calState.phase         = 2;
+            shared.calState.phaseStartTime = millis();
+            portEXIT_CRITICAL(&sharedMutex);
+
+            Serial.print("Right limit hit! Steps to right: ");
+            Serial.println(shared.calState.rightSteps);
             Serial.println("Switching to phase 2: Moving CCW to left limit...");
-            if (isLeftLimitTriggered()) {
-                Serial.println("Warning: Left limit switch already triggered at phase 2 start!");
-                calState.leftPosition = stepper.currentPosition();
-                calState.leftSteps = calState.leftPosition - calState.rightPosition;
-                Serial.print("Left limit hit! Steps from right to left: ");
-                Serial.println(calState.leftSteps);
-                calState.centerPosition = (calState.leftPosition + calState.rightPosition) / 2;
-                Serial.print("Center position calculated: ");
-                Serial.println(calState.centerPosition);
-                calState.phase = 3;
-                calState.phaseStartTime = millis();
-                stepper.moveTo(calState.centerPosition);
-            } else {
-                stepper.moveTo(LARGE_DISTANCE);
-            }
+
+            // start moving toward left limit
+            stepper.moveTo(LARGE_DISTANCE);
             return;
         }
-    } else if (calState.phase == 2) { // Move CCW to left limit
-        stepper.setMaxSpeed(CALIBRATION_SPEED);
+
+    } else if (phase == 2) {               // ---- PHASE 2 : move CCW to left limit ----
+        stepper.setMaxSpeed(CALIBRATION_SPEED);   // positive speed = CCW
         stepper.run();
 
         if (isLeftLimitTriggered()) {
             stepper.stop();
-            calState.leftPosition = stepper.currentPosition();
-            calState.leftSteps = calState.leftPosition - calState.rightPosition;
-            Serial.print("Left limit hit! Steps from right to left: ");
-            Serial.println(calState.leftSteps);
-            
-            calState.centerPosition = (calState.leftPosition + calState.rightPosition) / 2;
-            Serial.print("Center position calculated: ");
-            Serial.println(calState.centerPosition);
-            
-            // Set global limit positions and total steps
-            rightLimitPos = calState.rightPosition + SAFETY_STEPS;
-            leftLimitPos  = calState.leftPosition  - SAFETY_STEPS;
+            long curPos = stepper.currentPosition();
+
+            portENTER_CRITICAL(&sharedMutex);
+            shared.calState.leftPosition = curPos;
+            shared.calState.leftSteps    = curPos - shared.calState.rightPosition;
+            shared.calState.centerPosition = (curPos + shared.calState.rightPosition) / 2;
+
+            // ---- set global limits with safety margin ----
+            rightLimitPos = shared.calState.rightPosition + SAFETY_STEPS;
+            leftLimitPos  = shared.calState.leftPosition  - SAFETY_STEPS;
             totalStepsBetweenLimits = leftLimitPos - rightLimitPos;
-            
-            calState.phase = 3;
-            calState.phaseStartTime = millis();
-            stepper.moveTo(calState.centerPosition);
+
+            shared.calState.phase         = 3;
+            shared.calState.phaseStartTime = millis();
+            portEXIT_CRITICAL(&sharedMutex);
+
+            Serial.print("Left limit hit! Steps from right to left: ");
+            Serial.println(shared.calState.leftSteps);
+            Serial.print("Center position calculated: ");
+            Serial.println(shared.calState.centerPosition);
+
+            // start moving to centre
+            stepper.moveTo(shared.calState.centerPosition);
             return;
         }
-    } else if (calState.phase == 3) { // Move to center
-        stepper.setMaxSpeed(-CALIBRATION_SPEED);
+
+    } else if (phase == 3) {               // ---- PHASE 3 : move to centre ----
+        stepper.setMaxSpeed(-CALIBRATION_SPEED);   // direction does not matter – we use moveTo()
         stepper.run();
 
         if (stepper.distanceToGo() == 0) {
-            sendlogs();
-            calibrated = true;
-            // Serial.println("Calibration complete. At center position.");
-            // Serial.print("Final Right Steps (from initial): ");
-            // Serial.println(calState.rightSteps);
-            // Serial.print("Final Left Steps (from right): ");
-            // Serial.println(calState.leftSteps);
-            // Serial.print("Total Steps between Limits: ");
-            // Serial.println(totalStepsBetweenLimits);
-            calState.phase = 4;
+            // centre reached → calibration finished
+            portENTER_CRITICAL(&sharedMutex);
+            shared.calibrated = true;
+            shared.calState.phase = 4;
+            portEXIT_CRITICAL(&sharedMutex);
+
+            sendlogs();                         // one‑time report
+            Serial.println("Calibration complete. At centre position.");
         }
     }
+    // phase 4 = idle – nothing to do
 }
-
-
-
-
-
-
-void initiateRecalibration() {
-  // Reset calibration state
-  calState.phase = 1;
-  calState.phaseStartTime = millis();
-  calState.rightPosition = 0;
-  calState.leftPosition = 0;
-  calState.centerPosition = 0;
-  calState.rightSteps = 0;
-  calState.leftSteps = 0;
-  calibrated = false;
-  Serial.println("Recalibration initiated.");
-}
-
-
-

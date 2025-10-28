@@ -5,6 +5,18 @@ bool reachedA = false;
 long int target = 0;
 int movement_speed = 0;
 
+
+void resetAB(){
+    start_position = 0;
+    loopsDone  = 0;
+    goingToB = false;
+    reachedA = false;
+    target = 0;
+    movement_speed = 0;
+
+
+}
+
 void handleABShuttle(int A, int B, int speedAtoB, int speedBtoA, int loops) {
 
     if (reachedA == false){
@@ -54,13 +66,3 @@ void handleABShuttle(int A, int B, int speedAtoB, int speedBtoA, int loops) {
 }
 
 
-void resetAB(){
-    start_position = 0;
-    loopsDone  = 0;
-    goingToB = false;
-    reachedA = false;
-    target = 0;
-    movement_speed = 0;
-
-
-}
